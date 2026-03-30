@@ -1,0 +1,25 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: setting-service
+
+  datasource:
+    url: jdbc:postgresql://toshanidb.cf4ageamuk6x.ap-south-1.rds.amazonaws.com:5432/toshanidb
+    username: postgres
+    password: Aq52earuFJv0JvO5SPHR
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # options: create, create-drop, validate, none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: always
