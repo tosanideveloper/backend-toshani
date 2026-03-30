@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping(value = "/getUser")
+    @GetMapping(value = "/User")
     public List<UserModel> getUser(){
         List<UserModel> user = userService.getUser();
         return user;
