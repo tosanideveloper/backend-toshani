@@ -1,12 +1,13 @@
 package com.toshaniFintech.user_service.entity;
 
+import com.toshaniFintech.user_service.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Table(name = "users")
 @Data
-public class UserEntity {
+public class UserEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
