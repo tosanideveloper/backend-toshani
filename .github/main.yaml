@@ -2,7 +2,7 @@ name: Toshani CICD Pipeline
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'dev-abhijeet']
 
 jobs:
   # =========================
