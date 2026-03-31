@@ -1,0 +1,146 @@
+name: Toshani CICD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+# =========================
+# DETECT CHANGES
+# =========================
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.set.outputs.services }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: changes
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changes.txt
+          cat changes.txt
+
+      - name: Detect affected services
+        id: set
+        run: |
+          ALL_SERVICES=("auth-service" "user-service" "gateway-service" "eureka-client" "setting-service")
+          services=()
+
+          # If root pom.xml changed → rebuild all
+          if grep -q "^pom.xml" changes.txt; then
+            services=("${ALL_SERVICES[@]}")
+          else
+            for svc in "${ALL_SERVICES[@]}"
+            do
+              if grep -q "^$svc/" changes.txt; then
+                services+=("$svc")
+              fi
+            done
+          fi
+
+          # Convert to JSON
+          if [ ${#services[@]} -eq 0 ]; then
+            echo "services=[]" >> $GITHUB_OUTPUT
+          else
+            json=$(printf '"%s",' "${services[@]}")
+            json="[${json%,}]"
+            echo "services=$json" >> $GITHUB_OUTPUT
+          fi
+
+# =========================
+# BUILD ONLY CHANGED
+# =========================
+  build:
+    needs: detect
+    if: ${{ needs.detect.outputs.services != '[]' }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service: ${{ fromJson(needs.detect.outputs.services) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build Service
+        run: |
+          cd ${{ matrix.service }}
+          mvn clean package -DskipTests
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.service }}
+          path: ${{ matrix.service }}/target/*.jar
+
+# =========================
+# DEPLOY ONLY CHANGED
+# =========================
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service: ${{ fromJson(needs.detect.outputs.services) }}
+
+    steps:
+      - name: Download JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.service }}
+
+      - name: Upload to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "*.jar"
+          target: /opt/microservices/${{ matrix.service }}
+
+      - name: Deploy + Reload PM2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            SERVICE=${{ matrix.service }}
+            DIR=/opt/microservices/$SERVICE
+
+            echo "Deploying $SERVICE"
+
+            cd $DIR
+
+            # Backup old jar
+            if [ -f app.jar ]; then
+              cp app.jar app.jar.bak
+            fi
+
+            # Replace with new jar
+            NEW_JAR=$(ls *.jar | head -n 1)
+            mv $NEW_JAR app.jar
+
+            # Reload service (zero downtime)
+            pm2 reload $SERVICE || pm2 start ecosystem.config.js --only $SERVICE
+
+            sleep 5
+
+            echo "Checking health..."
+            curl -f http://localhost:8080/actuator/health || {
+              echo "Health check failed. Rolling back..."
+
+              mv app.jar.bak app.jar
+              pm2 restart $SERVICE
+              exit 1
+            }
