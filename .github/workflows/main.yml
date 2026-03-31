@@ -2,13 +2,12 @@ name: Toshani CICD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
-
-# =========================
-# DETECT CHANGES
-# =========================
+  # =========================
+  # DETECT CHANGES
+  # =========================
   detect:
     runs-on: ubuntu-latest
     outputs:
@@ -20,8 +19,12 @@ jobs:
       - name: Get changed files
         id: changes
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changes.txt
-          cat changes.txt
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "First commit detected"
+            git ls-files > changes.txt
+          else
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changes.txt
+          fi
 
       - name: Detect affected services
         id: set
@@ -50,9 +53,9 @@ jobs:
             echo "services=$json" >> $GITHUB_OUTPUT
           fi
 
-# =========================
-# BUILD ONLY CHANGED
-# =========================
+  # =========================
+  # BUILD ONLY CHANGED
+  # =========================
   build:
     needs: detect
     if: ${{ needs.detect.outputs.services != '[]' }}
@@ -82,9 +85,9 @@ jobs:
           name: ${{ matrix.service }}
           path: ${{ matrix.service }}/target/*.jar
 
-# =========================
-# DEPLOY ONLY CHANGED
-# =========================
+  # =========================
+  # DEPLOY ONLY CHANGED
+  # =========================
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -105,7 +108,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "*.jar"
+          source: '*.jar'
           target: /opt/microservices/${{ matrix.service }}
 
       - name: Deploy + Reload PM2
