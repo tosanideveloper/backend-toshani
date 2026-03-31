@@ -19,8 +19,8 @@ jobs:
       - name: Get changed files
         id: changes
         run: |
-          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
-            echo "First commit detected"
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "${{ github.event.before }}" 2>/dev/null; then
+            echo "First commit detected or previous commit not available in checkout"
             git ls-files > changes.txt
           else
             git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changes.txt
