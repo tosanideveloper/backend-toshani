@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/setting")
-@Tag(name = "Setting API", description = "APIs for Setting CRUD" )
+@Tag(name = "Setting API", description = "APIs for Setting CRUD")
 public class SettingController {
 
     @Autowired
