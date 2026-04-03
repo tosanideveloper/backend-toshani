@@ -37,7 +37,7 @@ public class SettingController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<APIResponse<List<SettingResponse>>> getAllSettings() {
+    public ResponseEntity<APIResponse<List<SettingResponse>>> getAllSetting() {
         return ResponseUtil.success(
                 "Settings fetched successfully",
                 settingService.getAllSettings(),
