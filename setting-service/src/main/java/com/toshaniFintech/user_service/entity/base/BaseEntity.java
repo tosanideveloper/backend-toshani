@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public abstract class BaseEntity {
-
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
