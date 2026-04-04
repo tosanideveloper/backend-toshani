@@ -34,6 +34,12 @@
 	</dependencyManagement>
 
 	<dependencies>
+        <!-- Common Utility-->
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>utility</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
 		<!-- Web (REQUIRED) -->
 		<dependency>

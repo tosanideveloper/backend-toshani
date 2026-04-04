@@ -4,15 +4,14 @@ package com.toshaniFintech.user_service.service.impl;
 import com.toshaniFintech.user_service.dto.request.SettingRequest;
 import com.toshaniFintech.user_service.dto.response.SettingResponse;
 import com.toshaniFintech.user_service.entity.SettingEntity;
-import com.toshaniFintech.user_service.exception.BadRequestException;
-import com.toshaniFintech.user_service.exception.NotFoundException;
-import com.toshaniFintech.user_service.exception.UnprocessableEntityException;
+import com.toshaniFintech.common.exception.model.BadRequestException;
+import com.toshaniFintech.common.exception.model.NotFoundException;
+import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.repository.SettingRepository;
 import com.toshaniFintech.user_service.service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,7 +53,7 @@ public class SettingServiceImpl implements SettingService {
     @Override
     public SettingResponse updateSetting(String id, SettingRequest settingRequest) {
         SettingEntity existingEntity = settingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("Setting not found with id: " + id));
 
         existingEntity.setSettingKey(settingRequest.getSettingKey());
         existingEntity.setSettingValue(settingRequest.getSettingValue());
