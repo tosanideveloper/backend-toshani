@@ -29,17 +29,6 @@ public class IPController {
     private IPService iPService;
 
     @PostMapping("/create")
-    @Operation(
-            summary = "Create User",
-            description = "Creates a new user in the system"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User created successfully",
-                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "User already exists"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
     public ResponseEntity<APIResponse<CreateIpResponse>> createIpResponseResponseEntity(
             @Valid @RequestBody CreateIpRequest createIpRequest) {
 
@@ -51,29 +40,63 @@ public class IPController {
     }
 
     @GetMapping("/get-all")
+    @Operation(
+            summary = "IP Addresses List",
+            description = "To fetch IP Addresses List"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "IP Addresses fetched successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            //@ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<APIResponse<List<IPAddressModel>>> getIpList() {
         return ResponseUtil.success(
-                "IP fetched successfully",
+                "IP Addresses fetched successfully",
                 iPService.getIpList(),
                 HttpStatus.OK
         );
     }
     @GetMapping("/get{id}")
+    @Operation(
+            summary = "IP Addresses List",
+            description = "To fetch IP Addresses List"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "IP Addresses fetched successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            //@ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+
     public ResponseEntity<APIResponse<IPAddressModel>> getIpListById(@PathVariable String id) {
         return ResponseUtil.success(
-                "IP fetched successfully",
+                "IP Addresses fetched successfully",
                 iPService.getIpListById(id),
                 HttpStatus.OK
         );
     }
 
     @PutMapping("/update/{id}")
+    @Operation(
+            summary = "IP Addresses List",
+            description = "To update IP Addresses List"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "IP Addresses updated successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            //@ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<APIResponse<CreateIpResponse>> updateIpAddress(
             @PathVariable Long id,
             @Valid @RequestBody CreateIpRequest request) {
 
         return ResponseUtil.success(
-                "IP updated successfully",
+                "IP Addresses updated successfully",
                 iPService.createIpResponse(request),
                 HttpStatus.OK
         );
