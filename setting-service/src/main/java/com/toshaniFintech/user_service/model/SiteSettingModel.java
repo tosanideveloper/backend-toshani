@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SiteSettingModel {
-    private Long id;
+    private String id;
     private String address;
     private String city;
     private String pinCode;

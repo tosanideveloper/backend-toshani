@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.user_service.dto.request.SiteSettingRequestDTO;
 import com.toshaniFintech.user_service.dto.response.APIResponse;
 import com.toshaniFintech.user_service.dto.response.SiteSettingResponseDTO;
+import com.toshaniFintech.user_service.model.ApisServiceModel;
 import com.toshaniFintech.user_service.model.SiteSettingModel;
 import com.toshaniFintech.user_service.service.SiteSettingService;
 import com.toshaniFintech.user_service.util.ResponseUtil;
@@ -32,7 +33,7 @@ public class SiteSettingController {
     @Autowired
     ObjectMapper objectMapper;
 
-    @GetMapping("/get")
+    @GetMapping("/get-all")
     @Operation(
             summary = "Site Setting Service",
             description = "get a Site Setting Service"
@@ -48,6 +49,21 @@ public class SiteSettingController {
         return ResponseUtil.success("Site Settings fetched successfully", siteSettingService.getAllSiteSettings(), HttpStatus.OK);
     }
 
+    @GetMapping("/get/{id}")
+    @Operation(
+            summary = "Site Setting Service",
+            description = "This api is to get by ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Apis service get by ID successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<APIResponse<SiteSettingModel>> getSiteSettingWithID(@PathVariable String id) {
+        return ResponseUtil.success("Site Settings fetched successfully", siteSettingService.getSiteSettingByID(id), HttpStatus.OK);
+    }
     @PutMapping("/update/{id}")
     @Operation(
             summary = "Site Setting Service",

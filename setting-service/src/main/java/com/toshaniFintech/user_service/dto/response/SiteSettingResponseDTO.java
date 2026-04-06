@@ -4,5 +4,15 @@ import lombok.Data;
 
 @Data
 public class SiteSettingResponseDTO {
-    private String message;
+    private String id;
+    private String address;
+    private String city;
+    private String pinCode;
+    private String phone;
+    private String email;
+    private String state;
+    private String country;
+    private String metaTitle;
+    private String metaDesc;
+    private String metaKey;
 }
