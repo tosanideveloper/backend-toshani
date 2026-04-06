@@ -11,7 +11,7 @@
 		<version>3.2.5</version>
 	</parent>
 
-	<groupId>com.example</groupId>
+	<groupId>com.toshaniFintech</groupId>
 	<artifactId>auth-service</artifactId>
 	<version>1.0</version>
 
@@ -36,7 +36,7 @@
 	<dependencies>
         <!-- Common Utility-->
         <dependency>
-            <groupId>com.example</groupId>
+            <groupId>com.toshaniFintech.common</groupId>
             <artifactId>utility</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

@@ -4,6 +4,8 @@
     <file url="file://$PROJECT_DIR$/auth-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka-client/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/parent-pom/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/parent-pom/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/setting-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/utility/src/main/java" charset="UTF-8" />
