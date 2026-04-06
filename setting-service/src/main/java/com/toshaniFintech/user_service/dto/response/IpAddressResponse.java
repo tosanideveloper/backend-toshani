@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class IpAddressResponse {
-
-    private String id;
     
     private String name;
 

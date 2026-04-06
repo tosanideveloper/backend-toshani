@@ -5,6 +5,11 @@ import com.toshaniFintech.user_service.dto.response.APIResponse;
 import com.toshaniFintech.user_service.dto.response.IpAddressResponse;
 import com.toshaniFintech.user_service.service.IpAddressService;
 import com.toshaniFintech.user_service.util.ResponseUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,18 @@ public class IpAddressController {
     private IpAddressService ipAddressService;
 
     @PostMapping("/create")
+    @Operation(
+            summary = "IP Addresses List",
+            description = "To Create IP Addresses List"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "IP Addresses created successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "IP Addresses already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+
     public ResponseEntity<APIResponse<IpAddressResponse>> createIpAddress(
             @Valid @RequestBody IpAddressRequest request) {
         

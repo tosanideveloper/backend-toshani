@@ -12,7 +12,6 @@ public class IpAddressRequest {
     @NotBlank(message = "name must not be blank")
     @Size(max = 100, message = "name must not exceed 100 characters")
     private String name;
-
     @NotBlank(message = "ipAddress must not be blank")
     @Size(max = 500, message = "ipAddress list/string must not exceed 500 characters")
     private String ipAddress;

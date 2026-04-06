@@ -43,7 +43,6 @@ public class IpAddressServiceImpl implements IpAddressService {
 
     private IpAddressResponse mapToModel(IpAddressEntity entity) {
         IpAddressResponse response = new IpAddressResponse();
-        response.setId(String.valueOf(entity.getId()));
         response.setName(entity.getName());
         response.setIpAddress(entity.getIpaddress());
         response.setIpAddressOne(entity.getIpaddressOne());
