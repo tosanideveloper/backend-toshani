@@ -1,7 +1,6 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toshaniFintech.user_service.dto.request.ApisServicesRequestDTO;
 import com.toshaniFintech.user_service.dto.response.ApisServicesResponseDTO;
 import com.toshaniFintech.user_service.entity.ApisServicesEntity;
 import com.toshaniFintech.user_service.exception.BadRequestException;
@@ -11,13 +10,10 @@ import com.toshaniFintech.user_service.model.ApisServiceModel;
 import com.toshaniFintech.user_service.repository.ApisServicesRepository;
 import com.toshaniFintech.user_service.service.ApisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.AbstractPersistable_;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class ApisServicesImpl implements ApisService {
@@ -39,17 +35,14 @@ public class ApisServicesImpl implements ApisService {
 
     @Override
     public ApisServiceModel createApisService(ApisServiceModel apisServiceModel) {
-     /*  if (apisServicesRepository.findByApi(apisServiceModel.getServiceName()).isPresent()) {
-            throw new UnprocessableEntityException(
-                    "service already exists with key: " + apisServiceModel.getServiceName()
-            );
-        }*/
-        ApisServicesEntity apisServicesEntity = apisServicesRepository.findById(String.valueOf(AbstractPersistable_.id)).orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
+        if (apisServicesRepository.findByApiName(apisServiceModel.getApiName()).isPresent()) {
+            throw new UnprocessableEntityException("Api Name already exists with key: " + apisServiceModel.getApiName());
+
+        }
+        ApisServicesEntity apisServicesEntity = new ApisServicesEntity();
         apisServicesEntity.setServiceName(apisServiceModel.getServiceName());
         apisServicesEntity.setApiName(apisServiceModel.getApiName());
         apisServicesEntity.setStatus(apisServiceModel.getStatus());
-        apisServicesEntity.setCreatedBy("Saudamini");
-        apisServicesEntity.setModifiedBy("Saudamini");
 
         ApisServicesEntity saved = apisServicesRepository.save(apisServicesEntity);
 
@@ -62,8 +55,7 @@ public class ApisServicesImpl implements ApisService {
         ApisServicesEntity apisServicesEntity = apisServicesRepository.findById(id).orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
         apisServicesEntity.setApiName(apisServiceModel.getApiName());
         apisServicesEntity.setStatus(apisServiceModel.getStatus());
-        apisServicesEntity.setCreatedBy("Saudamini");
-        apisServicesEntity.setModifiedBy("Saudamini");
+
 
         ApisServicesEntity saved = apisServicesRepository.save(apisServicesEntity);
 
@@ -81,6 +73,22 @@ public class ApisServicesImpl implements ApisService {
         existingEntity.setActive(false);
         existingEntity.setDeletedAt(LocalDateTime.now());
         apisServicesRepository.save(existingEntity);
+    }
+
+    @Override
+    public ApisServiceModel getByID(String id) {
+        ApisServicesEntity entity = apisServicesRepository.findById(id).orElseThrow(() -> new NotFoundException("Switching User not found with id: " + id));
+        return mapToModel(entity);
+    }
+
+    private ApisServiceModel mapToModel(ApisServicesEntity entity) {
+        ApisServicesResponseDTO response = new ApisServicesResponseDTO();
+        response.setId(entity.getId());
+        response.setServiceName(entity.getServiceName());
+        response.setApiName(entity.getApiName());
+        response.setStatus(entity.getStatus());
+
+        return objectMapper.convertValue(entity, ApisServiceModel.class);
     }
 
 }

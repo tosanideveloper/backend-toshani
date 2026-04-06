@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class ApisServicesResponseDTO {
-    private String message;
-
+    private String id;
+    private String serviceName;
+    private String apiName;
+    private String status;
 }

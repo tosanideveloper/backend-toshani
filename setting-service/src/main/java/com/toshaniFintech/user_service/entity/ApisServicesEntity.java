@@ -17,6 +17,6 @@ public class ApisServicesEntity extends BaseEntity {
     @Column(name = "api_name")
     private String apiName;
     @Column(name = "status")
-    private Boolean status;
+    private String status;
 
 }

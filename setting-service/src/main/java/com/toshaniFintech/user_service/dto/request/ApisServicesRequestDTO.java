@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ApisServicesRequestDTO {
 
-    private String apiServiceNmae;
-    private String apiNmae;
+    private String serviceName;
+    private String apiName;
     private String status;
 }
