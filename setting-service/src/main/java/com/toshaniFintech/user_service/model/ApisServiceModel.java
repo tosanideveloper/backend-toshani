@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ApisServiceModel {
-    private Long id;
+    private String id;
     private String serviceName;
     private String apiName;
-    private Boolean status;
+    private String status;
 }

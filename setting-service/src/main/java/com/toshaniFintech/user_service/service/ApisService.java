@@ -2,6 +2,7 @@ package com.toshaniFintech.user_service.service;
 
 import com.toshaniFintech.user_service.dto.request.ApisServicesRequestDTO;
 import com.toshaniFintech.user_service.dto.response.ApisServicesResponseDTO;
+import com.toshaniFintech.user_service.model.ApiSwitchingUserModel;
 import com.toshaniFintech.user_service.model.ApisServiceModel;
 import com.toshaniFintech.user_service.model.SiteSettingModel;
 
@@ -16,6 +17,7 @@ public interface ApisService {
 
     void deleteApisService(String id);
 
+    ApisServiceModel getByID(String id);
 
 
 }

@@ -7,6 +7,11 @@ import com.toshaniFintech.user_service.dto.response.SiteSettingResponseDTO;
 import com.toshaniFintech.user_service.model.SiteSettingModel;
 import com.toshaniFintech.user_service.service.SiteSettingService;
 import com.toshaniFintech.user_service.util.ResponseUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +33,33 @@ public class SiteSettingController {
     ObjectMapper objectMapper;
 
     @GetMapping("/get")
+    @Operation(
+            summary = "Site Setting Service",
+            description = "get a Site Setting Service"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Site Settings fetched successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<APIResponse<List<SiteSettingModel>>> getAllSiteSetting() {
         return ResponseUtil.success("Site Settings fetched successfully", siteSettingService.getAllSiteSettings(), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
+    @Operation(
+            summary = "Site Setting Service",
+            description = "Update a Site Setting Service"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Site Setting updated successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<APIResponse<SiteSettingResponseDTO>> updateSetting(@PathVariable String id, @Valid @RequestBody SiteSettingRequestDTO siteSettingRequestDTO) {
         SiteSettingModel siteSettingModel = objectMapper.convertValue(siteSettingRequestDTO, SiteSettingModel.class);
         SiteSettingModel updatedModel = siteSettingService.updateSiteSetting(id, siteSettingModel);

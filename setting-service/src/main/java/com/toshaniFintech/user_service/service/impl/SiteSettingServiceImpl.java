@@ -22,7 +22,8 @@ public class SiteSettingServiceImpl implements SiteSettingService {
     @Override
     public List<SiteSettingModel> getAllSiteSettings() {
         List<SiteSettingEntity> settings = siteSettingRepository.findAll();
-        List<SiteSettingModel> siteSettingList = settings.stream().map(siteSettingEntity -> objectMapper.convertValue(siteSettingEntity, SiteSettingModel.class)).toList();
+        List<SiteSettingModel> siteSettingList = settings.stream()
+                .map(siteSettingEntity -> objectMapper.convertValue(siteSettingEntity, SiteSettingModel.class)).toList();
 
         return siteSettingList;
 
