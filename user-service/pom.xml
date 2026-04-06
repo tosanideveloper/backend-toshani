@@ -10,7 +10,7 @@
 		<version>3.2.5</version>
 	</parent>
 
-	<groupId>com.example</groupId>
+	<groupId>com.toshaniFintech</groupId>
 	<artifactId>user-service</artifactId>
 	<version>1.0</version>
 
@@ -35,7 +35,7 @@
 
         <!-- Common Utility-->
         <dependency>
-            <groupId>com.example</groupId>
+            <groupId>com.toshaniFintech.common</groupId>
             <artifactId>utility</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
