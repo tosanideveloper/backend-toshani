@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.service.impl;
 
+import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.dto.request.HolidayRequest;
 import com.toshaniFintech.user_service.dto.response.HolidayResponse;
 import com.toshaniFintech.user_service.entity.HolidayEntity;
-import com.toshaniFintech.user_service.exception.UnprocessableEntityException;
 import com.toshaniFintech.user_service.repository.HolidayRepository;
 import com.toshaniFintech.user_service.service.HolidayService;
 import org.springframework.beans.factory.annotation.Autowired;

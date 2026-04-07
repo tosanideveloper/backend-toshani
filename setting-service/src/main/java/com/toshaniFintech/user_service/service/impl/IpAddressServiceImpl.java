@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.service.impl;
 
+import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.dto.request.IpAddressRequest;
 import com.toshaniFintech.user_service.dto.response.IpAddressResponse;
 import com.toshaniFintech.user_service.entity.IpAddressEntity;
-import com.toshaniFintech.user_service.exception.UnprocessableEntityException;
 import com.toshaniFintech.user_service.repository.IpAddressRepository;
 import com.toshaniFintech.user_service.service.IpAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
