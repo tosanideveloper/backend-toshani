@@ -1,8 +1,8 @@
 package com.toshaniFintech.auth.service.impl;
 
-import com.toshaniFintech.auth.enitiy.AppUser;
-import com.toshaniFintech.auth.repository.UserRepository;
 import com.toshaniFintech.auth.service.CustomUserDetailsService;
+import com.toshaniFintech.common.entity.Users;
+import com.toshaniFintech.common.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,18 +13,18 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsServiceImpl implements CustomUserDetailsService , UserDetailsService  {
 
     @Autowired
-    private UserRepository repo;
+    private UsersRepository repo;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
 
-        AppUser user = repo.findByUsername(username)
+        Users user = repo.findByUserName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
+                .withUsername(user.getUserName())
                 .password(user.getPassword())
-                .roles(user.getRole())
+                .roles(String.valueOf(user.getRoles()))
                 .build();
     }
 }
