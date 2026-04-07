@@ -54,7 +54,7 @@ public class SettingServiceImpl implements SettingService {
     @Override
     public SettingResponse updateSetting(String id, SettingRequest settingRequest) {
         SettingEntity existingEntity = settingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("Setting not found with id: " + id));
 
         existingEntity.setSettingKey(settingRequest.getSettingKey());
         existingEntity.setSettingValue(settingRequest.getSettingValue());

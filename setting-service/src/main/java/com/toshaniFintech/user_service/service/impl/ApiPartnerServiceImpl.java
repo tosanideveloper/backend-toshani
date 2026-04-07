@@ -20,10 +20,10 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @Service
 public class ApiPartnerServiceImpl implements ApiPartnerService {
     @Autowired
-    ApiPartnerServicesRepository apiPartnerServicesRepository;
+    private ApiPartnerServicesRepository apiPartnerServicesRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
 
     @Override

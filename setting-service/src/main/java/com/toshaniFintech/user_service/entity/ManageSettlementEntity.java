@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TH_SETTLEMENT_TIME")
+@Table(name = "th_settlement_time")
 @Getter
 @Setter
 public class ManageSettlementEntity extends BaseEntity {

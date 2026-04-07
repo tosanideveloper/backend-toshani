@@ -16,10 +16,10 @@ import java.util.List;
 public class SiteSettingServiceImpl implements SiteSettingService {
 
     @Autowired
-    SiteSettingRepository siteSettingRepository;
+    private SiteSettingRepository siteSettingRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public List<SiteSettingModel> getAllSiteSettings() {
@@ -32,7 +32,7 @@ public class SiteSettingServiceImpl implements SiteSettingService {
 
     @Override
     public SiteSettingModel updateSiteSetting(String id, SiteSettingModel siteSettingModel) {
-        SiteSettingEntity entity = siteSettingRepository.findById(id).orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
+        SiteSettingEntity entity = siteSettingRepository.findById(id).orElseThrow(() -> new NotFoundException("Setting not found with id: " + id));
         entity.setAddress(siteSettingModel.getAddress());
         entity.setCity(siteSettingModel.getCity());
         entity.setPinCode(siteSettingModel.getPinCode());

@@ -26,12 +26,12 @@ import java.util.List;
 @Tag(name = "Api Partner Service API", description = "APIs for Manage API Partner Service CRUD")
 public class ApiPartnerServiceController {
     @Autowired
-    ApiPartnerService apiPartnerService;
+    private ApiPartnerService apiPartnerService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    @GetMapping("/get")
+    @GetMapping("/all")
     @Operation(
             summary = "API partner service",
             description = "This api is to fetch API Partner Service Details"
@@ -46,7 +46,6 @@ public class ApiPartnerServiceController {
     public ResponseEntity<APIResponse<List<ApiPartnerServiceModel>>> getAllSettlementTime() {
         return ResponseUtil.success("API Partner Services fetched successfully", apiPartnerService.getAllApiPartnerServices(), HttpStatus.OK);
     }
-
     @PostMapping("/create")
     @Operation(
             summary = "API partner service",
@@ -59,7 +58,7 @@ public class ApiPartnerServiceController {
             @ApiResponse(responseCode = "409", description = "Data does not exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<ApiPartnerServiceResponseDTO>> createApis(@Valid @RequestBody ApisServicesRequestDTO apisServicesRequestDto) {
+    public ResponseEntity<APIResponse<ApiPartnerServiceResponseDTO>> createPartner(@Valid @RequestBody ApisServicesRequestDTO apisServicesRequestDto) {
         ApiPartnerServiceModel apiPartnerServiceModel = objectMapper.convertValue(apisServicesRequestDto, ApiPartnerServiceModel.class);
         ApiPartnerServiceModel partnerServiceModel = apiPartnerService.createApisPartnerService(apiPartnerServiceModel);
         ApiPartnerServiceResponseDTO responseDTO = objectMapper.convertValue(partnerServiceModel, ApiPartnerServiceResponseDTO.class);
@@ -78,7 +77,7 @@ public class ApiPartnerServiceController {
             @ApiResponse(responseCode = "409", description = "Data does not exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<Object>> deleteApisService(@PathVariable String id) {
+    public ResponseEntity<APIResponse<Object>> deletePartner(@PathVariable String id) {
         apiPartnerService.deleteApiPartnerService(id);
         return ResponseUtil.success("API Partner Services deleted successfully", null, HttpStatus.OK);
     }

@@ -15,10 +15,10 @@ public class MerchantBankAccountImpl implements MerchantBankAccountService {
 
 
     @Autowired
-    MerchantBankAccRepository merchantBankAccRepository;
+    private MerchantBankAccRepository merchantBankAccRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public List<MerchantBankAccModel> getMerchantBankAcc() {

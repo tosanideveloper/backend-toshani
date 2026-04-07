@@ -1,11 +1,10 @@
 package com.toshaniFintech.user_service.service;
 
 import com.toshaniFintech.user_service.model.ApiSwitchingUserModel;
-import com.toshaniFintech.user_service.model.SiteSettingModel;
 
 import java.util.List;
 
-public interface ApiSwitchingUserService {
+public interface SwitchingUserService {
     List<ApiSwitchingUserModel> getApiSwitchingUser();
 
     ApiSwitchingUserModel getSwitchUserByID(String id);

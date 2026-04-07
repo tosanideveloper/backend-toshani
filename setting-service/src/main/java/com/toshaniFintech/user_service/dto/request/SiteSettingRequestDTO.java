@@ -6,9 +6,7 @@ import lombok.Data;
 
 @Data
 public class SiteSettingRequestDTO {
-    @NotBlank(message = "id must not be blank")
-    @Size(max = 8, message = "id must not exceed 10 characters")
-    private Long id;
+    private String id;
     @NotBlank(message = "address must not be blank")
     @Size(max = 10, message = "address must not exceed 10 characters")
     private String address;

@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TH_MERCHANT_BANK_ACCOUNTS")
+@Table(name = "th_merchant_bank_accounts")
 @Getter
 @Setter
 public class MerchantBankAccEntity extends BaseEntity {

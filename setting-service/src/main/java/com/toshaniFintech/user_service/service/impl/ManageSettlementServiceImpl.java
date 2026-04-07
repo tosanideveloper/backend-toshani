@@ -16,10 +16,10 @@ import java.util.List;
 public class ManageSettlementServiceImpl implements ManageSettlementService {
 
     @Autowired
-    ManageSettlementRepository manageSettlementRepository;
+    private ManageSettlementRepository manageSettlementRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public List<ManageSettlementModel> getAllSettlementTime() {
@@ -35,7 +35,7 @@ public class ManageSettlementServiceImpl implements ManageSettlementService {
 
     @Override
     public ManageSettlementModel updateSettlementTime(String id, ManageSettlementModel manageSettlementModel) {
-        ManageSettlementEntity manageSettlementEntity = manageSettlementRepository.findById(id).orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
+        ManageSettlementEntity manageSettlementEntity = manageSettlementRepository.findById(id).orElseThrow(() -> new NotFoundException("Setting not found with id: " + id));
         manageSettlementEntity.setDay(manageSettlementModel.getDay());
         manageSettlementEntity.setStartTime(manageSettlementModel.getStartTime());
         manageSettlementEntity.setEndTime(manageSettlementModel.getEndTime());

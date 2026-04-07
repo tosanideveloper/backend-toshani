@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TH_API_PARTNER_SERVICES")
+@Table(name = "th_api_Partner_Services")
 @Getter
 @Setter
 public class ApiPartnerServiceEntity extends BaseEntity {

@@ -27,12 +27,12 @@ import java.util.List;
 public class ManageSettlementController {
 
     @Autowired
-    ManageSettlementService manageSettlementService;
+    private ManageSettlementService manageSettlementService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     @Operation(
             summary = "Manage Settlement",
             description = "This api is to get settlement time"
@@ -47,7 +47,7 @@ public class ManageSettlementController {
         return ResponseUtil.success("Manage settlement time fetched successfully", manageSettlementService.getAllSettlementTime(), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     @Operation(
             summary = "Manage Settlement",
             description = "This api is to get settlement time by ID"

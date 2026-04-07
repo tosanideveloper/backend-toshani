@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TH_API_SWITCH_USER")
+@Table(name = "th_api_switch_user")
 @Getter
 @Setter
 public class ApiSwitchingUserEntity extends BaseEntity {

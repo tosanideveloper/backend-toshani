@@ -20,15 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/api-service")
+@RequestMapping("/api/v1/merchant-bank")
 @Tag(name = "Merchant Bank Account API", description = "APIs for Merchant Bank Account CRUD")
 public class MerchantBankAccController {
 
     @Autowired
-    MerchantBankAccountService merchantBankAccountService;
+    private MerchantBankAccountService merchantBankAccountService;
 
 
-    @GetMapping("/get")
+    @GetMapping("/all")
     @Operation(
             summary = "Merchant Bank Account",
             description = "get a Merchant Bank Account"

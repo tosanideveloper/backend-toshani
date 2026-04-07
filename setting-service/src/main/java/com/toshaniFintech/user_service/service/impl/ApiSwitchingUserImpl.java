@@ -3,26 +3,24 @@ package com.toshaniFintech.user_service.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.user_service.dto.response.ApiSwitchingUserResponseDTO;
 import com.toshaniFintech.user_service.entity.ApiSwitchingUserEntity;
-import com.toshaniFintech.user_service.entity.SiteSettingEntity;
 import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.ApiSwitchingUserModel;
-import com.toshaniFintech.user_service.model.SiteSettingModel;
 import com.toshaniFintech.user_service.repository.ApiSwitchingUserRepository;
-import com.toshaniFintech.user_service.service.ApiSwitchingUserService;
+import com.toshaniFintech.user_service.service.SwitchingUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ApiSwitchingUserImpl implements ApiSwitchingUserService {
+public class ApiSwitchingUserImpl implements SwitchingUserService {
 
     @Autowired
-    ApiSwitchingUserRepository apiSwitchingUserRepository;
+    private ApiSwitchingUserRepository apiSwitchingUserRepository;
 
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public List<ApiSwitchingUserModel> getApiSwitchingUser() {
@@ -40,7 +38,7 @@ public class ApiSwitchingUserImpl implements ApiSwitchingUserService {
 
     @Override
     public ApiSwitchingUserModel updateSwitchUser(String id, ApiSwitchingUserModel apiSwitchingUserModel) {
-        ApiSwitchingUserEntity entity = apiSwitchingUserRepository.findById(id).orElseThrow(() -> new RuntimeException("Switching User not found with id: " + id));
+        ApiSwitchingUserEntity entity = apiSwitchingUserRepository.findById(id).orElseThrow(() -> new NotFoundException("Switching User not found with id: " + id));
         entity.setSwitchCategoryCode(apiSwitchingUserModel.getSwitchCategoryCode());
         entity.setSwitchCategoryName(apiSwitchingUserModel.getSwitchCategoryName());
         entity.setSwitchIP(apiSwitchingUserModel.getSwitchIP());

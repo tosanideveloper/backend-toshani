@@ -31,7 +31,7 @@ import java.util.List;
 public class ApisServicesController {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     @Autowired
     private ApisService apisService;
 
@@ -54,7 +54,7 @@ public class ApisServicesController {
         return ResponseUtil.success("API Services created successfully", responseDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     @Operation(
             summary = "Api Service",
             description = "This api is to get Api Service list"
@@ -71,7 +71,7 @@ public class ApisServicesController {
         return ResponseUtil.success("Apis Services fetched successfully", apisService.getApisService(), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     @Operation(
             summary = "Api Service",
             description = "This api is to get by ID"

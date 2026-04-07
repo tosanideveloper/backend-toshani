@@ -28,12 +28,12 @@ import java.util.List;
 public class SiteSettingController {
 
     @Autowired
-    SiteSettingService siteSettingService;
+    private SiteSettingService siteSettingService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     @Operation(
             summary = "Site Setting Service",
             description = "get a Site Setting Service"
@@ -49,7 +49,7 @@ public class SiteSettingController {
         return ResponseUtil.success("Site Settings fetched successfully", siteSettingService.getAllSiteSettings(), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     @Operation(
             summary = "Site Setting Service",
             description = "This api is to get by ID"
@@ -76,7 +76,7 @@ public class SiteSettingController {
             @ApiResponse(responseCode = "409", description = "User already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<SiteSettingResponseDTO>> updateSetting(@PathVariable String id, @Valid @RequestBody SiteSettingRequestDTO siteSettingRequestDTO) {
+    public ResponseEntity<APIResponse<SiteSettingResponseDTO>> updateSiteSetting(@PathVariable String id, @Valid @RequestBody SiteSettingRequestDTO siteSettingRequestDTO) {
         SiteSettingModel siteSettingModel = objectMapper.convertValue(siteSettingRequestDTO, SiteSettingModel.class);
         SiteSettingModel updatedModel = siteSettingService.updateSiteSetting(id, siteSettingModel);
         SiteSettingResponseDTO responseDTO = objectMapper.convertValue(updatedModel, SiteSettingResponseDTO.class);

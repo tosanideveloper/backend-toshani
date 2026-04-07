@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TH_SITE_SETTINGS")
+@Table(name = "th_site_settings")
 @Getter
 @Setter
 public class SiteSettingEntity extends BaseEntity {

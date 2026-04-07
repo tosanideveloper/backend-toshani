@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "TH_API_SEFRVICES")
+@Table(name = "th_api_services")
 @Getter
 @Setter
 public class ApisServicesEntity extends BaseEntity {
