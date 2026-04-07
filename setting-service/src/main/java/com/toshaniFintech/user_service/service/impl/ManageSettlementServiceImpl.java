@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.dto.response.ManageSettlementResponseDTO;
 import com.toshaniFintech.user_service.entity.ManageSettlementEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.ManageSettlementModel;
 import com.toshaniFintech.user_service.repository.ManageSettlementRepository;
 import com.toshaniFintech.user_service.service.ManageSettlementService;

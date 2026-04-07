@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.dto.response.SiteSettingResponseDTO;
 import com.toshaniFintech.user_service.entity.SiteSettingEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.SiteSettingModel;
 import com.toshaniFintech.user_service.repository.SiteSettingRepository;
 import com.toshaniFintech.user_service.service.SiteSettingService;

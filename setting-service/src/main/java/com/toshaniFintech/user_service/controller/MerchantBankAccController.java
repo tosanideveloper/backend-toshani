@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.controller;
 
-import com.toshaniFintech.user_service.dto.response.APIResponse;
+import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.utils.ResponseUtil;
 import com.toshaniFintech.user_service.model.MerchantBankAccModel;
 import com.toshaniFintech.user_service.service.MerchantBankAccountService;
-import com.toshaniFintech.user_service.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.dto.response.ApiSwitchingUserResponseDTO;
 import com.toshaniFintech.user_service.entity.ApiSwitchingUserEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.ApiSwitchingUserModel;
 import com.toshaniFintech.user_service.repository.ApiSwitchingUserRepository;
 import com.toshaniFintech.user_service.service.SwitchingUserService;

@@ -1,11 +1,10 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
+import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.dto.response.ApisServicesResponseDTO;
 import com.toshaniFintech.user_service.entity.ApisServicesEntity;
-import com.toshaniFintech.user_service.exception.BadRequestException;
-import com.toshaniFintech.user_service.exception.NotFoundException;
-import com.toshaniFintech.user_service.exception.UnprocessableEntityException;
 import com.toshaniFintech.user_service.model.ApisServiceModel;
 import com.toshaniFintech.user_service.repository.ApisServicesRepository;
 import com.toshaniFintech.user_service.service.ApisService;
