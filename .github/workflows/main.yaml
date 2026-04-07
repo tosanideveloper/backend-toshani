@@ -5,62 +5,93 @@ on:
     branches:
       - develop
 
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Select service to deploy"
+        required: true
+        type: choice
+        options:
+          - eureka-client
+          - auth-service
+          - gateway-service
+          - setting-service
+          - user-service
+
 jobs:
-  build-and-deploy:
+
+  # =========================
+  # BUILD JOB (AUTO)
+  # =========================
+  build:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
-      # =========================
-      # CHECKOUT
-      # =========================
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # =========================
-      # JAVA SETUP
-      # =========================
-      - name: Setup Java 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # =========================
-      # BUILD USING PARENT POM
-      # =========================
-      - name: Build All Modules (Parent POM)
+      - name: Build All Modules
         run: |
           cd parent-pom
           mvn clean install -DskipTests
 
-      # =========================
-      # COLLECT ONLY SERVICE JARS
-      # =========================
-      - name: Collect Service JARs
+      - name: Collect JARs
         run: |
-          mkdir jars
-          cp auth-service/target/*.jar jars/ || true
-          cp eureka-client/target/*.jar jars/ || true
-          cp gateway-service/target/*.jar jars/ || true
-          cp setting-service/target/*.jar jars/ || true
-          cp user-service/target/*.jar jars/ || true
+          mkdir artifacts
+          cp auth-service/target/*.jar artifacts/ || true
+          cp eureka-client/target/*.jar artifacts/ || true
+          cp gateway-service/target/*.jar artifacts/ || true
+          cp setting-service/target/*.jar artifacts/ || true
+          cp user-service/target/*.jar artifacts/ || true
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: microservices-jars
+          path: artifacts/*.jar
+
+
+  # =========================
+  # DEPLOY JOB (MANUAL)
+  # =========================
+  deploy:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: microservices-jars
+          path: artifacts
+
+      - name: Show Selected Service
+        run: |
+          echo "Deploying service: ${{ github.event.inputs.service }}"
 
       # =========================
-      # COPY TO SERVER
+      # COPY ONLY REQUIRED JAR
       # =========================
-      - name: Upload JARs to EC2
+      - name: Upload Selected Service JAR
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "jars/*.jar"
+          source: "artifacts/*${{ github.event.inputs.service }}*.jar"
           target: "/opt/microservices/"
 
       # =========================
-      # DEPLOY SEQUENTIALLY
+      # DEPLOY ONLY SELECTED SERVICE
       # =========================
-      - name: Deploy Services (Ordered + Safe)
+      - name: Deploy Selected Service
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -68,7 +99,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
 
-            echo "🚀 Starting Deployment..."
+            SERVICE=${{ github.event.inputs.service }}
 
             declare -A PORTS
             PORTS["eureka-client"]=8761
@@ -77,73 +108,60 @@ jobs:
             PORTS["setting-service"]=8082
             PORTS["user-service"]=8083
 
-            SERVICES=(
-              "eureka-client"
-              "auth-service"
-              "gateway-service"
-              "setting-service"
-              "user-service"
-            )
+            echo "===================================="
+            echo "Deploying ONLY $SERVICE"
+            echo "===================================="
 
-            for SERVICE in "${SERVICES[@]}"
-            do
-              echo "===================================="
-              echo "Deploying $SERVICE"
-              echo "===================================="
+            DIR=/opt/microservices/$SERVICE
+            mkdir -p $DIR
 
-              DIR=/opt/microservices/$SERVICE
-              mkdir -p $DIR
+            cd /opt/microservices
 
-              cd /opt/microservices
+            # Pick correct jar
+            JAR=$(ls *.jar | grep $SERVICE | head -n 1)
 
-              # Find correct jar
-              JAR=$(ls *.jar | grep $SERVICE | head -n 1)
+            if [ -z "$JAR" ]; then
+              echo "❌ No JAR found for $SERVICE"
+              exit 1
+            fi
 
-              if [ -z "$JAR" ]; then
-                echo "⚠ No new JAR found for $SERVICE, skipping..."
-                continue
+            # Backup
+            if [ -f $DIR/app.jar ]; then
+              cp $DIR/app.jar $DIR/app.jar.bak
+            fi
+
+            # Replace jar
+            mv $JAR $DIR/app.jar
+
+            cd $DIR
+
+            # Restart only this service
+            pm2 describe $SERVICE > /dev/null 2>&1
+
+            if [ $? -eq 0 ]; then
+              pm2 reload $SERVICE
+            else
+              pm2 start app.jar --name $SERVICE --interpreter java --interpreter-args "-jar"
+            fi
+
+            sleep 8
+
+            PORT=${PORTS[$SERVICE]}
+
+            echo "Checking health on port $PORT..."
+
+            curl -f http://localhost:$PORT/actuator/health > /dev/null 2>&1
+
+            if [ $? -ne 0 ]; then
+              echo "❌ Health check failed"
+
+              if [ -f app.jar.bak ]; then
+                echo "↩ Rolling back..."
+                mv app.jar.bak app.jar
+                pm2 restart $SERVICE
               fi
 
-              # Move jar to service directory
-              mv $JAR $DIR/app.jar
+              exit 1
+            fi
 
-              cd $DIR
-
-              # Backup previous version
-              if [ -f app.jar ]; then
-                cp app.jar app.jar.bak
-              fi
-
-              # Start or reload via PM2
-              pm2 describe $SERVICE > /dev/null 2>&1
-
-              if [ $? -eq 0 ]; then
-                pm2 reload $SERVICE
-              else
-                pm2 start app.jar --name $SERVICE --interpreter java --interpreter-args "-jar"
-              fi
-
-              sleep 8
-
-              PORT=${PORTS[$SERVICE]}
-
-              echo "🔍 Checking health on port $PORT"
-
-              curl -f http://localhost:$PORT/actuator/health > /dev/null 2>&1
-
-              if [ $? -ne 0 ]; then
-                echo "❌ Health check failed for $SERVICE"
-
-                if [ -f app.jar.bak ]; then
-                  echo "↩ Rolling back..."
-                  mv app.jar.bak app.jar
-                  pm2 restart $SERVICE
-                fi
-
-                exit 1
-              fi
-
-              echo "✅ $SERVICE deployed successfully"
-            done
-
-            echo "🎉 All services deployed successfully!"
+            echo "✅ $SERVICE deployed successfully"
