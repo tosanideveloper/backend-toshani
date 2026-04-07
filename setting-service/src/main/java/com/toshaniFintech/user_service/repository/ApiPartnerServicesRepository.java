@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ApiPartnerServicesRepository extends JpaRepository<ApiPartnerServiceEntity, String> {
-    Optional<ApiPartnerServiceEntity> findByServiceNameKey(String settingKey);
+    Optional<ApiPartnerServiceEntity> findByServiceName(String settingKey);
 
 }

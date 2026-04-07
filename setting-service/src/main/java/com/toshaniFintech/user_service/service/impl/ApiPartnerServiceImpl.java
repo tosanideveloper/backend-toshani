@@ -34,7 +34,7 @@ public class ApiPartnerServiceImpl implements ApiPartnerService {
 
     @Override
     public ApiPartnerServiceModel createApisPartnerService(ApiPartnerServiceModel apiPartnerServiceModel) {
-        if (apiPartnerServicesRepository.findByServiceNameKey(apiPartnerServiceModel.getServiceName()).isPresent()) {
+        if (apiPartnerServicesRepository.findByServiceName(apiPartnerServiceModel.getServiceName()).isPresent()) {
             throw new UnprocessableEntityException(
                     "Setting already exists with key: " + apiPartnerServiceModel.getServiceName()
             );
