@@ -4,6 +4,7 @@ server:
 spring:
   application:
     name: gateway-service
+    forward-headers-strategy: framework
 
   cloud:
     gateway:
