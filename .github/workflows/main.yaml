@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       service:
-        description: "Select service to deploy"
+        description: Select service to deploy
         required: true
         type: choice
         options:
@@ -20,29 +20,26 @@ on:
 
 jobs:
 
-  # =========================
-  # BUILD JOB
-  # =========================
   build:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build All Modules
+      - name: Build
         run: |
           cd parent-pom
           mvn clean install -DskipTests
 
-      - name: Collect JARs
+      - name: Collect jars
         run: |
           mkdir artifacts
           cp auth-service/target/*.jar artifacts/ || true
@@ -50,108 +47,72 @@ jobs:
           cp gateway-service/target/*.jar artifacts/ || true
           cp setting-service/target/*.jar artifacts/ || true
           cp user-service/target/*.jar artifacts/ || true
-          ls -lh artifacts
 
-      - name: Upload Artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: microservices-jars
+          name: jars
           path: artifacts/*.jar
 
 
   deploy:
-  if: github.event_name == 'workflow_dispatch'
-  needs: build
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    needs: build
 
-  steps:
-    - name: Download Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: microservices-jars
-        path: artifacts
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: jars
+          path: artifacts
 
-    - name: Show Selected Service
-      run: echo "Deploying service: ${{ github.event.inputs.service }}"
+      - name: Upload jars to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: artifacts/*.jar
+          target: /opt/microservices/
 
-    - name: Upload JARs to EC2
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        source: artifacts/*.jar
-        target: /opt/microservices/
+      - name: Deploy selected service
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            SERVICE="${{ github.event.inputs.service }}"
 
-    - name: Deploy Selected Service
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          SERVICE="${{ github.event.inputs.service }}"
-          echo "Deploying $SERVICE"
+            echo "Deploying $SERVICE"
 
-          declare -A PORTS
-          PORTS["eureka-client"]=8761
-          PORTS["auth-service"]=8081
-          PORTS["gateway-service"]=8080
-          PORTS["setting-service"]=8082
-          PORTS["user-service"]=8083
+            DIR="/opt/microservices/$SERVICE"
+            mkdir -p "$DIR"
 
-          DIR="/opt/microservices/$SERVICE"
-          mkdir -p "$DIR"
+            cd /opt/microservices
+            JAR=$(ls -t *.jar | grep "$SERVICE" | head -n 1)
 
-          cd /opt/microservices
-
-          JAR=$(ls -t *.jar | grep "$SERVICE" | head -n 1)
-
-          if [ -z "$JAR" ]; then
-            echo "No JAR found for $SERVICE"
-            exit 1
-          fi
-
-          cd "$DIR"
-          if [ -f app.jar ]; then
-            cp app.jar app.jar.bak
-          fi
-
-          cd /opt/microservices
-          mv "$JAR" "$DIR/app.jar"
-
-          cd "$DIR"
-
-          pm2 describe "$SERVICE" > /dev/null 2>&1
-
-          if [ $? -eq 0 ]; then
-            pm2 reload "$SERVICE"
-          else
-            pm2 start "java -jar app.jar" --name "$SERVICE"
-          fi
-
-          PORT=${PORTS[$SERVICE]}
-
-          echo "Checking health on port $PORT"
-
-          for i in 1 2 3 4 5
-          do
-            curl -f http://localhost:$PORT/actuator/health > /dev/null 2>&1 && break
-            echo "Waiting... attempt $i"
-            sleep 5
-          done
-
-          curl -f http://localhost:$PORT/actuator/health > /dev/null 2>&1
-
-          if [ $? -ne 0 ]; then
-            echo "Health check failed"
-
-            if [ -f app.jar.bak ]; then
-              mv app.jar.bak app.jar
-              pm2 restart "$SERVICE"
+            if [ -z "$JAR" ]; then
+              echo "No jar found"
+              exit 1
             fi
 
-            exit 1
-          fi
+            cd "$DIR"
+            if [ -f app.jar ]; then
+              cp app.jar app.jar.bak
+            fi
 
-          echo "$SERVICE deployed successfully"
+            cd /opt/microservices
+            mv "$JAR" "$DIR/app.jar"
+
+            cd "$DIR"
+
+            pm2 describe "$SERVICE" > /dev/null 2>&1
+            if [ $? -eq 0 ]; then
+              pm2 reload "$SERVICE"
+            else
+              pm2 start "java -jar app.jar" --name "$SERVICE"
+            fi
+
+            echo "Done"
