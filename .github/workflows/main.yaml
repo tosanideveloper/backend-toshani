@@ -74,7 +74,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           source: artifacts/*.jar
-          target: /opt/microservices/
+          target: /var/www/toshanidev
 
       - name: Deploy selected service
         uses: appleboy/ssh-action@v1.0.3
@@ -87,10 +87,10 @@ jobs:
 
             echo "Deploying $SERVICE"
 
-            DIR="/opt/microservices/$SERVICE"
+            DIR="/var/www/toshanidev/$SERVICE"
             mkdir -p "$DIR"
 
-            cd /opt/microservices
+            cd /var/www/toshanidev
             JAR=$(ls -t *.jar | grep "$SERVICE" | head -n 1)
 
             if [ -z "$JAR" ]; then
@@ -103,7 +103,7 @@ jobs:
               cp app.jar app.jar.bak
             fi
 
-            cd /opt/microservices
+            cd /var/www/toshanidev
             mv "$JAR" "$DIR/app.jar"
 
             cd "$DIR"
