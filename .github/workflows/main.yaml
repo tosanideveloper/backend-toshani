@@ -20,6 +20,9 @@ on:
 
 jobs:
 
+  # =========================
+  # BUILD JOB
+  # =========================
   build:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -55,107 +58,82 @@ jobs:
           path: artifacts/*.jar
 
 
+  # =========================
+  # DEPLOY JOB
+  # =========================
   deploy:
-  runs-on: ubuntu-latest
-  if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
-  needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    needs: build
 
-  steps:
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: jars
-        path: artifacts
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: jars
+          path: artifacts
 
-    # Upload to TEMP (IMPORTANT)
-    - name: Upload jars to EC2 (temp)
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        source: artifacts/*.jar
-        target: /tmp/deploy/
+      - name: Upload jars to EC2 (temp)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: artifacts/*.jar
+          target: /tmp/deploy/
 
-    - name: Deploy selected service
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
+      - name: Deploy selected service
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            SERVICE="${{ github.event.inputs.service }}"
 
-          # =========================
-          # HANDLE SERVICE INPUT
-          # =========================
-          SERVICE="${{ github.event.inputs.service }}"
+            if [ -z "$SERVICE" ]; then
+              echo "No service selected. Skipping."
+              exit 0
+            fi
 
-          # If push event (no input), skip deploy safely
-          if [ -z "$SERVICE" ]; then
-            echo "No service selected (push event). Skipping deployment."
-            exit 0
-          fi
+            echo "Deploying $SERVICE"
 
-          echo "Deploying $SERVICE"
+            BASE_DIR="/var/www/toshanidev"
+            SERVICE_DIR="$BASE_DIR/$SERVICE"
+            TMP_DIR="/tmp/deploy"
 
-          BASE_DIR="/var/www/toshanidev"
-          SERVICE_DIR="$BASE_DIR/$SERVICE"
-          TMP_DIR="/tmp/deploy"
+            TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
-          TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+            mkdir -p "$SERVICE_DIR"
 
-          mkdir -p "$SERVICE_DIR"
+            cd "$TMP_DIR"
+            JAR=$(ls -t *.jar | grep "$SERVICE" | head -n 1)
 
-          # =========================
-          # FIND NEW JAR
-          # =========================
-          cd "$TMP_DIR"
-          JAR=$(ls -t *.jar | grep "$SERVICE" | head -n 1)
+            if [ -z "$JAR" ]; then
+              echo "No JAR found"
+              exit 1
+            fi
 
-          if [ -z "$JAR" ]; then
-            echo "❌ No JAR found for $SERVICE"
-            exit 1
-          fi
+            cd "$SERVICE_DIR"
+            if [ -f app.jar ]; then
+              BACKUP_DIR="$SERVICE_DIR/backup_$TIMESTAMP"
+              mkdir -p "$BACKUP_DIR"
+              cp app.jar "$BACKUP_DIR/"
+            fi
 
-          # =========================
-          # BACKUP EXISTING JAR
-          # =========================
-          cd "$SERVICE_DIR"
+            cd "$TMP_DIR"
+            mv "$JAR" "$SERVICE_DIR/app.jar"
 
-          if [ -f app.jar ]; then
-            BACKUP_DIR="$SERVICE_DIR/backup_$TIMESTAMP"
-            mkdir -p "$BACKUP_DIR"
+            cd "$SERVICE_DIR"
 
-            echo "Taking backup: $BACKUP_DIR"
-            cp app.jar "$BACKUP_DIR/"
-          fi
+            pm2 describe "$SERVICE" > /dev/null 2>&1
 
-          # =========================
-          # REPLACE JAR
-          # =========================
-          cd "$TMP_DIR"
-          mv "$JAR" "$SERVICE_DIR/app.jar"
+            if [ $? -eq 0 ]; then
+              pm2 reload "$SERVICE"
+            else
+              pm2 start "java -jar app.jar" --name "$SERVICE"
+            fi
 
-          cd "$SERVICE_DIR"
+            rm -f $TMP_DIR/*.jar
 
-          echo "New JAR deployed"
-
-          # =========================
-          # PM2 RELOAD (ONLY THIS SERVICE)
-          # =========================
-          pm2 describe "$SERVICE" > /dev/null 2>&1
-
-          if [ $? -eq 0 ]; then
-            pm2 reload "$SERVICE"
-          else
-            pm2 start "java -jar app.jar" --name "$SERVICE"
-          fi
-
-          echo "PM2 reload done"
-
-          # =========================
-          # CLEAN TEMP
-          # =========================
-          rm -f $TMP_DIR/*.jar
-
-          echo "✅ Deployment completed"
+            echo "Deployment completed"
