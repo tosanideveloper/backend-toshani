@@ -8,4 +8,6 @@ import java.util.List;
 public interface HolidayService {
     HolidayResponse createHoliday(HolidayRequest holidayRequest);
     List<HolidayResponse> getAllHolidays();
+    HolidayResponse getHolidayById(String id);
+    HolidayResponse updateHoliday(String id, HolidayRequest holidayModel);
 }

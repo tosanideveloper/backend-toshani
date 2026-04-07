@@ -47,6 +47,7 @@ public class HolidayController {
                 HttpStatus.CREATED
         );
     }
+
     @GetMapping("/get")
     @Operation(
             summary = "Holiday List",
@@ -64,6 +65,48 @@ public class HolidayController {
         return ResponseUtil.success(
                 "Holiday fetched successfully",
                 holidayService.getAllHolidays(),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get Holiday By ID",
+            description = "To Fetch Holiday By ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Holiday fetched successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "Holiday already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<APIResponse<HolidayResponse>> getHolidayById(@PathVariable Long id) {
+        return ResponseUtil.success(
+                "Holiday fetched successfully",
+                holidayService.getHolidayById(String.valueOf(id)),
+                HttpStatus.OK
+        );
+    }
+
+    @PutMapping("/update/{id}")
+    @Operation(
+            summary = "Update Holiday List",
+            description = "To Update an Existing Holiday List"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Holiday Updated successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "Holiday already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<APIResponse<HolidayResponse>> updateHoliday(
+            @PathVariable String id,
+            @Valid @RequestBody HolidayRequest holidayRequest) {
+        return ResponseUtil.success(
+                "Holiday updated successfully",
+                holidayService.updateHoliday(id, holidayRequest),
                 HttpStatus.OK
         );
     }

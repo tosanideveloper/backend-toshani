@@ -1,5 +1,6 @@
 package com.toshaniFintech.user_service.service.impl;
 
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.dto.request.HolidayRequest;
 import com.toshaniFintech.user_service.dto.response.HolidayResponse;
@@ -35,6 +36,25 @@ public class HolidayServiceImpl implements HolidayService {
         return holidays.stream()
                 .map(this::mapToModel)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public HolidayResponse getHolidayById(String id) {
+        HolidayEntity entity = holidayRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new NotFoundException("Holiday not found with id: " + id));
+        return mapToModel(entity);
+    }
+
+    @Override
+    public HolidayResponse updateHoliday(String id, HolidayRequest holidayRequest) {
+        HolidayEntity existingEntity;
+        existingEntity = holidayRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new NotFoundException("Holiday not found with id: " + id));
+
+        existingEntity.setHolidayName(holidayRequest.getHolidayName());
+        existingEntity.setHolidayDate(holidayRequest.getHolidayDate());
+        HolidayEntity updatedEntity = holidayRepository.save(existingEntity);
+        return mapToModel(updatedEntity);
     }
 
     private HolidayEntity mapToEntity(HolidayRequest request) {
