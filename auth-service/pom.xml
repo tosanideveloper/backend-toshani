@@ -5,13 +5,14 @@
 
 <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
-	</parent>
+    <parent>
+        <groupId>com.toshaniFintech</groupId>
+        <artifactId>parent-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../parent-pom/pom.xml</relativePath>
+    </parent>
 
-	<groupId>com.example</groupId>
+	<groupId>com.toshaniFintech</groupId>
 	<artifactId>auth-service</artifactId>
 	<version>1.0</version>
 
@@ -34,6 +35,12 @@
 	</dependencyManagement>
 
 	<dependencies>
+        <!-- Common Utility-->
+        <dependency>
+            <groupId>com.toshaniFintech.common</groupId>
+            <artifactId>utility</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
 		<!-- Web (REQUIRED) -->
 		<dependency>
