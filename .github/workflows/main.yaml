@@ -2,148 +2,148 @@ name: Toshani CICD Pipeline
 
 on:
   push:
-    branches: ['develop']
+    branches:
+      - develop
 
 jobs:
-  # =========================
-  # DETECT CHANGES
-  # =========================
-  detect:
-    runs-on: ubuntu-latest
-    outputs:
-      services: ${{ steps.set.outputs.services }}
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Get changed files
-        id: changes
-        run: |
-          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "${{ github.event.before }}" 2>/dev/null; then
-            echo "First commit detected or previous commit not available in checkout"
-            git ls-files > changes.txt
-          else
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changes.txt
-          fi
-
-      - name: Detect affected services
-        id: set
-        run: |
-          ALL_SERVICES=("auth-service" "user-service" "gateway-service" "eureka-client" "setting-service")
-          services=()
-
-          # If root pom.xml changed → rebuild all
-          if grep -q "^pom.xml" changes.txt; then
-            services=("${ALL_SERVICES[@]}")
-          else
-            for svc in "${ALL_SERVICES[@]}"
-            do
-              if grep -q "^$svc/" changes.txt; then
-                services+=("$svc")
-              fi
-            done
-          fi
-
-          # Convert to JSON
-          if [ ${#services[@]} -eq 0 ]; then
-            echo "services=[]" >> $GITHUB_OUTPUT
-          else
-            json=$(printf '"%s",' "${services[@]}")
-            json="[${json%,}]"
-            echo "services=$json" >> $GITHUB_OUTPUT
-          fi
-
-  # =========================
-  # BUILD ONLY CHANGED
-  # =========================
-  build:
-    needs: detect
-    if: ${{ needs.detect.outputs.services != '[]' }}
+  build-and-deploy:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        service: ${{ fromJson(needs.detect.outputs.services) }}
-
     steps:
-      - uses: actions/checkout@v4
+      # =========================
+      # CHECKOUT
+      # =========================
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Setup Java
+      # =========================
+      # JAVA SETUP
+      # =========================
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build Service
+      # =========================
+      # BUILD USING PARENT POM
+      # =========================
+      - name: Build All Modules (Parent POM)
         run: |
-          cd ${{ matrix.service }}
-          mvn clean package -DskipTests
+          cd parent-pom
+          mvn clean install -DskipTests
 
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.service }}
-          path: ${{ matrix.service }}/target/*.jar
+      # =========================
+      # COLLECT ONLY SERVICE JARS
+      # =========================
+      - name: Collect Service JARs
+        run: |
+          mkdir jars
+          cp auth-service/target/*.jar jars/ || true
+          cp eureka-client/target/*.jar jars/ || true
+          cp gateway-service/target/*.jar jars/ || true
+          cp setting-service/target/*.jar jars/ || true
+          cp user-service/target/*.jar jars/ || true
 
-  # =========================
-  # DEPLOY ONLY CHANGED
-  # =========================
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        service: ${{ fromJson(needs.detect.outputs.services) }}
-
-    steps:
-      - name: Download JAR
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ matrix.service }}
-
-      - name: Upload to server
+      # =========================
+      # COPY TO SERVER
+      # =========================
+      - name: Upload JARs to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: '*.jar'
-          target: /opt/microservices/${{ matrix.service }}
+          source: "jars/*.jar"
+          target: "/opt/microservices/"
 
-      - name: Deploy + Reload PM2
+      # =========================
+      # DEPLOY SEQUENTIALLY
+      # =========================
+      - name: Deploy Services (Ordered + Safe)
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            SERVICE=${{ matrix.service }}
-            DIR=/opt/microservices/$SERVICE
 
-            echo "Deploying $SERVICE"
+            echo "🚀 Starting Deployment..."
 
-            cd $DIR
+            declare -A PORTS
+            PORTS["eureka-client"]=8761
+            PORTS["auth-service"]=8081
+            PORTS["gateway-service"]=8080
+            PORTS["setting-service"]=8082
+            PORTS["user-service"]=8083
 
-            # Backup old jar
-            if [ -f app.jar ]; then
-              cp app.jar app.jar.bak
-            fi
+            SERVICES=(
+              "eureka-client"
+              "auth-service"
+              "gateway-service"
+              "setting-service"
+              "user-service"
+            )
 
-            # Replace with new jar
-            NEW_JAR=$(ls *.jar | head -n 1)
-            mv $NEW_JAR app.jar
+            for SERVICE in "${SERVICES[@]}"
+            do
+              echo "===================================="
+              echo "Deploying $SERVICE"
+              echo "===================================="
 
-            # Reload service (zero downtime)
-            pm2 reload $SERVICE || pm2 start ecosystem.config.js --only $SERVICE
+              DIR=/opt/microservices/$SERVICE
+              mkdir -p $DIR
 
-            sleep 5
+              cd /opt/microservices
 
-            echo "Checking health..."
-            curl -f http://localhost:8080/actuator/health || {
-              echo "Health check failed. Rolling back..."
+              # Find correct jar
+              JAR=$(ls *.jar | grep $SERVICE | head -n 1)
 
-              mv app.jar.bak app.jar
-              pm2 restart $SERVICE
-              exit 1
-            }
+              if [ -z "$JAR" ]; then
+                echo "⚠ No new JAR found for $SERVICE, skipping..."
+                continue
+              fi
+
+              # Move jar to service directory
+              mv $JAR $DIR/app.jar
+
+              cd $DIR
+
+              # Backup previous version
+              if [ -f app.jar ]; then
+                cp app.jar app.jar.bak
+              fi
+
+              # Start or reload via PM2
+              pm2 describe $SERVICE > /dev/null 2>&1
+
+              if [ $? -eq 0 ]; then
+                pm2 reload $SERVICE
+              else
+                pm2 start app.jar --name $SERVICE --interpreter java --interpreter-args "-jar"
+              fi
+
+              sleep 8
+
+              PORT=${PORTS[$SERVICE]}
+
+              echo "🔍 Checking health on port $PORT"
+
+              curl -f http://localhost:$PORT/actuator/health > /dev/null 2>&1
+
+              if [ $? -ne 0 ]; then
+                echo "❌ Health check failed for $SERVICE"
+
+                if [ -f app.jar.bak ]; then
+                  echo "↩ Rolling back..."
+                  mv app.jar.bak app.jar
+                  pm2 restart $SERVICE
+                fi
+
+                exit 1
+              fi
+
+              echo "✅ $SERVICE deployed successfully"
+            done
+
+            echo "🎉 All services deployed successfully!"
