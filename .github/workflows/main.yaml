@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
     inputs:
       service:
-        description: Select service to deploy
-        required: true
+        description: Select service to deploy (optional)
+        required: false
         type: choice
         options:
           - eureka-client
@@ -25,7 +25,6 @@ jobs:
   # =========================
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout Code
@@ -62,46 +61,54 @@ jobs:
   # DEPLOY JOB
   # =========================
   deploy:
-  runs-on: ubuntu-latest
-  needs: build
-  if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs: build
 
-  steps:
-    - name: Download Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: jars
-        path: artifacts
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: jars
+          path: artifacts
 
-    - name: Upload JARs to EC2 (tmp)
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        source: artifacts/*.jar
-        target: /tmp/deploy/
+      - name: Upload JARs to EC2 (tmp)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: artifacts/*.jar
+          target: /tmp/deploy/
 
-    - name: Copy and Restart
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
+      - name: Copy and Restart Services
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
 
-          echo "🚀 Copying JARs to /var/www/toshanidev"
+            echo "🚀 Starting Deployment"
 
-          # Copy all jars to main directory
-          cp /tmp/deploy/artifacts/*.jar /var/www/toshanidev/
+            TMP="/tmp/deploy/artifacts"
+            BASE="/var/www/toshanidev"
 
-          echo "Files after copy:"
-          ls -l /var/www/toshanidev/
+            # Copy jars to respective service folders
+            cp $TMP/auth-service*.jar $BASE/auth-service/ 2>/dev/null || true
+            cp $TMP/user-service*.jar $BASE/user-service/ 2>/dev/null || true
+            cp $TMP/gateway-service*.jar $BASE/gateway-service/ 2>/dev/null || true
+            cp $TMP/setting-service*.jar $BASE/setting-service/ 2>/dev/null || true
+            cp $TMP/eureka-client*.jar $BASE/eureka-client/ 2>/dev/null || true
 
-          # Restart all services
-          pm2 restart all
+            echo "📂 Files after copy:"
+            ls -R $BASE
 
-          # Clean temp
-          rm -f /tmp/deploy/artifacts/*.jar
+            # Restart all services
+            pm2 restart all
 
-          echo "✅ Deployment completed"
+            echo "🔄 PM2 restarted all services"
+
+            # Clean temp files
+            rm -f $TMP/*.jar
+
+            echo "✅ Deployment completed successfully"
