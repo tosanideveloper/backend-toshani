@@ -21,23 +21,23 @@ on:
 jobs:
 
   # =========================
-  # BUILD JOB (AUTO)
+  # BUILD JOB
   # =========================
   build:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build All Modules
+      - name: Build All Modules (Parent POM)
         run: |
           cd parent-pom
           mvn clean install -DskipTests
@@ -51,6 +51,9 @@ jobs:
           cp setting-service/target/*.jar artifacts/ || true
           cp user-service/target/*.jar artifacts/ || true
 
+          echo "Artifacts:"
+          ls -lh artifacts
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -59,10 +62,11 @@ jobs:
 
 
   # =========================
-  # DEPLOY JOB (MANUAL)
+  # DEPLOY JOB (MANUAL ONLY)
   # =========================
   deploy:
     if: github.event_name == 'workflow_dispatch'
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -73,11 +77,10 @@ jobs:
           path: artifacts
 
       - name: Show Selected Service
-        run: |
-          echo "Deploying service: ${{ github.event.inputs.service }}"
+        run: echo "Deploying service: ${{ github.event.inputs.service }}"
 
       # =========================
-      # COPY ONLY REQUIRED JAR
+      # UPLOAD SELECTED JAR
       # =========================
       - name: Upload Selected Service JAR
         uses: appleboy/scp-action@v0.1.7
@@ -89,7 +92,7 @@ jobs:
           target: "/opt/microservices/"
 
       # =========================
-      # DEPLOY ONLY SELECTED SERVICE
+      # DEPLOY SELECTED SERVICE
       # =========================
       - name: Deploy Selected Service
         uses: appleboy/ssh-action@v1.0.3
@@ -117,20 +120,22 @@ jobs:
 
             cd /opt/microservices
 
-            # Pick correct jar
-            JAR=$(ls *.jar | grep $SERVICE | head -n 1)
+            # Pick latest jar
+            JAR=$(ls -t *.jar | grep $SERVICE | head -n 1)
 
             if [ -z "$JAR" ]; then
               echo "❌ No JAR found for $SERVICE"
               exit 1
             fi
 
-            # Backup
-            if [ -f $DIR/app.jar ]; then
-              cp $DIR/app.jar $DIR/app.jar.bak
+            # Backup existing jar
+            cd $DIR
+            if [ -f app.jar ]; then
+              cp app.jar app.jar.bak
             fi
 
-            # Replace jar
+            # Move new jar
+            cd /opt/microservices
             mv $JAR $DIR/app.jar
 
             cd $DIR
@@ -141,14 +146,19 @@ jobs:
             if [ $? -eq 0 ]; then
               pm2 reload $SERVICE
             else
-              pm2 start app.jar --name $SERVICE --interpreter java --interpreter-args "-jar"
+              pm2 start "java -jar app.jar" --name $SERVICE
             fi
-
-            sleep 8
 
             PORT=${PORTS[$SERVICE]}
 
             echo "Checking health on port $PORT..."
+
+            for i in {1..5}
+            do
+              curl -f http://localhost:$PORT/actuator/health > /dev/null 2>&1 && break
+              echo "Waiting for service... ($i)"
+              sleep 5
+            done
 
             curl -f http://localhost:$PORT/actuator/health > /dev/null 2>&1
 
