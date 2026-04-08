@@ -5,27 +5,10 @@ on:
     branches:
       - develop
 
-  workflow_dispatch:
-    inputs:
-      service:
-        description: Select service to deploy
-        required: true
-        type: choice
-        options:
-          - eureka-client
-          - auth-service
-          - gateway-service
-          - setting-service
-          - user-service
-
 jobs:
 
-  # =========================
-  # BUILD JOB
-  # =========================
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout Code
@@ -58,13 +41,9 @@ jobs:
           path: artifacts/*.jar
 
 
-  # =========================
-  # DEPLOY JOB
-  # =========================
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
 
     steps:
       - name: Download Artifacts
@@ -73,7 +52,7 @@ jobs:
           name: jars
           path: artifacts
 
-      - name: Upload JARs to EC2 (temp)
+      - name: Upload JARs to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -82,7 +61,7 @@ jobs:
           source: artifacts/*.jar
           target: /tmp/deploy/
 
-      - name: Deploy Selected Service
+      - name: Deploy & Restart
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -90,50 +69,20 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
 
-            SERVICE="${{ github.event.inputs.service }}"
+            echo "🚀 Deploying to /var/www/toshanidev"
 
-            # Skip deploy on push
-            if [ -z "$SERVICE" ]; then
-              echo "No service selected. Skipping deployment."
-              exit 0
-            fi
+            # Copy all jars
+            cp /tmp/deploy/artifacts/*.jar /var/www/toshanidev/
 
-            echo "Deploying $SERVICE"
+            echo "📂 Current files:"
+            ls -l /var/www/toshanidev/
 
-            BASE_DIR="/var/www/toshanidev"
-            SERVICE_DIR="$BASE_DIR/$SERVICE"
-            TMP_DIR="/tmp/deploy/artifacts"
+            # Restart all services
+            pm2 restart all
 
-            mkdir -p "$SERVICE_DIR"
+            echo "🔄 PM2 restarted"
 
-            cd "$TMP_DIR"
+            # Cleanup
+            rm -f /tmp/deploy/artifacts/*.jar
 
-            echo "Available JARs:"
-            ls -l
-
-            # Find correct jar
-            JAR=$(ls -t *.jar | grep -i "$SERVICE" | head -n 1)
-
-            if [ -z "$JAR" ]; then
-              echo "❌ No JAR found for $SERVICE"
-              exit 1
-            fi
-
-            echo "Using JAR: $JAR"
-
-            # Overwrite existing jar (same name required for PM2)
-            cp "$JAR" "$SERVICE_DIR/$JAR"
-
-            cd "$SERVICE_DIR"
-
-            echo "Updated: $SERVICE_DIR/$JAR"
-
-            # Restart only this service
-            pm2 restart "$SERVICE"
-
-            echo "PM2 restarted $SERVICE"
-
-            # Clean temp
-            rm -f $TMP_DIR/*.jar
-
-            echo "✅ Deployment completed successfully"
+            echo "✅ Deployment successful"
