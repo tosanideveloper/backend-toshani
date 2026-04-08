@@ -1,9 +1,10 @@
 server:
   port: 8761
+  forward-headers-strategy: framework
 
 spring:
   application:
-    name: eureka-server
+    name: eureka-client
 
 eureka:
   client:

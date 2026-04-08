@@ -1,0 +1,88 @@
+name: Toshani CICD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build All Modules
+        run: |
+          cd parent-pom
+          mvn clean install -DskipTests
+
+      - name: Collect JARs
+        run: |
+          mkdir artifacts
+          cp auth-service/target/*.jar artifacts/ || true
+          cp eureka-client/target/*.jar artifacts/ || true
+          cp gateway-service/target/*.jar artifacts/ || true
+          cp setting-service/target/*.jar artifacts/ || true
+          cp user-service/target/*.jar artifacts/ || true
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jars
+          path: artifacts/*.jar
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: jars
+          path: artifacts
+
+      - name: Upload JARs to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: artifacts/*.jar
+          target: /tmp/deploy/
+
+      - name: Deploy & Restart
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+
+            echo "🚀 Deploying to /var/www/toshanidev"
+
+            # Copy all jars
+            cp /tmp/deploy/artifacts/*.jar /var/www/toshanidev/
+
+            echo "📂 Current files:"
+            ls -l /var/www/toshanidev/
+
+            # Restart all services
+            pm2 restart all
+
+            echo "🔄 PM2 restarted"
+
+            # Cleanup
+            rm -f /tmp/deploy/artifacts/*.jar
+
+            echo "✅ Deployment successful"

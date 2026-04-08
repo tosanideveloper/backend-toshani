@@ -1,9 +1,10 @@
 server:
-  port: 8080
+  port: 8083
 
 spring:
   application:
     name: gateway-service
+    forward-headers-strategy: framework
 
   cloud:
     gateway:

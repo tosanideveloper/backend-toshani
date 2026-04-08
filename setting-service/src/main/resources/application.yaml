@@ -1,5 +1,6 @@
 server:
-  port: 8083
+  port: 8084
+  forward-headers-strategy: framework
 
 spring:
   application:
@@ -20,6 +21,6 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  sql:
-    init:
-      mode: always
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html

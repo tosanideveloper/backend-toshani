@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import com.toshaniFintech.user_service.dto.request.SettingRequest;
-import com.toshaniFintech.user_service.dto.response.APIResponse;
+import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.user_service.dto.response.SettingResponse;
-import com.toshaniFintech.user_service.util.ResponseUtil;
+import com.toshaniFintech.common.utils.ResponseUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/setting")
-@Tag(name = "Setting API", description = "APIs for Setting CRUD" )
+@Tag(name = "Setting API", description = "APIs for Settings CRUD")
 public class SettingController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class SettingController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<APIResponse<List<SettingResponse>>> getAllSettings() {
+    public ResponseEntity<APIResponse<List<SettingResponse>>> getAllSetting() {
         return ResponseUtil.success(
                 "Settings fetched successfully",
                 settingService.getAllSettings(),

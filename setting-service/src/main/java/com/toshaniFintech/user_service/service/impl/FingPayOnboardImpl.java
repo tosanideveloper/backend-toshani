@@ -1,9 +1,7 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toshaniFintech.user_service.dto.response.FingPayOnboardResponseDTO;
 import com.toshaniFintech.user_service.entity.FingPayOnboardEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.FingPayOnboardModel;
 import com.toshaniFintech.user_service.repository.FingPayOnboardRepository;
 import com.toshaniFintech.user_service.service.FingPayOnboardService;
@@ -16,10 +14,10 @@ import java.util.List;
 public class FingPayOnboardImpl implements FingPayOnboardService {
 
     @Autowired
-    FingPayOnboardRepository fingPayOnboardRepository;
+    private FingPayOnboardRepository fingPayOnboardRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public List<FingPayOnboardModel> getFingPayOnboardList() {

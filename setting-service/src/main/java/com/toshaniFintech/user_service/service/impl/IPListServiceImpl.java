@@ -1,10 +1,10 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.dto.request.CreateIpRequest;
 import com.toshaniFintech.user_service.dto.response.CreateIpResponse;
 import com.toshaniFintech.user_service.entity.IPAddressesEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.IPAddressModel;
 import com.toshaniFintech.user_service.repository.IPListRepository;
 import com.toshaniFintech.user_service.service.IPService;
@@ -20,7 +20,7 @@ public class IPListServiceImpl implements IPService {
     private IPListRepository ipListRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public List<IPAddressModel> getIpList() {
