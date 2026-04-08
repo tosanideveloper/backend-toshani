@@ -10,9 +10,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "th_ip_addresses")
 public class IPAddressesEntity extends BaseEntity {
-
-    @Column(name = "name")
     @NotBlank
+    @Column(name = "name")
     private String name;
 
     @Column(name = "ip_address")

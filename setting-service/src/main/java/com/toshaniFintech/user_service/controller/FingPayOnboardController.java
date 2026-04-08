@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping
-@Tag(name = "TH_FINGPAYONBOARD", description = "APIs for FingPayOnboard CRUD")
+@RequestMapping("/api/v1/fingpayonboard")
+@Tag(name = "th_fingpayonboard", description = "APIs for FingPayOnboard CRUD")
 
 public class FingPayOnboardController {
     @Autowired
     private FingPayOnboardService fingPayOnboardService;
 
-    @GetMapping("/get")
+    @GetMapping("/all")
     @Operation(
             summary = "FingPay Onboard List",
             description = "To fetch FingPay Onboard List"

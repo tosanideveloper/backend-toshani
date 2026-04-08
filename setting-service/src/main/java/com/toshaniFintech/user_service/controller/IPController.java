@@ -39,7 +39,7 @@ public class IPController {
         );
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     @Operation(
             summary = "IP Addresses List",
             description = "To fetch IP Addresses List"
@@ -88,7 +88,6 @@ public class IPController {
             @ApiResponse(responseCode = "200", description = "IP Addresses updated successfully",
                     content = @Content(schema = @Schema(implementation = APIResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            //@ApiResponse(responseCode = "409", description = "User already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<APIResponse<CreateIpResponse>> updateIpAddress(
