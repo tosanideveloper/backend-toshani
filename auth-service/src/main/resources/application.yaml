@@ -21,16 +21,10 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-# springdoc:
-#   swagger-ui:
-#     path: /swagger-ui/index.html
-
 springdoc:
-  api-docs:
-    path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui/index.html
-    config-url: /auth/v3/api-docs 
+
 
 #eureka:
 #  client:
