@@ -54,7 +54,7 @@ public class SwaggerConfig {
 
                 // ✅ ADD THIS (FIXES 127.0.0.1 ISSUE COMPLETELY)
                 .servers(List.of(
-                        new Server().url("https://testapi.toshani.in/auth")
+                        new Server().url("https://testapi.toshani.in")
                 ))
 
                 // Existing security config
