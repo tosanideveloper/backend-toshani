@@ -1,6 +1,7 @@
 package com.toshaniFintech.user_service.service.impl;
 
 
+import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.user_service.dto.request.SettingRequest;
 import com.toshaniFintech.user_service.dto.response.SettingResponse;
 import com.toshaniFintech.user_service.entity.SettingEntity;
@@ -10,6 +11,8 @@ import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.repository.SettingRepository;
 import com.toshaniFintech.user_service.service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,11 +39,21 @@ public class SettingServiceImpl implements SettingService {
     }
 
     @Override
-    public List<SettingResponse> getAllSettings() {
-        List<SettingEntity> settings = settingRepository.findAll();
-        return settings.stream()
-                .map(this::mapToModel)
-                .collect(Collectors.toList());
+    public PaginatedResponse<SettingResponse> getAllSettings(PageRequest pageRequest) {
+
+        Page<SettingEntity> settingPage = settingRepository.findAll(pageRequest);
+
+        PaginatedResponse<SettingResponse> response =
+                new PaginatedResponse<>(settingPage);
+
+        response.setData(
+                settingPage.getContent()
+                        .stream()
+                        .map(this::mapToModel)
+                        .collect(Collectors.toList())
+        );
+
+        return response;
     }
 
     @Override
