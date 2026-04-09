@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "TH_IP_ADDRESSES")
+@Table(name = "th_ip_addresses")
 public class IpAddressEntity extends BaseEntity {
 
     @Column(name = "name", nullable = false)

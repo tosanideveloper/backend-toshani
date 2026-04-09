@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Entity
-@Table(name = "TH_HOLIDAY")
+@Table(name = "th_holiday")
 
 public class HolidayEntity extends BaseEntity {
     @Column(name = "holiday_name", nullable = false)
