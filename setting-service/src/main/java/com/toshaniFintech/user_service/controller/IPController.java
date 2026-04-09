@@ -37,7 +37,6 @@ public class IPController {
     @GetMapping("/all")
     @Operation(summary = "IP Addresses List", description = "To fetch IP Addresses List")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "IP Addresses fetched successfully", content = @Content(schema = @Schema(implementation = APIResponse.class))), @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            //@ApiResponse(responseCode = "409", description = "User already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     public ResponseEntity<APIResponse<List<IPAddressModel>>> getIpList() {
         return ResponseUtil.success("IP Addresses fetched successfully", iPService.getIpList(), HttpStatus.OK);
@@ -46,7 +45,6 @@ public class IPController {
     @GetMapping("/get{id}")
     @Operation(summary = "IP Addresses List", description = "To fetch IP Addresses List")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "IP Addresses fetched successfully", content = @Content(schema = @Schema(implementation = APIResponse.class))), @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            //@ApiResponse(responseCode = "409", description = "User already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
 
     public ResponseEntity<APIResponse<IPAddressModel>> getIpListById(@PathVariable String id) {
