@@ -46,7 +46,7 @@ public class SettingServiceImpl implements SettingService {
         PaginatedResponse<SettingResponse> response =
                 new PaginatedResponse<>(settingPage);
 
-        response.setData(
+        response.setContent(
                 settingPage.getContent()
                         .stream()
                         .map(this::mapToModel)
