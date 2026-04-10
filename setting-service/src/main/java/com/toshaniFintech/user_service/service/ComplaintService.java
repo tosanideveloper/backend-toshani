@@ -1,25 +1,21 @@
 package com.toshaniFintech.user_service.service;
 
 import com.toshaniFintech.user_service.dto.request.ComplaintRequest;
+import com.toshaniFintech.user_service.dto.request.SettingRequest;
 import com.toshaniFintech.user_service.dto.response.ComplaintResponse;
+import com.toshaniFintech.user_service.dto.response.SettingResponse;
 
 import java.util.List;
 
 public interface ComplaintService {
-
-    ComplaintResponse createComplaints(ComplaintRequest request);
+    ComplaintResponse createComplaint(ComplaintRequest complaintRequest);
 
     List<ComplaintResponse> getAllComplaints();
 
-    static ComplaintResponse getComplaintsById() {
-        return null;
-    }
+    ComplaintResponse getComplaintById(String id);
 
-    ComplaintResponse getComplaintById(String complaintId);
+    ComplaintResponse getComplaintsId(String id);
 
-    ComplaintResponse updateComplaints(String complaintId, ComplaintRequest request);
+    ComplaintResponse updateComplaint(String id, ComplaintRequest complaintModel);
 
-    String updateComplaints(ComplaintRequest request);
-
-    ComplaintResponse updateComplaint(String complaintId, ComplaintRequest request);
 }

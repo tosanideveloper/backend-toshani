@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,7 @@ public class ComplaintController {
 
     @Autowired
     private ComplaintService complaintService;
-
-    @GetMapping("/get")
+    @GetMapping("/all")
     @Operation(
             summary = "Complaints List",
             description = "To Fetch Complaints List"
@@ -57,12 +57,13 @@ public class ComplaintController {
             @ApiResponse(responseCode = "409", description = "Complaints already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<ComplaintResponse>> getComplaintsById(@PathVariable String id) {
-        return ResponseUtil.success("Complaints fetched successfully",
-                ComplaintService.getComplaintsById(),
-                HttpStatus.OK);
+    public ResponseEntity<APIResponse<ComplaintResponse>> getComplaintById(@PathVariable String id) {
+        return ResponseUtil.success(
+                "Complaint fetched successfully",
+                complaintService.getComplaintById(id),
+                HttpStatus.OK
+        );
     }
-
     @PutMapping("/update/{id}")
     @Operation(
             summary = "Update Complaints List",
@@ -80,7 +81,7 @@ public class ComplaintController {
             @Valid @RequestBody ComplaintRequest complaintsRequest) {
         return ResponseUtil.success(
                 "Complaints updated successfully",
-                complaintService.updateComplaints(id, complaintsRequest),
+                complaintService.updateComplaint(id, complaintsRequest),
                 HttpStatus.OK
         );
     }

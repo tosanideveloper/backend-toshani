@@ -35,7 +35,6 @@ public class ComplaintRequest {
 
     private String attachment;
 
-    private List messages;
-
+    private List <String>messages;
 
 }

@@ -1,10 +1,8 @@
 package com.toshaniFintech.user_service.dto.request;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-
 
 @Data
 public class IpAddressRequest {

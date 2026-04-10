@@ -1,6 +1,7 @@
 package com.toshaniFintech.user_service.entity;
 
 import com.toshaniFintech.common.entity.BaseEntity;
+import com.toshaniFintech.user_service.dto.request.ComplaintRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -16,7 +17,7 @@ import java.util.List;
 @Table(name="th_complaints")
 public class ComplaintEntity extends BaseEntity {
     @Column(name = "complaint_id", nullable = false, unique = true)
-    private String complaintsId;
+    private String complaintId;
     @Column(name = "complaint_on")
     private LocalDateTime complaintOn;
     @Column(name = "agent_details")
@@ -37,7 +38,7 @@ public class ComplaintEntity extends BaseEntity {
 
     public ComplaintEntity(String complaintId, LocalDateTime complaintOn, String agentDetails, String requestUrl,
                            String request, String response, String attachment, String status) {
-        this.complaintsId = complaintsId;
+        this.complaintId = complaintId;
         this.complaintOn = complaintOn;
         this.agentDetails = agentDetails;
         this.requestUrl = requestUrl;
@@ -49,8 +50,13 @@ public class ComplaintEntity extends BaseEntity {
 
     public void setMessages(List <String>messages) {
     }
-
     public org.hibernate.mapping.List getMessages() {
         return null;
+    }
+
+    public void setResponse(ComplaintRequest complaintRequest, Object getResponse) {
+    }
+    public String getComplaintsId() {
+        return "";
     }
 }

@@ -1,6 +1,7 @@
 package com.toshaniFintech.user_service.service.impl;
 
 
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.dto.request.ComplaintRequest;
 import com.toshaniFintech.user_service.dto.response.ComplaintResponse;
@@ -19,52 +20,63 @@ public class ComplaintServiceImpl implements ComplaintService {
     private ComplaintRepository complaintRepository;
 
     @Override
-    public ComplaintResponse createComplaints(ComplaintRequest complaintRequest) {
+    public ComplaintResponse createComplaint(ComplaintRequest complaintRequest) {
 
-        if (ComplaintRepository.findByComplaintId(complaintRequest.getComplaintId()).isPresent()) {
+        if (complaintRepository.findByComplaintId(complaintRequest.getComplaintId()).isPresent()) {
             throw new UnprocessableEntityException(
-                    "Complaints already exists with id: " + complaintRequest.getComplaintId()
+                    "Complaint already exists with key: " + complaintRequest.getComplaintId()
             );
         }
-
         ComplaintEntity entity = mapToEntity(complaintRequest);
         ComplaintEntity savedEntity = complaintRepository.save(entity);
-        return mapToResponse(savedEntity);
+        return mapToModel(savedEntity);
+    }
+
+    private ComplaintResponse mapToModel(ComplaintEntity savedEntity) {
+        return null;
     }
 
     @Override
     public List<ComplaintResponse> getAllComplaints() {
         List<ComplaintEntity> complaints = complaintRepository.findAll();
         return complaints.stream()
-                .map(this::mapToResponse)
+                .map(this::mapToModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ComplaintResponse getComplaintById(String complaintId) {
-        ComplaintEntity entity = ComplaintRepository.findByComplaintId(complaintId)
-                .orElseThrow(() -> new RuntimeException("Complaint not found with ID: " + complaintId));
-        return mapToResponse(entity);
-    }
-
-    @Override
-    public ComplaintResponse updateComplaints(String complaintId, ComplaintRequest request) {
+    public ComplaintResponse getComplaintById(String id) {
         return null;
     }
 
     @Override
-    public String updateComplaints(ComplaintRequest request) {
-        return "";
+    public ComplaintResponse getComplaintsId(String id) {
+        ComplaintEntity entity = complaintRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Complaint not found with id: " + id));
+        return mapToModel(entity);
     }
 
     @Override
-    public ComplaintResponse updateComplaint(String complaintId, ComplaintRequest request) {
-        return null;
-    }
+    public ComplaintResponse updateComplaint(String id, ComplaintRequest complaintRequest) {
+        ComplaintEntity existingEntity = complaintRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Complaint not found with id: " + id));
 
+        existingEntity.setComplaintId(complaintRequest.getComplaintId());
+        existingEntity.setAgentDetails(complaintRequest.getAgentDetails());
+        existingEntity.setRequestUrl(complaintRequest.getRequestUrl());
+        existingEntity.setRequest(complaintRequest.getRequest());
+        existingEntity.setResponse(complaintRequest.getResponse());
+        existingEntity.setComplaintOn(complaintRequest.getComplaintOn());
+        existingEntity.setAttachment(complaintRequest.getAttachment());
+        existingEntity.setStatus(complaintRequest.getStatus());
+        existingEntity.setMessages(complaintRequest.getMessages());
+
+        ComplaintEntity updatedEntity = complaintRepository.save(existingEntity);
+        return mapToModel(updatedEntity);
+    }
     private ComplaintEntity mapToEntity(ComplaintRequest complaintRequest) {
         ComplaintEntity entity = new ComplaintEntity();
-        entity.setComplaintsId(complaintRequest.getComplaintId());
+        entity.setComplaintId(complaintRequest.getComplaintId());
         entity.setAgentDetails(complaintRequest.getAgentDetails());
         entity.setRequestUrl(complaintRequest.getRequestUrl());
         entity.setRequest(complaintRequest.getRequest());
@@ -75,7 +87,6 @@ public class ComplaintServiceImpl implements ComplaintService {
         entity.setMessages(complaintRequest.getMessages());
         return entity;
     }
-
     private ComplaintResponse mapToResponse(ComplaintEntity entity) {
         ComplaintResponse response = new ComplaintResponse();
         response.setComplaintId(entity.getComplaintsId());
