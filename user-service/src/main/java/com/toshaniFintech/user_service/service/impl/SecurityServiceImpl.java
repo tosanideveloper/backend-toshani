@@ -67,7 +67,6 @@ public class SecurityServiceImpl implements SecurityService {
         if (security.getMpinHash() == null || !Boolean.TRUE.equals(security.getMpinEnabled())) {
             throw new BadRequestException("MPIN is not enabled");
         }
-
         if (!passwordEncoder.matches(request.getMpin(), security.getMpinHash())) {
             throw new BadRequestException("Invalid MPIN");
         }
@@ -221,7 +220,6 @@ public class SecurityServiceImpl implements SecurityService {
         }
 
         boolean valid = totpUtility.verifyCode(security.getGoogleAuthSecret(), request.getOtp());
-
         if (!valid) {
             throw new BadRequestException("Invalid OTP");
         }
