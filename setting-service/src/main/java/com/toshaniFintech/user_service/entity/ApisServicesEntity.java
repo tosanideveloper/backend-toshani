@@ -19,5 +19,4 @@ public class ApisServicesEntity extends BaseEntity {
 
     @Column(name = "status")
     private String status;
-
 }
