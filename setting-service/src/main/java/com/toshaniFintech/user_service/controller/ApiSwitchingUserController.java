@@ -1,12 +1,12 @@
 package com.toshaniFintech.user_service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.utils.ResponseUtil;
 import com.toshaniFintech.user_service.dto.request.ApiSwitchingUserRequestDTO;
-import com.toshaniFintech.user_service.dto.response.APIResponse;
 import com.toshaniFintech.user_service.dto.response.ApiSwitchingUserResponseDTO;
 import com.toshaniFintech.user_service.model.ApiSwitchingUserModel;
-import com.toshaniFintech.user_service.service.ApiSwitchingUserService;
-import com.toshaniFintech.user_service.util.ResponseUtil;
+import com.toshaniFintech.user_service.service.SwitchingUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,12 +27,12 @@ import java.util.List;
 public class ApiSwitchingUserController {
 
     @Autowired
-    ApiSwitchingUserService apiSwitchingUSerService;
+    private SwitchingUserService switchingUserService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     @Operation(
             summary = "Api Switching User",
             description = "get a API for Switching User"
@@ -45,10 +45,10 @@ public class ApiSwitchingUserController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<APIResponse<List<ApiSwitchingUserModel>>> getApiSwitchingUser() {
-        return ResponseUtil.success("Api Switching User fetched successfully", apiSwitchingUSerService.getApiSwitchingUser(), HttpStatus.OK);
+        return ResponseUtil.success("Api Switching User fetched successfully", switchingUserService.getApiSwitchingUser(), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     @Operation(
             summary = "Api Switching User",
             description = "get a API for Switching User with ID"
@@ -61,7 +61,7 @@ public class ApiSwitchingUserController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<APIResponse<ApiSwitchingUserModel>> getSwitchUser(@PathVariable String id) {
-        return ResponseUtil.success("API Switching User fetched successfully", apiSwitchingUSerService.getSwitchUserByID(id), HttpStatus.OK);
+        return ResponseUtil.success("API Switching User fetched successfully", switchingUserService.getSwitchUserByID(id), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
@@ -78,7 +78,7 @@ public class ApiSwitchingUserController {
     })
     public ResponseEntity<APIResponse<ApiSwitchingUserResponseDTO>> updateSwitchUser(@PathVariable String id, @Valid @RequestBody ApiSwitchingUserRequestDTO apiSwitchingUserRequestDTO) {
         ApiSwitchingUserModel apiSwitchingUserModel = objectMapper.convertValue(apiSwitchingUserRequestDTO, ApiSwitchingUserModel.class);
-        ApiSwitchingUserModel updatedModel = apiSwitchingUSerService.updateSwitchUser(id, apiSwitchingUserModel);
+        ApiSwitchingUserModel updatedModel = switchingUserService.updateSwitchUser(id, apiSwitchingUserModel);
         ApiSwitchingUserResponseDTO responseDTO = objectMapper.convertValue(updatedModel, ApiSwitchingUserResponseDTO.class);
         return ResponseUtil.success("Switch User updated successfully", responseDTO, HttpStatus.OK);
     }

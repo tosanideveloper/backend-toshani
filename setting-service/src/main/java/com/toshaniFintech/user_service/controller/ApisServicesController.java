@@ -2,15 +2,12 @@ package com.toshaniFintech.user_service.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.utils.ResponseUtil;
 import com.toshaniFintech.user_service.dto.request.ApisServicesRequestDTO;
-import com.toshaniFintech.user_service.dto.response.APIResponse;
 import com.toshaniFintech.user_service.dto.response.ApisServicesResponseDTO;
-import com.toshaniFintech.user_service.dto.response.SiteSettingResponseDTO;
-import com.toshaniFintech.user_service.model.ApiSwitchingUserModel;
 import com.toshaniFintech.user_service.model.ApisServiceModel;
-import com.toshaniFintech.user_service.model.SiteSettingModel;
 import com.toshaniFintech.user_service.service.ApisService;
-import com.toshaniFintech.user_service.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,7 +28,7 @@ import java.util.List;
 public class ApisServicesController {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     @Autowired
     private ApisService apisService;
 
@@ -54,7 +51,7 @@ public class ApisServicesController {
         return ResponseUtil.success("API Services created successfully", responseDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     @Operation(
             summary = "Api Service",
             description = "This api is to get Api Service list"
@@ -71,7 +68,7 @@ public class ApisServicesController {
         return ResponseUtil.success("Apis Services fetched successfully", apisService.getApisService(), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     @Operation(
             summary = "Api Service",
             description = "This api is to get by ID"

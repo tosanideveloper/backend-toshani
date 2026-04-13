@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.dto.response.SiteSettingResponseDTO;
 import com.toshaniFintech.user_service.entity.SiteSettingEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.SiteSettingModel;
 import com.toshaniFintech.user_service.repository.SiteSettingRepository;
 import com.toshaniFintech.user_service.service.SiteSettingService;
@@ -16,10 +16,10 @@ import java.util.List;
 public class SiteSettingServiceImpl implements SiteSettingService {
 
     @Autowired
-    SiteSettingRepository siteSettingRepository;
+    private SiteSettingRepository siteSettingRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public List<SiteSettingModel> getAllSiteSettings() {
@@ -32,7 +32,7 @@ public class SiteSettingServiceImpl implements SiteSettingService {
 
     @Override
     public SiteSettingModel updateSiteSetting(String id, SiteSettingModel siteSettingModel) {
-        SiteSettingEntity entity = siteSettingRepository.findById(id).orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
+        SiteSettingEntity entity = siteSettingRepository.findById(id).orElseThrow(() -> new NotFoundException("Setting not found with id: " + id));
         entity.setAddress(siteSettingModel.getAddress());
         entity.setCity(siteSettingModel.getCity());
         entity.setPinCode(siteSettingModel.getPinCode());

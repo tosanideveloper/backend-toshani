@@ -1,12 +1,12 @@
 package com.toshaniFintech.user_service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.utils.ResponseUtil;
 import com.toshaniFintech.user_service.dto.request.SiteSettingRequestDTO;
-import com.toshaniFintech.user_service.dto.response.APIResponse;
 import com.toshaniFintech.user_service.dto.response.ManageSettlementResponseDTO;
 import com.toshaniFintech.user_service.model.ManageSettlementModel;
 import com.toshaniFintech.user_service.service.ManageSettlementService;
-import com.toshaniFintech.user_service.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,12 +27,12 @@ import java.util.List;
 public class ManageSettlementController {
 
     @Autowired
-    ManageSettlementService manageSettlementService;
+    private ManageSettlementService manageSettlementService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     @Operation(
             summary = "Manage Settlement",
             description = "This api is to get settlement time"
@@ -47,7 +47,7 @@ public class ManageSettlementController {
         return ResponseUtil.success("Manage settlement time fetched successfully", manageSettlementService.getAllSettlementTime(), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     @Operation(
             summary = "Manage Settlement",
             description = "This api is to get settlement time by ID"

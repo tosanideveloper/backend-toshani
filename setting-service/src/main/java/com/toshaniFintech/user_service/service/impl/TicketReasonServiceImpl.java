@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.dto.response.TicketReasonResponseDTO;
 import com.toshaniFintech.user_service.entity.TicketReasonEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.TicketReasonModel;
 import com.toshaniFintech.user_service.repository.TicketReasonRepository;
 import com.toshaniFintech.user_service.service.TicketReasonService;

@@ -1,10 +1,10 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.BadRequestException;
+import com.toshaniFintech.common.exception.model.NotFoundException;
+import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.entity.ApiPartnerServiceEntity;
-import com.toshaniFintech.user_service.exception.BadRequestException;
-import com.toshaniFintech.user_service.exception.NotFoundException;
-import com.toshaniFintech.user_service.exception.UnprocessableEntityException;
 import com.toshaniFintech.user_service.model.ApiPartnerServiceModel;
 import com.toshaniFintech.user_service.repository.ApiPartnerServicesRepository;
 import com.toshaniFintech.user_service.service.ApiPartnerService;
@@ -20,10 +20,10 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @Service
 public class ApiPartnerServiceImpl implements ApiPartnerService {
     @Autowired
-    ApiPartnerServicesRepository apiPartnerServicesRepository;
+    private ApiPartnerServicesRepository apiPartnerServicesRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
 
     @Override

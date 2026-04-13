@@ -1,13 +1,10 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.dto.response.TicketDetailsResponseDTO;
-import com.toshaniFintech.user_service.dto.response.TicketMessagesResponseDTO;
 import com.toshaniFintech.user_service.entity.TicketDetailsEntity;
-import com.toshaniFintech.user_service.entity.TicketMessagesEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.TicketDetailsModel;
-import com.toshaniFintech.user_service.model.TicketMessagesModel;
 import com.toshaniFintech.user_service.repository.TicketDetailsRepository;
 import com.toshaniFintech.user_service.service.TicketDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +48,7 @@ public class TicketDetailsServiceImpl implements TicketDetailsService {
         TicketDetailsEntity entity = ticketDetailsRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket Details not found with id: " + id));
         return mapToModel(entity);
     }
+
     private TicketDetailsModel mapToModel(TicketDetailsEntity entity) {
         TicketDetailsResponseDTO response = new TicketDetailsResponseDTO();
         response.setId(entity.getId());

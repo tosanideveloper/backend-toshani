@@ -1,8 +1,8 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.entity.SettlementBankEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.SettlementBankModel;
 import com.toshaniFintech.user_service.repository.SettlementBankRepository;
 import com.toshaniFintech.user_service.service.SettlementBankService;

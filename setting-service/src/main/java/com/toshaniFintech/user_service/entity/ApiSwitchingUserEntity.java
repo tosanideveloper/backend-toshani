@@ -1,6 +1,6 @@
 package com.toshaniFintech.user_service.entity;
 
-import com.toshaniFintech.user_service.entity.base.BaseEntity;
+import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TH_API_SWITCH_USER")
+@Table(name = "th_api_switch_user")
 @Getter
 @Setter
 public class ApiSwitchingUserEntity extends BaseEntity {

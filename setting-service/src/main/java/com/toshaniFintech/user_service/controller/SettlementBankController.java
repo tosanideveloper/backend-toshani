@@ -1,12 +1,12 @@
 package com.toshaniFintech.user_service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.utils.ResponseUtil;
 import com.toshaniFintech.user_service.dto.request.SettlementBankRequestDTO;
-import com.toshaniFintech.user_service.dto.response.APIResponse;
 import com.toshaniFintech.user_service.dto.response.SettlementBankResponseDTO;
 import com.toshaniFintech.user_service.model.SettlementBankModel;
 import com.toshaniFintech.user_service.service.SettlementBankService;
-import com.toshaniFintech.user_service.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

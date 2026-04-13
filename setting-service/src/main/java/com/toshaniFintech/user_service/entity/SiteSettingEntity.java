@@ -1,12 +1,12 @@
 package com.toshaniFintech.user_service.entity;
 
-import com.toshaniFintech.user_service.entity.base.BaseEntity;
+import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TH_SITE_SETTINGS")
+@Table(name = "th_site_settings")
 @Getter
 @Setter
 public class SiteSettingEntity extends BaseEntity {

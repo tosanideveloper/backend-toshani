@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.dto.response.ManageSettlementResponseDTO;
 import com.toshaniFintech.user_service.entity.ManageSettlementEntity;
-import com.toshaniFintech.user_service.exception.NotFoundException;
 import com.toshaniFintech.user_service.model.ManageSettlementModel;
 import com.toshaniFintech.user_service.repository.ManageSettlementRepository;
 import com.toshaniFintech.user_service.service.ManageSettlementService;
@@ -16,10 +16,10 @@ import java.util.List;
 public class ManageSettlementServiceImpl implements ManageSettlementService {
 
     @Autowired
-    ManageSettlementRepository manageSettlementRepository;
+    private ManageSettlementRepository manageSettlementRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public List<ManageSettlementModel> getAllSettlementTime() {
@@ -35,7 +35,7 @@ public class ManageSettlementServiceImpl implements ManageSettlementService {
 
     @Override
     public ManageSettlementModel updateSettlementTime(String id, ManageSettlementModel manageSettlementModel) {
-        ManageSettlementEntity manageSettlementEntity = manageSettlementRepository.findById(id).orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
+        ManageSettlementEntity manageSettlementEntity = manageSettlementRepository.findById(id).orElseThrow(() -> new NotFoundException("Setting not found with id: " + id));
         manageSettlementEntity.setDay(manageSettlementModel.getDay());
         manageSettlementEntity.setStartTime(manageSettlementModel.getStartTime());
         manageSettlementEntity.setEndTime(manageSettlementModel.getEndTime());

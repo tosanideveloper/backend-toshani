@@ -1,6 +1,6 @@
 package com.toshaniFintech.user_service.entity;
 
-import com.toshaniFintech.user_service.entity.base.BaseEntity;
+import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

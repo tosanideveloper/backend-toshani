@@ -1,6 +1,6 @@
 package com.toshaniFintech.user_service.entity;
 
-import com.toshaniFintech.user_service.entity.base.BaseEntity;
+import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TH_MERCHANT_BANK_ACCOUNTS")
+@Table(name = "th_merchant_bank_accounts")
 @Getter
 @Setter
 public class MerchantBankAccEntity extends BaseEntity {

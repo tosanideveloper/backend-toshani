@@ -1,9 +1,9 @@
 package com.toshaniFintech.user_service.controller;
 
-import com.toshaniFintech.user_service.dto.response.APIResponse;
+import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.utils.ResponseUtil;
 import com.toshaniFintech.user_service.model.MerchantBankAccModel;
 import com.toshaniFintech.user_service.service.MerchantBankAccountService;
-import com.toshaniFintech.user_service.util.ResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,14 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/api-service")
+@RequestMapping("/api/v1/merchant-bank")
 @Tag(name = "Merchant Bank Account API", description = "APIs for Merchant Bank Account CRUD")
 public class MerchantBankAccController {
 
     @Autowired
-    MerchantBankAccountService merchantBankAccountService;
+    private MerchantBankAccountService merchantBankAccountService;
 
-    @GetMapping("/get")
+
+    @GetMapping("/all")
     @Operation(
             summary = "Merchant Bank Account",
             description = "get a Merchant Bank Account"
