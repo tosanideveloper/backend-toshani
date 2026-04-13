@@ -70,7 +70,7 @@ public class PartnerManagementController {
     @Operation(summary = "Partner Management user", description = "This api is to Delete API for Partner Management")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Partner Management user Services deleted successfully", content = @Content(schema = @Schema(implementation = APIResponse.class))), @ApiResponse(responseCode = "400", description = "Invalid input data"), @ApiResponse(responseCode = "409", description = "Data does not exists"), @ApiResponse(responseCode = "500", description = "Internal server error")})
     public ResponseEntity<APIResponse<Object>> deletePartnerManagement(@PathVariable String id) {
-        partnerManagementService.getPartnerManagementByID(id);
+        partnerManagementService.deletePartnerManagement(id);
         return ResponseUtil.success("Partner Management user deleted successfully", null, HttpStatus.OK);
     }
 }
