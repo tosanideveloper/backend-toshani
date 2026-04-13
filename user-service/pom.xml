@@ -82,5 +82,39 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.5.0</version>
         </dependency>
-	</dependencies>
+            <!-- TOTP -->
+            <dependency>
+                <groupId>org.jboss.aerogear</groupId>
+                <artifactId>aerogear-otp-java</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <!-- QR code generation -->
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>core</artifactId>
+                <version>3.5.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>javase</artifactId>
+                <version>3.5.3</version>
+            </dependency>
+        </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

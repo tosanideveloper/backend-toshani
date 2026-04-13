@@ -1,5 +1,6 @@
 server:
   port: 8082
+  forward-headers-strategy: framework
 
 spring:
   application:
@@ -13,13 +14,18 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update   # options: create, create-drop, validate, none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  sql:
-    init:
-      mode: always
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui/index.html
+    disable-swagger-default-url: true

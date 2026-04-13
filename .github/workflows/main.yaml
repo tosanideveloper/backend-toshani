@@ -2,71 +2,17 @@ name: Toshani CICD Pipeline
 
 on:
   push:
-    branches: ['develop']
+    branches:
+      - develop
 
 jobs:
-  # =========================
-  # DETECT CHANGES
-  # =========================
-  detect:
-    runs-on: ubuntu-latest
-    outputs:
-      services: ${{ steps.set.outputs.services }}
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Get changed files
-        id: changes
-        run: |
-          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "${{ github.event.before }}" 2>/dev/null; then
-            echo "First commit detected or previous commit not available in checkout"
-            git ls-files > changes.txt
-          else
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changes.txt
-          fi
-
-      - name: Detect affected services
-        id: set
-        run: |
-          ALL_SERVICES=("auth-service" "user-service" "gateway-service" "eureka-client" "setting-service")
-          services=()
-
-          # If root pom.xml changed → rebuild all
-          if grep -q "^pom.xml" changes.txt; then
-            services=("${ALL_SERVICES[@]}")
-          else
-            for svc in "${ALL_SERVICES[@]}"
-            do
-              if grep -q "^$svc/" changes.txt; then
-                services+=("$svc")
-              fi
-            done
-          fi
-
-          # Convert to JSON
-          if [ ${#services[@]} -eq 0 ]; then
-            echo "services=[]" >> $GITHUB_OUTPUT
-          else
-            json=$(printf '"%s",' "${services[@]}")
-            json="[${json%,}]"
-            echo "services=$json" >> $GITHUB_OUTPUT
-          fi
-
-  # =========================
-  # BUILD ONLY CHANGED
-  # =========================
   build:
-    needs: detect
-    if: ${{ needs.detect.outputs.services != '[]' }}
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        service: ${{ fromJson(needs.detect.outputs.services) }}
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -74,76 +20,69 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build Service
+      - name: Build All Modules
         run: |
-          cd ${{ matrix.service }}
-          mvn clean package -DskipTests
+          cd parent-pom
+          mvn clean install -DskipTests
 
-      - name: Upload JAR
+      - name: Collect JARs
+        run: |
+          mkdir artifacts
+          cp auth-service/target/*.jar artifacts/ || true
+          cp eureka-client/target/*.jar artifacts/ || true
+          cp gateway-service/target/*.jar artifacts/ || true
+          cp setting-service/target/*.jar artifacts/ || true
+          cp user-service/target/*.jar artifacts/ || true
+
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.service }}
-          path: ${{ matrix.service }}/target/*.jar
+          name: jars
+          path: artifacts/*.jar
 
-  # =========================
-  # DEPLOY ONLY CHANGED
-  # =========================
+
   deploy:
-    needs: build
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        service: ${{ fromJson(needs.detect.outputs.services) }}
+    needs: build
 
     steps:
-      - name: Download JAR
+      - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ${{ matrix.service }}
+          name: jars
+          path: artifacts
 
-      - name: Upload to server
+      - name: Upload JARs to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: '*.jar'
-          target: /opt/microservices/${{ matrix.service }}
+          source: artifacts/*.jar
+          target: /tmp/deploy/
 
-      - name: Deploy + Reload PM2
+      - name: Deploy & Restart
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            SERVICE=${{ matrix.service }}
-            DIR=/opt/microservices/$SERVICE
 
-            echo "Deploying $SERVICE"
+            echo "🚀 Deploying to /var/www/toshanidev"
 
-            cd $DIR
+            # Copy all jars
+            cp /tmp/deploy/artifacts/*.jar /var/www/toshanidev/
 
-            # Backup old jar
-            if [ -f app.jar ]; then
-              cp app.jar app.jar.bak
-            fi
+            echo "📂 Current files:"
+            ls -l /var/www/toshanidev/
 
-            # Replace with new jar
-            NEW_JAR=$(ls *.jar | head -n 1)
-            mv $NEW_JAR app.jar
+            # Restart all services
+            pm2 restart all
 
-            # Reload service (zero downtime)
-            pm2 reload $SERVICE || pm2 start ecosystem.config.js --only $SERVICE
+            echo "🔄 PM2 restarted"
 
-            sleep 5
+            # Cleanup
+            rm -f /tmp/deploy/artifacts/*.jar
 
-            echo "Checking health..."
-            curl -f http://localhost:8080/actuator/health || {
-              echo "Health check failed. Rolling back..."
-
-              mv app.jar.bak app.jar
-              pm2 restart $SERVICE
-              exit 1
-            }
+            echo "✅ Deployment successful"
