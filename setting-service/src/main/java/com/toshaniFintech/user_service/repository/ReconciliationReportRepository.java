@@ -9,5 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface ReconciliationReportRepository extends JpaRepository<ReconciliationReportEntity, String> {
-    Optional<ReconciliationReportEntity> findByID(String id);
 }
