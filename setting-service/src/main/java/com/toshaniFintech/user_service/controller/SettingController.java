@@ -1,6 +1,10 @@
 package com.toshaniFintech.user_service.controller;
 
+import com.toshaniFintech.common.dto.response.PaginatedResponse;
+import com.toshaniFintech.common.utils.AppConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,10 +41,41 @@ public class SettingController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<APIResponse<List<SettingResponse>>> getAllSetting() {
+    public ResponseEntity<APIResponse<PaginatedResponse<SettingResponse>>> getAllSetting(
+            @RequestParam(name = AppConstant.PAGE_NUMBER_PROPERTY_NAME,
+                    defaultValue = AppConstant.PAGE_NUMBER_DEFAULT_VALUE,
+                    required = false) int pageNo,
+
+            @RequestParam(name = AppConstant.PAGE_SIZE_PROPERTY_NAME,
+                    defaultValue = AppConstant.PAGE_SIZE_DEFAULT_VALUE,
+                    required = false) int pageSize,
+
+            @RequestParam(name = AppConstant.SORT_BY_PROPERTY_NAME,
+                    defaultValue = AppConstant.SORT_BY_DEFAULT_VALUE,
+                    required = false) String sortBy,
+
+            @RequestParam(name = AppConstant.ORDER_TYPE_PROPERTY_NAME,
+                    defaultValue = AppConstant.ORDER_TYPE_DEFAULT_VALUE,
+                    required = false) String orderType,
+
+            @RequestParam(name = AppConstant.SEARCH_PROPERTY_NAME,
+                    required = false) String searchString
+    ) {
+
+        PageRequest pageRequest;
+
+        if (AppConstant.ORDER_TYPE_DEFAULT_VALUE.equalsIgnoreCase(orderType)) {
+            pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        } else {
+            pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        }
+
+        PaginatedResponse<SettingResponse> response =
+                settingService.getAllSettings(pageRequest);
+
         return ResponseUtil.success(
                 "Settings fetched successfully",
-                settingService.getAllSettings(),
+                response,
                 HttpStatus.OK
         );
     }
