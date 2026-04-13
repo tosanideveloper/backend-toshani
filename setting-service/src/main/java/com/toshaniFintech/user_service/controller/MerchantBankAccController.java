@@ -27,7 +27,6 @@ public class MerchantBankAccController {
     @Autowired
     MerchantBankAccountService merchantBankAccountService;
 
-
     @GetMapping("/get")
     @Operation(
             summary = "Merchant Bank Account",

@@ -66,7 +66,6 @@ public class ApiPartnerServiceController {
         return ResponseUtil.success("API Partner Services created successfully", responseDTO, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
-    @PostMapping("/create")
     @Operation(
             summary = "API partner service",
             description = "This api is to Delete API Partner Service"
