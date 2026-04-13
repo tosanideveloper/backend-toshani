@@ -2,15 +2,10 @@ package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.exception.model.NotFoundException;
-import com.toshaniFintech.user_service.dto.response.AdminEmailResponseDTO;
 import com.toshaniFintech.user_service.dto.response.PartnerManagementResponseDTO;
-import com.toshaniFintech.user_service.entity.AdminEmailsEntity;
 import com.toshaniFintech.user_service.entity.PartnerManagementEntity;
-import com.toshaniFintech.user_service.model.AdminEmailsModel;
 import com.toshaniFintech.user_service.model.PartnerManagementModel;
-import com.toshaniFintech.user_service.repository.AdminEmailsRepository;
 import com.toshaniFintech.user_service.repository.PartnerManagementRepository;
-import com.toshaniFintech.user_service.service.AdminEmailsService;
 import com.toshaniFintech.user_service.service.PartnerManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.AbstractPersistable_;
@@ -77,6 +72,7 @@ public class PartnerManagementImpl implements PartnerManagementService {
         PartnerManagementEntity entity = partnerManagementRepository.findById(id).orElseThrow(() -> new NotFoundException("Admin email not found with id: " + id));
         return mapToModel(entity);
     }
+
     private PartnerManagementModel mapToModel(PartnerManagementEntity entity) {
         PartnerManagementResponseDTO response = new PartnerManagementResponseDTO();
         response.setName(entity.getName());
