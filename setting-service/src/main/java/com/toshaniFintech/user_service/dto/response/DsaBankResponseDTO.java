@@ -1,7 +1,6 @@
 package com.toshaniFintech.user_service.dto.response;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class DsaBankResponseDTO {
