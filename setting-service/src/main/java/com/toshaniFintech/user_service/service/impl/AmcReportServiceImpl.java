@@ -6,6 +6,7 @@ import com.toshaniFintech.user_service.model.AmcReportModel;
 import com.toshaniFintech.user_service.repository.AmcReportRepository;
 import com.toshaniFintech.user_service.service.AmcReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class AmcReportServiceImpl implements AmcReportService {
 
 
     @Override
-    public List<AmcReportModel> getAllAmcReport() {
+    public List<AmcReportModel> getAllAmcReport(PageRequest pageRequest) {
         List<AmcReportEntity> amcReportEntityList = amcReportRepository.findAll();
         return amcReportEntityList.stream().map
                 (amcReportEntity -> objectMapper.convertValue(amcReportEntity,
