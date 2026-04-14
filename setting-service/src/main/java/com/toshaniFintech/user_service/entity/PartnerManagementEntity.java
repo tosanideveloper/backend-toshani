@@ -27,9 +27,6 @@ public class PartnerManagementEntity extends BaseEntity {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "wallet_balance")
-    private String wallet_balance;
-
     @Column(name = "joined_on")
     private String joinedON;
 
@@ -44,7 +41,6 @@ public class PartnerManagementEntity extends BaseEntity {
         this.email = email;
         this.walletBalance = walletBalance;
         this.status = status;
-        this.wallet_balance = wallet_balance;
         this.action = action;
     }
 
@@ -98,14 +94,6 @@ public class PartnerManagementEntity extends BaseEntity {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getWallet_balance() {
-        return wallet_balance;
-    }
-
-    public void setWallet_balance(String wallet_balance) {
-        this.wallet_balance = wallet_balance;
     }
 
     public String getJoinedON() {
