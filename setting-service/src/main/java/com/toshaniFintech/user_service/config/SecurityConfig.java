@@ -27,9 +27,11 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
+                "http://localhost:3005",
                 "http://localhost:3000",
                 "http://localhost:8080",
-                "http://localhost:8084"
+                "http://localhost:8084",
+                "https://testapi.toshani.in"
         ));
         configuration.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"

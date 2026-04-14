@@ -8,6 +8,7 @@ D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\exception\model\
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\exception\model\NotFoundException.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\exception\model\BadRequestException.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\CommonUtilityApp.java
+D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\dto\response\PaginatedResponse.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\dto\response\APIErrorResponse.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\exception\model\GlobalExceptionHandler.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\enums\UserStatus.java

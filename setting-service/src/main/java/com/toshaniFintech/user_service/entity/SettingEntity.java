@@ -4,7 +4,11 @@ import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "th_settings")
 public class SettingEntity extends BaseEntity {
@@ -24,30 +28,6 @@ public class SettingEntity extends BaseEntity {
     public SettingEntity(Long id, String settingKey, String settingValue, String description) {
         this.settingKey = settingKey;
         this.settingValue = settingValue;
-        this.description = description;
-    }
-
-    public String getSettingKey() {
-        return settingKey;
-    }
-
-    public void setSettingKey(String settingKey) {
-        this.settingKey = settingKey;
-    }
-
-    public String getSettingValue() {
-        return settingValue;
-    }
-
-    public void setSettingValue(String settingValue) {
-        this.settingValue = settingValue;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 
