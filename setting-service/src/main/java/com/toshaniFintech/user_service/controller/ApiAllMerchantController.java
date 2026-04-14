@@ -72,6 +72,7 @@ public class ApiAllMerchantController {
             @ApiResponse(responseCode = "409", description = "User already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
+
     public ResponseEntity<APIResponse<ApiAllMerchantResponseDTO>> updateSetting(@PathVariable String id, @Valid @RequestBody ApiAllMerchantRequestDTO apiAllMerchantRequestDTO) {
         ApiAllMerchantModel apiAllMerchantModel = objectMapper.convertValue(apiAllMerchantRequestDTO, ApiAllMerchantModel.class);
         ApiAllMerchantModel updatedModel = apiAllMerchantService.updateAllMerchant(id, apiAllMerchantModel);
