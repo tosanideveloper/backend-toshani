@@ -2,34 +2,31 @@ package com.toshaniFintech.user_service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.AppConstant;
 import com.toshaniFintech.common.utils.ResponseUtil;
-import com.toshaniFintech.user_service.model.AmcReportModel;
-import com.toshaniFintech.user_service.service.AmcReportService;
+import com.toshaniFintech.user_service.dto.response.ActivityReportResponse;
+import com.toshaniFintech.user_service.service.ActivityReportService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/v1/amc-report")
-@Tag(name = "Amc Report Service API", description = "APIs for Manage AMC Report Service CRUD")
-public class AmcReportController {
+@RequestMapping("/api/v1/activity-report")
+@Tag(name = "Activity Report API", description = "APIs for Activity Report CRUD")
+public class ActivityReportController {
     @Autowired
-    private AmcReportService amcReportService;
+    private ActivityReportService activityReportService;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @PostMapping("/all")
-    public ResponseEntity<APIResponse<List<AmcReportModel>>> getAllAmcReport(
+    public ResponseEntity<APIResponse<PaginatedResponse<ActivityReportResponse>>> getAllActivityReport(
             @RequestParam(name = AppConstant.PAGE_NUMBER_PROPERTY_NAME,
                     defaultValue = AppConstant.PAGE_NUMBER_DEFAULT_VALUE,
                     required = false) int pageNo,
@@ -58,14 +55,13 @@ public class AmcReportController {
             pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
         }
 
-        List<AmcReportModel> response =
-                amcReportService.getAllAmcReport(pageRequest);
+        PaginatedResponse<ActivityReportResponse> response =
+                activityReportService.getAllActivityReport(pageRequest);
 
         return ResponseUtil.success(
-                "Amc Reports fetched successfully",
+                "Activity Report fetched successfully",
                 response,
                 HttpStatus.OK
         );
     }
-
 }
