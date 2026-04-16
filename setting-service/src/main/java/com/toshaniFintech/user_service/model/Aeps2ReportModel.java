@@ -3,15 +3,13 @@ package com.toshaniFintech.user_service.model;
 import lombok.Data;
 
 @Data
-public class Aeps2ReportModel {
-
-    private String startDate;
-    private String endDate;
-
-    private String txnDate;
-    private String partnerDetails;
-    private String txnID;
-    private String orderID;
+public class AEPS2ReportModel {
+    private String slNo;
+    private String transactionDate;
+    private String partnerName;
+    private String partnerId;
+    private String transactionId;
+    private String orderId;
     private String merchantCode;
-    private String apiTxnID;
+    private String apiTransactionId;
 }

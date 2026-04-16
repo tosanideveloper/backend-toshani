@@ -4,109 +4,55 @@ import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
+
+@Setter
+@Getter
 @Entity
-@Table(name = "th_aeps2_report")
-public class Aeps2ReportEntity extends BaseEntity {
+@Table(name ="th_aeps2_report")
+public class AEPS2ReportEntity extends BaseEntity {
+    @Column(name = "transaction_date")
+    private LocalDateTime transactionDate;
 
-    @Column(name = "txn_date")
-    private String txnDate;
+    @Column(name = "partner_name", length = 100)
+    private String partnerName;
 
-    @Column(name = "txn_ID")
-    private String txnID;
+    @Column(name = "partner_id", length = 50)
+    private String partnerId;
 
-    @Column(name = "order_ID")
-    private String orderID;
+    @Column(name = "transaction_id", length = 100)
+    private String transactionId;
 
-    @Column(name = "bank_name")
-    private String bankName;
+    @Column(name = "order_id", length = 100)
+    private String orderId;
 
-    @Column(name = "aadhaar_No")
-    private String aadhaarNo;
+    @Column(name = "merchant_code", length = 50)
+    private String merchantCode;
 
-    @Column(name = "txn_type")
-    private String txnType;
+    @Column(name = "api_transaction_id", length = 100)
+    private String apiTransactionId;
 
-    @Column(name = "txn_status")
-    private String txnStatus;
-
-    @Column(name = "amount")
-    private String amount;
-
-    @Column(name = "RRN")
-    private String rrn;
-
-    public String getTxnDate() {
-        return txnDate;
+    public AEPS2ReportEntity() {
     }
 
-    public void setTxnDate(String txnDate) {
-        this.txnDate = txnDate;
+    public AEPS2ReportEntity(LocalDateTime transactionDate,
+                             String partnerName,
+                             String partnerId,
+                             String transactionId,
+                             String orderId,
+                             String merchantCode,
+                             String apiTransactionId) {
+
+        this.transactionDate = transactionDate;
+        this.partnerName = partnerName;
+        this.partnerId = partnerId;
+        this.transactionId = transactionId;
+        this.orderId = orderId;
+        this.merchantCode = merchantCode;
+        this.apiTransactionId = apiTransactionId;
     }
 
-    public String getTxnID() {
-        return txnID;
-    }
-
-    public void setTxnID(String txnID) {
-        this.txnID = txnID;
-    }
-
-    public String getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(String orderID) {
-        this.orderID = orderID;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getAadhaarNo() {
-        return aadhaarNo;
-    }
-
-    public void setAadhaarNo(String aadhaarNo) {
-        this.aadhaarNo = aadhaarNo;
-    }
-
-    public String getTxnType() {
-        return txnType;
-    }
-
-    public void setTxnType(String txnType) {
-        this.txnType = txnType;
-    }
-
-    public String getTxnStatus() {
-        return txnStatus;
-    }
-
-    public void setTxnStatus(String txnStatus) {
-        this.txnStatus = txnStatus;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getRrn() {
-        return rrn;
-    }
-
-    public void setRrn(String rrn) {
-        this.rrn = rrn;
-    }
 }
