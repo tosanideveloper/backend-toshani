@@ -21,7 +21,7 @@ public class HolidayEntity extends BaseEntity {
     public HolidayEntity(){
 
     }
-    public HolidayEntity(String holidayName, LocalDate holidayDate){
+    public HolidayEntity(Long Id,String holidayName, LocalDate holidayDate){
         this.holidayName = holidayName;
         this.holidayDate = holidayDate;
 

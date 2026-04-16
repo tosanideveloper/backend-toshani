@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class HolidayResponse {
+    private String Id;
     private String holidayName;
     private LocalDate holidayDate;
 }
