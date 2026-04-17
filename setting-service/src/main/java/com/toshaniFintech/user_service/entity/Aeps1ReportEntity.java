@@ -27,26 +27,14 @@ public class Aeps1ReportEntity extends BaseEntity {
     @Column(name = "txn_type")
     private String txnType;
 
+    @Column(name = "txn_status")
+    private String txnStatus;
+
     @Column(name = "amount")
     private String amount;
 
     @Column(name = "RRN")
     private String rrn;
-
-    public Aeps1ReportEntity(String startDate, String endDate, String txnDate, String txnID, String orderID, String bankName, String aadhaarNo, String txnType, String amount, String rrn) {
-        this.txnDate = txnDate;
-        this.txnID = txnID;
-        this.orderID = orderID;
-        this.bankName = bankName;
-        this.aadhaarNo = aadhaarNo;
-        this.txnType = txnType;
-        this.amount = amount;
-        this.rrn = rrn;
-    }
-
-    public Aeps1ReportEntity() {
-
-    }
 
     public String getTxnDate() {
         return txnDate;
@@ -94,6 +82,14 @@ public class Aeps1ReportEntity extends BaseEntity {
 
     public void setTxnType(String txnType) {
         this.txnType = txnType;
+    }
+
+    public String getTxnStatus() {
+        return txnStatus;
+    }
+
+    public void setTxnStatus(String txnStatus) {
+        this.txnStatus = txnStatus;
     }
 
     public String getAmount() {

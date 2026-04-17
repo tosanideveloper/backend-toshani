@@ -1,18 +1,17 @@
 package com.toshaniFintech.user_service.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
+import com.toshaniFintech.common.utils.Utility;
+import com.toshaniFintech.user_service.dto.request.Aeps1ReportRequestDTO;
+import com.toshaniFintech.user_service.dto.response.Aeps1ReportResponseDTO;
 import com.toshaniFintech.user_service.entity.Aeps1ReportEntity;
-import com.toshaniFintech.user_service.model.Aeps1ReportModel;
+import com.toshaniFintech.user_service.mapper.Aeps1ReportMapper;
 import com.toshaniFintech.user_service.repository.Aeps1ReportRepository;
 import com.toshaniFintech.user_service.service.Aeps1ReportService;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,97 +23,42 @@ public class Aeps1ReportServiceImpl implements Aeps1ReportService {
     private Aeps1ReportRepository aeps1ReportRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private Aeps1ReportMapper aeps1ReportMapper;
 
     @Override
-    public PaginatedResponse<Aeps1ReportModel> createAepsReport(Aeps1ReportModel aeps1ReportModel) {
+    public PaginatedResponse<Aeps1ReportResponseDTO> fetchAepsReport(Aeps1ReportRequestDTO requestDTO) {
 
-        int pageNo = aeps1ReportModel.getPageNo() != null ? aeps1ReportModel.getPageNo().intValue() : 0;
-        int pageSize = aeps1ReportModel.getPageSize() != null ? aeps1ReportModel.getPageSize().intValue() : 10;
-
-        Pageable pageable = PageRequest.of(
-                pageNo,
-                pageSize,
-                Sort.by(Sort.Direction.DESC, "createdDate")
+        PageRequest page = Utility.pageRequest(
+                requestDTO.getPageNo(),
+                requestDTO.getPageSize(),
+                requestDTO.getSortBy(),
+                requestDTO.getOrderBy()
         );
 
-        Specification<Aeps1ReportEntity> specification = (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
+        Page<Aeps1ReportEntity> paginatedContent = aeps1ReportRepository.fetchAepsReport(
+                requestDTO.getStartDate(),
+                requestDTO.getEndDate(),
+                requestDTO.getOrderId(),
+                requestDTO.getTxnId(),
+                requestDTO.getTxnType(),
+                requestDTO.getStatus(),
+                requestDTO.getSearch(),
+                requestDTO.getSearchByField(),
+                page
+        );
 
-            // date range
-            if (StringUtils.hasText(aeps1ReportModel.getStartDate())
-                    && StringUtils.hasText(aeps1ReportModel.getEndDate())) {
-                predicates.add(cb.between(
-                        root.get("txnDate"),
-                        aeps1ReportModel.getStartDate(),
-                        aeps1ReportModel.getEndDate()
-                ));
-            }
+        List<Aeps1ReportResponseDTO> responseDTOS = new ArrayList<>();
+        paginatedContent.getContent().forEach(content ->
+                responseDTOS.add(aeps1ReportMapper.toResponseDto(content))
+        );
 
-            // order id filter
-            if (!CollectionUtils.isEmpty(aeps1ReportModel.getOrderId())) {
-                predicates.add(root.get("orderID").in(aeps1ReportModel.getOrderId()));
-            }
-
-            // txn id filter
-            if (!CollectionUtils.isEmpty(aeps1ReportModel.getTxnId())) {
-                predicates.add(root.get("txnID").in(aeps1ReportModel.getTxnId()));
-            }
-
-            // txn type filter
-            if (!CollectionUtils.isEmpty(aeps1ReportModel.getTxnType())
-                    && !aeps1ReportModel.getTxnType().contains("ALL")) {
-                predicates.add(root.get("txnType").in(aeps1ReportModel.getTxnType()));
-            }
-
-            // status filter
-            if (!CollectionUtils.isEmpty(aeps1ReportModel.getStatus())
-                    && !aeps1ReportModel.getStatus().contains("ALL")) {
-                predicates.add(root.get("txnStatus").in(aeps1ReportModel.getStatus()));
-            }
-
-            // search + searchByField
-            if (StringUtils.hasText(aeps1ReportModel.getSearch())
-                    && StringUtils.hasText(aeps1ReportModel.getSearchByField())) {
-
-                String field = aeps1ReportModel.getSearchByField();
-
-                if ("txnID".equals(field)
-                        || "orderID".equals(field)
-                        || "bankName".equals(field)
-                        || "aadhaarNo".equals(field)
-                        || "rrn".equals(field)
-                        || "txnType".equals(field)
-                        || "txnStatus".equals(field)) {
-
-                    predicates.add(cb.like(
-                            cb.lower(root.get(field).as(String.class)),
-                            "%" + aeps1ReportModel.getSearch().toLowerCase() + "%"
-                    ));
-                }
-            }
-
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-
-        Page<Aeps1ReportEntity> pageData = aeps1ReportRepository.findAll(specification, pageable);
-
-        List<Aeps1ReportModel> modelList = pageData.getContent().stream().map(entity -> {
-            Aeps1ReportModel model = new Aeps1ReportModel();
-            model.setId(entity.getId());
-            model.setTxnDate(entity.getTxnDate());
-            model.setTxnID(entity.getTxnID());
-            model.setOrderID(entity.getOrderID());
-            model.setBankName(entity.getBankName());
-            model.setAadhaarNo(entity.getAadhaarNo());
-            model.setAmount(entity.getAmount());
-            model.setRrn(entity.getRrn());
-            return model;
-        }).toList();
-
-        PaginatedResponse<Aeps1ReportModel> response = new PaginatedResponse<>(pageData);
-        response.setContent(modelList);
-
-        return response;
+        return Utility.paginatedResponseForSubList(
+                paginatedContent.getNumber(),
+                paginatedContent.getTotalPages(),
+                paginatedContent.getSize(),
+                paginatedContent.getNumberOfElements(),
+                paginatedContent.getTotalElements(),
+                responseDTOS
+        );
     }
 }
