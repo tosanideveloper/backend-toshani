@@ -48,6 +48,8 @@ public class BbpsReportEntity extends BaseEntity {
 
     @Column(name = "gst")
     private String gst;
+    @Column(name = "rrn")
+    private String rrn;
 
     @Column(name = "commission")
     private String commission;
@@ -79,9 +81,10 @@ public class BbpsReportEntity extends BaseEntity {
     @Column(name = "xml_response", columnDefinition = "TEXT")
     private String xmlResponse;
 
-    public BbpsReportEntity(String startDate, String endDate, String txnDate, String partnerDetails, String txnID, String orderID, String apiRequestID, String type, String billerName, String amount, String charges, String gst, String commission, String tds, String apiStatus, String apiName, String status, String request, String response, String callback, String xmlRequest, String xmlResponse) {
+    public BbpsReportEntity(String startDate, String endDate, String rrn, String txnDate, String partnerDetails, String txnID, String orderID, String apiRequestID, String type, String billerName, String amount, String charges, String gst, String commission, String tds, String apiStatus, String apiName, String status, String request, String response, String callback, String xmlRequest, String xmlResponse) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.rrn = rrn;
         this.txnDate = txnDate;
         this.partnerDetails = partnerDetails;
         this.txnID = txnID;
@@ -118,6 +121,14 @@ public class BbpsReportEntity extends BaseEntity {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getRrn() {
+        return rrn;
+    }
+
+    public void setRrn(String rrn) {
+        this.rrn = rrn;
     }
 
     public String getTxnDate() {

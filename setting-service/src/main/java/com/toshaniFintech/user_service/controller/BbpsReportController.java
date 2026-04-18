@@ -1,8 +1,11 @@
 package com.toshaniFintech.user_service.controller;
 
 import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.ResponseUtil;
+import com.toshaniFintech.user_service.dto.request.Aeps2ReportRequestDTO;
 import com.toshaniFintech.user_service.dto.request.BbpsReportRequestDTO;
+import com.toshaniFintech.user_service.dto.response.Aeps2ReportResponseDTO;
 import com.toshaniFintech.user_service.dto.response.BbpsReportResponseDTO;
 import com.toshaniFintech.user_service.service.BbpsReportService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +30,7 @@ public class BbpsReportController {
     @Autowired
     private BbpsReportService bbpsReportService;
 
-    @PostMapping("/get")
+    @PostMapping("/all")
     @Operation(summary = "Get BBPS Report", description = "Get BBPS report data")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "BBPS Report fetched successfully",
@@ -35,11 +38,14 @@ public class BbpsReportController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<List<BbpsReportResponseDTO>>> getBbpsReport(
-            @Valid @RequestBody BbpsReportRequestDTO requestDTO) {
 
-        List<BbpsReportResponseDTO> response = bbpsReportService.getBbpsReport(requestDTO);
+    public ResponseEntity<PaginatedResponse<BbpsReportResponseDTO>> fetchBbpsReport(
+            @Valid @RequestBody BbpsReportRequestDTO bbpsReportRequestDTO) {
 
-        return ResponseUtil.success("BBPS Report fetched successfully", response, HttpStatus.OK);
+        return new ResponseEntity<>(
+                bbpsReportService.fetchBbpsReport(bbpsReportRequestDTO),
+                HttpStatus.OK
+        );
     }
+
 }

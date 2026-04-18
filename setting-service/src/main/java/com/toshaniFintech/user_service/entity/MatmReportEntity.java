@@ -4,12 +4,10 @@ import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "th_matm_report")
-@Data
 @NoArgsConstructor
 public class MatmReportEntity extends BaseEntity {
 
@@ -37,6 +35,9 @@ public class MatmReportEntity extends BaseEntity {
     @Column(name = "card_no")
     private String cardNo;
 
+    @Column(name = "card_type")
+    private String cardType;
+
     @Column(name = "txn_type")
     private String txnType;
 
@@ -52,15 +53,15 @@ public class MatmReportEntity extends BaseEntity {
     @Column(name = "tds")
     private String tds;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "txn_status")
+    private String txnStatus;
 
     @Column(name = "response_message")
     private String responseMessage;
 
     public MatmReportEntity(String startDate, String endDate, String txnDate,
                             String partnerDetails, String txnID, String orderID,
-                            String apiTxnID, String cardNo, String txnType,
+                            String apiTxnID, String cardNo,String cardType, String txnType,
                             String amount, String utr, String comm, String tds,
                             String status, String responseMessage) {
         this.startDate = startDate;
@@ -71,12 +72,13 @@ public class MatmReportEntity extends BaseEntity {
         this.orderID = orderID;
         this.apiTxnID = apiTxnID;
         this.cardNo = cardNo;
+        this.cardType = cardType;
         this.txnType = txnType;
         this.amount = amount;
         this.utr = utr;
         this.comm = comm;
         this.tds = tds;
-        this.status = status;
+        this.txnStatus = status;
         this.responseMessage = responseMessage;
     }
 
@@ -152,6 +154,14 @@ public class MatmReportEntity extends BaseEntity {
         this.cardNo = cardNo;
     }
 
+     public String getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
+    }
+
     public String getAmount() {
         return amount;
     }
@@ -184,12 +194,12 @@ public class MatmReportEntity extends BaseEntity {
         this.tds = tds;
     }
 
-    public String getStatus() {
-        return status;
+    public String getTxnStatus() {
+        return txnStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTxnStatus(String status) {
+        this.txnStatus = status;
     }
 
     public String getResponseMessage() {

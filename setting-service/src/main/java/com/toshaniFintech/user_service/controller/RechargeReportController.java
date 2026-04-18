@@ -1,8 +1,11 @@
 package com.toshaniFintech.user_service.controller;
 
 import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.ResponseUtil;
+import com.toshaniFintech.user_service.dto.request.BbpsReportRequestDTO;
 import com.toshaniFintech.user_service.dto.request.RechargeReportRequestDTO;
+import com.toshaniFintech.user_service.dto.response.BbpsReportResponseDTO;
 import com.toshaniFintech.user_service.dto.response.RechargeReportResponseDTO;
 import com.toshaniFintech.user_service.service.RechargeReportService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +30,7 @@ public class RechargeReportController {
     @Autowired
     private RechargeReportService rechargeReportService;
 
-    @PostMapping("/get")
+    @PostMapping("/all")
     @Operation(summary = "Get Recharge Report", description = "Get recharge report data")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recharge Report fetched successfully",
@@ -35,12 +38,12 @@ public class RechargeReportController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<List<RechargeReportResponseDTO>>> getRechargeReport(
+    public ResponseEntity<PaginatedResponse<RechargeReportResponseDTO>> fetchRechargeReport(
             @Valid @RequestBody RechargeReportRequestDTO requestDTO) {
 
-        List<RechargeReportResponseDTO> response = rechargeReportService.getRechargeReport(requestDTO);
-
-        return ResponseUtil.success("Recharge Report fetched successfully", response, HttpStatus.OK);
+        return new ResponseEntity<>(
+                rechargeReportService.fetchRechargeReport(requestDTO),
+                HttpStatus.OK
+        );
     }
-
 }

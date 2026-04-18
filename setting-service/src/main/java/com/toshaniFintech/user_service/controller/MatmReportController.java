@@ -1,11 +1,16 @@
 package com.toshaniFintech.user_service.controller;
 
 import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.ResponseUtil;
+import com.toshaniFintech.user_service.dto.request.Aeps2ReportRequestDTO;
 import com.toshaniFintech.user_service.dto.request.MatmReportRequestDTO;
+import com.toshaniFintech.user_service.dto.response.Aeps2ReportResponseDTO;
 import com.toshaniFintech.user_service.dto.response.MatmReportResponseDTO;
 import com.toshaniFintech.user_service.service.MatmReportService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +30,20 @@ public class MatmReportController {
 
     @Autowired
     private MatmReportService matmReportService;
-
-    @PostMapping("/get")
+    @PostMapping("/all")
     @Operation(summary = "Get Matm Report", description = "Get MATM report data")
-    public ResponseEntity<APIResponse<List<MatmReportResponseDTO>>> getMatmReport(
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Matm Report fetched successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<PaginatedResponse<MatmReportResponseDTO>> fetchMatmReport(
             @Valid @RequestBody MatmReportRequestDTO requestDTO) {
 
-        List<MatmReportResponseDTO> response =
-                matmReportService.getMatmReport(requestDTO);
-
-        return ResponseUtil.success("Matm Report fetched successfully", response, HttpStatus.OK);
+        return new ResponseEntity<>(
+                matmReportService.fetchMatmReport(requestDTO),
+                HttpStatus.OK
+        );
     }
+
 }

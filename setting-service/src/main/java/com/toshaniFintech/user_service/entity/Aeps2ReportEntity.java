@@ -9,65 +9,34 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "th_aeps2_report")
-@Data
 public class Aeps2ReportEntity extends BaseEntity {
-
-    @Column(name = "start_date", nullable = false)
-    private String startDate;
-
-    @Column(name = "end_date")
-    private String endDate;
 
     @Column(name = "txn_date")
     private String txnDate;
 
-    @Column(name = "partner_details")
-    private String partnerDetails;
-
-    @Column(name = "txn_id")
+    @Column(name = "txn_ID")
     private String txnID;
 
-    @Column(name = "order_id")
+    @Column(name = "order_ID")
     private String orderID;
 
-    @Column(name = "merchant_code")
-    private String merchantCode;
+    @Column(name = "bank_name")
+    private String bankName;
 
-    @Column(name = "api_txn_id")
-    private String apiTxnID;
+    @Column(name = "aadhaar_No")
+    private String aadhaarNo;
 
-    public Aeps2ReportEntity(String startDate, String endDate, String txnDate,
-                             String partnerDetails, String txnID, String orderID,
-                             String merchantCode, String apiTxnID) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.txnDate = txnDate;
-        this.partnerDetails = partnerDetails;
-        this.txnID = txnID;
-        this.orderID = orderID;
-        this.merchantCode = merchantCode;
-        this.apiTxnID = apiTxnID;
-    }
+    @Column(name = "txn_type")
+    private String txnType;
 
-    public Aeps2ReportEntity() {
+    @Column(name = "txn_status")
+    private String txnStatus;
 
-    }
+    @Column(name = "amount")
+    private String amount;
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
+    @Column(name = "RRN")
+    private String rrn;
 
     public String getTxnDate() {
         return txnDate;
@@ -75,14 +44,6 @@ public class Aeps2ReportEntity extends BaseEntity {
 
     public void setTxnDate(String txnDate) {
         this.txnDate = txnDate;
-    }
-
-    public String getPartnerDetails() {
-        return partnerDetails;
-    }
-
-    public void setPartnerDetails(String partnerDetails) {
-        this.partnerDetails = partnerDetails;
     }
 
     public String getTxnID() {
@@ -101,19 +62,51 @@ public class Aeps2ReportEntity extends BaseEntity {
         this.orderID = orderID;
     }
 
-    public String getMerchantCode() {
-        return merchantCode;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setMerchantCode(String merchantCode) {
-        this.merchantCode = merchantCode;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
-    public String getApiTxnID() {
-        return apiTxnID;
+    public String getAadhaarNo() {
+        return aadhaarNo;
     }
 
-    public void setApiTxnID(String apiTxnID) {
-        this.apiTxnID = apiTxnID;
+    public void setAadhaarNo(String aadhaarNo) {
+        this.aadhaarNo = aadhaarNo;
+    }
+
+    public String getTxnType() {
+        return txnType;
+    }
+
+    public void setTxnType(String txnType) {
+        this.txnType = txnType;
+    }
+
+    public String getTxnStatus() {
+        return txnStatus;
+    }
+
+    public void setTxnStatus(String txnStatus) {
+        this.txnStatus = txnStatus;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getRrn() {
+        return rrn;
+    }
+
+    public void setRrn(String rrn) {
+        this.rrn = rrn;
     }
 }

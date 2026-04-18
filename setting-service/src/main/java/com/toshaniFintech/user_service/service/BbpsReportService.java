@@ -1,12 +1,11 @@
 package com.toshaniFintech.user_service.service;
 
+import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.user_service.dto.request.BbpsReportRequestDTO;
 import com.toshaniFintech.user_service.dto.response.BbpsReportResponseDTO;
 
-import java.util.List;
-
 public interface BbpsReportService {
+    PaginatedResponse<BbpsReportResponseDTO> fetchBbpsReport(BbpsReportRequestDTO requestDTO);
 
-    List<BbpsReportResponseDTO> getBbpsReport(BbpsReportRequestDTO requestDTO);
 
 }

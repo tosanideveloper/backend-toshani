@@ -31,6 +31,9 @@ public class RechargeReportEntity extends BaseEntity {
     @Column(name = "txn_id")
     private String txnID;
 
+    @Column(name = "rrn")
+    private String rrn;
+
     @Column(name = "order_id")
     private String orderID;
 
@@ -67,13 +70,14 @@ public class RechargeReportEntity extends BaseEntity {
     @Column(name = "response_data", columnDefinition = "TEXT")
     private String response;
 
-    public RechargeReportEntity(String startDate, String endDate, String slNo, String txnDate, String partnerDetails, String txnID, String orderID, String type, String operator, String number, String operatorID, String amount, String commission, String tds, String status, String api, String request, String response) {
+    public RechargeReportEntity(String startDate, String endDate, String slNo, String txnDate, String partnerDetails, String txnID,String rrn, String orderID, String type, String operator, String number, String operatorID, String amount, String commission, String tds, String status, String api, String request, String response) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.slNo = slNo;
         this.txnDate = txnDate;
         this.partnerDetails = partnerDetails;
         this.txnID = txnID;
+        this.rrn = rrn;
         this.orderID = orderID;
         this.type = type;
         this.operator = operator;
@@ -134,6 +138,14 @@ public class RechargeReportEntity extends BaseEntity {
 
     public void setTxnID(String txnID) {
         this.txnID = txnID;
+    }
+
+    public String getRrn() {
+        return rrn;
+    }
+
+    public void setRrn(String rrn) {
+        this.rrn = rrn;
     }
 
     public String getOrderID() {
