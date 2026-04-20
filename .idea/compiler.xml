@@ -14,6 +14,7 @@
         <module name="utility-service" />
         <module name="utility" />
         <module name="user-service" />
+        <module name="notification-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -22,6 +23,7 @@
       <module name="auth-service" options="-parameters" />
       <module name="eureka-client" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="setting-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
       <module name="utility" options="-parameters" />
