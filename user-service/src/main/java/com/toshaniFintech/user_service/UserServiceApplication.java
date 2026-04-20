@@ -3,6 +3,7 @@ package com.toshaniFintech.user_service;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaAuditing
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "com.toshaniFintech.user_service.repository",
         "com.toshaniFintech.common.repository"
 })
+@EnableFeignClients
 public class UserServiceApplication {
 
 	public static void main(String[] args) {

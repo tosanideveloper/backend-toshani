@@ -1,6 +1,7 @@
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\entity\Role.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\utils\ResponseUtil.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\entity\PasswordResetToken.java
+D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\dto\request\EmailReq.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\repository\UsersRepository.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\utils\AppConstant.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\dto\response\UsersResponse.java

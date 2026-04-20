@@ -52,7 +52,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/v1/users/create", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v3/api-docs").permitAll()
+                        .requestMatchers("/api/v1/users/create", "/api/v1/users/forgot-password",
+                                "/api/v1/users/reset-password", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**",
+                                "/v3/api-docs").permitAll()
                         .requestMatchers("/api/v1/users/**").authenticated()
                         .requestMatchers("/api/v1/security/**").authenticated()
                         .anyRequest().permitAll()
