@@ -91,4 +91,25 @@ public class RemittanceChargeCommissionController {
                 HttpStatus.OK
         );
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<APIResponse<RemittanceChargeCommissionResponse>> updateRemittanceChargeCommission(
+            @PathVariable String id,
+            @Valid @RequestBody RemittanceChargeCommissionRequest remittanceChargeCommissionRequest) {
+        return ResponseUtil.success(
+                "RemittanceChargeCommission updated successfully",
+                remittanceChargeCommissionService.updateRemittanceChargeCommission(id, remittanceChargeCommissionRequest),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<APIResponse<Object>> deleteRemittanceChargeCommission(@PathVariable String id) {
+        remittanceChargeCommissionService.deleteRemittanceChargeCommission(id);
+        return ResponseUtil.success(
+                "RemittanceChargeCommission deleted successfully",
+                null,
+                HttpStatus.OK
+        );
+    }
 }
