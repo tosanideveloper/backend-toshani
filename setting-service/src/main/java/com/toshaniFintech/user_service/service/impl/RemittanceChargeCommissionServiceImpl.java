@@ -1,14 +1,12 @@
 package com.toshaniFintech.user_service.service.impl;
 
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
+import com.toshaniFintech.common.exception.model.BadRequestException;
 import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
-import com.toshaniFintech.user_service.dto.request.RemittanceChargeCommissionRequest;
-import com.toshaniFintech.user_service.dto.request.SettingRequest;
+import com.toshaniFintech.user_service.dto.request.RemittanceChargeCommissionRequest;;
 import com.toshaniFintech.user_service.dto.response.RemittanceChargeCommissionResponse;
-import com.toshaniFintech.user_service.dto.response.SettingResponse;
 import com.toshaniFintech.user_service.entity.RemittanceChargeCommissionEntity;
-import com.toshaniFintech.user_service.entity.SettingEntity;
 import com.toshaniFintech.user_service.repository.RemittanceChargeCommissionRepository;
 import com.toshaniFintech.user_service.service.RemittanceChargeCommissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,6 +63,34 @@ public class RemittanceChargeCommissionServiceImpl implements RemittanceChargeCo
         RemittanceChargeCommissionEntity entity = remittanceChargeCommissionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Setting not found with id: " + id));
         return mapToModel(entity);
+    }
+
+    @Override
+    public RemittanceChargeCommissionResponse updateRemittanceChargeCommission
+            (String id, RemittanceChargeCommissionRequest remittanceChargeCommissionRequest) {
+        RemittanceChargeCommissionEntity existingEntity = remittanceChargeCommissionRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("RemittanceChargeCommission not found with id: " + id));
+
+        existingEntity.setMinAmount(remittanceChargeCommissionRequest.getMinAmount());
+        existingEntity.setMaxAmount(remittanceChargeCommissionRequest.getMaxAmount());
+        existingEntity.setChargeType(remittanceChargeCommissionRequest.getChargeType());
+        existingEntity.setCharge(remittanceChargeCommissionRequest.getCharge());
+
+        RemittanceChargeCommissionEntity updatedEntity = remittanceChargeCommissionRepository.save(existingEntity);
+        return mapToModel(updatedEntity);
+    }
+
+    @Override
+    public void deleteRemittanceChargeCommission(String id) {
+        RemittanceChargeCommissionEntity existingEntity = remittanceChargeCommissionRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("RemittanceChargeCommission not found with id: " + id));
+
+        if (!existingEntity.isActive()) {
+            throw new BadRequestException("RemittanceChargeCommission already deleted");
+        }
+        existingEntity.setActive(false);
+        existingEntity.setDeletedAt(LocalDateTime.now());
+        remittanceChargeCommissionRepository.save(existingEntity);
     }
     private RemittanceChargeCommissionEntity mapToEntity(RemittanceChargeCommissionRequest model) {
         RemittanceChargeCommissionEntity entity = new RemittanceChargeCommissionEntity();
