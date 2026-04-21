@@ -23,4 +23,8 @@ public class RemittanceChargeCommissionRequest {
     @NotNull(message = "Charge is required")
     @DecimalMin(value = "0.0", inclusive = true, message = "Charge must be >= 0")
     private BigDecimal charge;
+
+    public String getId() {
+        return "";
+    }
 }

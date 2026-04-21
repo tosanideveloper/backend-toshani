@@ -26,8 +26,8 @@ public class RemittanceChargeCommissionServiceImpl implements RemittanceChargeCo
     public RemittanceChargeCommissionResponse createRemittanceChargeCommission
             (RemittanceChargeCommissionRequest remittanceChargeCommissionRequest) {
 
-        if (remittanceChargeCommissionRepository.findByChargeType
-                (remittanceChargeCommissionRequest.getChargeType()).isPresent()) {
+        if (remittanceChargeCommissionRepository.findById
+                (remittanceChargeCommissionRequest.getId()).isPresent()) {
             throw new UnprocessableEntityException(
                     "RemittanceChargeCommission already exists with key: " + remittanceChargeCommissionRequest
                             .getChargeType()
@@ -61,7 +61,7 @@ public class RemittanceChargeCommissionServiceImpl implements RemittanceChargeCo
     @Override
     public RemittanceChargeCommissionResponse getRemittanceChargeCommissionById(String id) {
         RemittanceChargeCommissionEntity entity = remittanceChargeCommissionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Setting not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("Remittance Charge Commission not found with id: " + id));
         return mapToModel(entity);
     }
 
