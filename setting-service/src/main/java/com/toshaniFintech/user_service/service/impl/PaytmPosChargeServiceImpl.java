@@ -30,7 +30,6 @@ public class PaytmPosChargeServiceImpl implements PaytmPosChargeService {
     @Autowired
     private PaytmPosChargeMapper mapper;
 
-    // ✅ CREATE
     @Override
     public PaytmPosChargeModel create(PaytmPosChargeModel model) {
 
@@ -42,7 +41,6 @@ public class PaytmPosChargeServiceImpl implements PaytmPosChargeService {
         return objectMapper.convertValue(saved, PaytmPosChargeModel.class);
     }
 
-    // ✅ GET ALL (Pagination + Filter)
     @Override
     public PaginatedResponse<PaytmPosChargeResponseDTO> getAll(
             PaytmPosChargeRequestDTO requestDTO) {
@@ -80,7 +78,6 @@ public class PaytmPosChargeServiceImpl implements PaytmPosChargeService {
         );
     }
 
-    // ✅ GET BY ID
     @Override
     public PaytmPosChargeResponseDTO getById(String id) {
 
@@ -90,7 +87,6 @@ public class PaytmPosChargeServiceImpl implements PaytmPosChargeService {
         return mapper.toResponseDto(entity);
     }
 
-    // ✅ UPDATE
     @Override
     public PaytmPosChargeResponseDTO update(String id, PaytmPosChargeModel model) {
 
@@ -108,7 +104,6 @@ public class PaytmPosChargeServiceImpl implements PaytmPosChargeService {
         return mapper.toResponseDto(updatedEntity);
     }
 
-    // ✅ DELETE
     @Override
     public void delete(String id) {
 

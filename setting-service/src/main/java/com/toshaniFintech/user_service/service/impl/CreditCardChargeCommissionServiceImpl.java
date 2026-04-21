@@ -76,7 +76,7 @@ public class CreditCardChargeCommissionServiceImpl implements CreditCardChargeCo
     public CreditCardChargeCommissionResponseDTO getById(String id) {
 
         CreditCardChargeCommissionEntity entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Charge not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Credit Charge not found with id: " + id));
 
         return creditCardChargeCommissionMapper.toResponseDto(entity);
     }
@@ -84,7 +84,7 @@ public class CreditCardChargeCommissionServiceImpl implements CreditCardChargeCo
     public CreditCardChargeCommissionResponseDTO update(String id, CreditCardChargeCommissionModel model) {
 
         CreditCardChargeCommissionEntity entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Charge not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Credit Charge not found with id: " + id));
 
         entity.setMinAmount(model.getMinAmount());
         entity.setMaxAmount(model.getMaxAmount());
@@ -99,7 +99,7 @@ public class CreditCardChargeCommissionServiceImpl implements CreditCardChargeCo
     public void delete(String id) {
 
         CreditCardChargeCommissionEntity entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Charge not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Credit Charge not found with id: " + id));
 
         repository.delete(entity);
     }
