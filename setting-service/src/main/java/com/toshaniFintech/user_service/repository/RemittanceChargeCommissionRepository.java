@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface RemittanceChargeCommissionRepository extends JpaRepository<RemittanceChargeCommissionEntity, String> {
-    Optional<RemittanceChargeCommissionEntity> findByChargeType(String ChargeType);
 }
