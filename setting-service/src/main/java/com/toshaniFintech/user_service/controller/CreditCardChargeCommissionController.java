@@ -54,7 +54,7 @@ public class CreditCardChargeCommissionController {
         return ResponseUtil.success("Charge created successfully", response, HttpStatus.OK);
     }
 
-    @PostMapping("/get")
+    @PostMapping("/all")
     @Operation(summary = "Get Credit Card Charges", description = "Get credit card charge commission with pagination and search")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Charges fetched successfully"),
