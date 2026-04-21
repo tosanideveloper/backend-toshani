@@ -22,7 +22,7 @@ public class PayoutReportController {
     @Autowired
     private PayoutReportService service;
 
-    @PostMapping("/get")
+    @PostMapping("/all")
     @Operation(summary = "Payout Report", description = "Get payout report with pagination and advanced filter")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Report fetched successfully"),

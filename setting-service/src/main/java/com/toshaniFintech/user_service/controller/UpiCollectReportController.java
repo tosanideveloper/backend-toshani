@@ -22,7 +22,7 @@ public class UpiCollectReportController {
     @Autowired
     private UpiCollectReportService service;
 
-    @PostMapping("/get")
+    @PostMapping("/all")
     @Operation(summary = "UPI Collect Report", description = "Get UPI Collect report with pagination and advanced filter")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Report fetched successfully"),
