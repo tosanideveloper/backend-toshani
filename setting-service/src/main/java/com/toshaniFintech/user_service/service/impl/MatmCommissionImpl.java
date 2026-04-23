@@ -2,13 +2,14 @@ package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
+import com.toshaniFintech.common.utils.Utility;
 import com.toshaniFintech.user_service.dto.request.MatmCommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.MatmCommissionResponseDTO;
 import com.toshaniFintech.user_service.entity.MatmCommissionEntity;
+import com.toshaniFintech.user_service.mapper.MatmCommissionMapper;
 import com.toshaniFintech.user_service.model.MatmCommissionModel;
 import com.toshaniFintech.user_service.repository.MatmCommissionRepository;
 import com.toshaniFintech.user_service.service.MatmCommissionService;
-import org.aspectj.apache.bcel.classfile.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +28,10 @@ public class MatmCommissionImpl implements MatmCommissionService {
     @Autowired
     private ObjectMapper objectMapper;
 
-//    @Autowired
-//    private MatmCommisionMapper matmCommisionMapper;
+    @Autowired
+   private MatmCommissionMapper matmCommissionMapper;
 
-    // ✅ CREATE
+
     @Override
     public MatmCommissionModel create(MatmCommissionModel matmCommissionModel) {
 
@@ -41,7 +42,6 @@ public class MatmCommissionImpl implements MatmCommissionService {
 
         return objectMapper.convertValue(saved, MatmCommissionModel.class);
     }
-    // ✅ GET ALL (Pagination + Filter)
     @Override
     public PaginatedResponse<MatmCommissionResponseDTO> getAll(
             MatmCommissionRequestDTO matmCommissionRequestDTO) {
@@ -55,8 +55,6 @@ public class MatmCommissionImpl implements MatmCommissionService {
 
         Page<MatmCommissionEntity> paginatedContent =
                 matmCommissionRepository.fetchAll(
-                        matmCommissionRequestDTO.getMinAmount(),
-                        matmCommissionRequestDTO.getMaxAmount(),
                         matmCommissionRequestDTO.getCommtype(),
                         matmCommissionRequestDTO.getSearch(),
                         matmCommissionRequestDTO.getSearchByField(),
@@ -65,7 +63,7 @@ public class MatmCommissionImpl implements MatmCommissionService {
 
         List<MatmCommissionResponseDTO> responseDTOS = new ArrayList<>();
         paginatedContent.getContent().forEach(content ->
-                responseDTOS.add(mapper.toResponseDto(content))
+                responseDTOS.add(matmCommissionMapper.toResponseDto(content))
         );
 
         return Utility.paginatedResponseForSubList(
@@ -78,17 +76,16 @@ public class MatmCommissionImpl implements MatmCommissionService {
         );
     }
 
-    // ✅ GET BY ID
     @Override
     public MatmCommissionResponseDTO getById(String id) {
 
         MatmCommissionEntity matmCommissionEntity = matmCommissionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Matm not found with id: " + id));
 
-        return mapper.toResponseDto(matmCommissionEntity);
+        return matmCommissionMapper.toResponseDto(matmCommissionEntity);
     }
 
-    // ✅ UPDATE
+
     @Override
     public MatmCommissionResponseDTO update(String id, MatmCommissionModel matmCommissionModel) {
 
@@ -102,10 +99,9 @@ public class MatmCommissionImpl implements MatmCommissionService {
 
         MatmCommissionEntity updatedEntity = matmCommissionRepository.save(matmCommissionEntity);
 
-        return mapper.toResponseDto(updatedEntity);
+        return matmCommissionMapper.toResponseDto(updatedEntity);
     }
 
-    // ✅ DELETE
     @Override
     public void delete(String id) {
 
