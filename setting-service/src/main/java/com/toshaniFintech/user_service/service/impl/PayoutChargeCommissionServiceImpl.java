@@ -3,7 +3,6 @@ package com.toshaniFintech.user_service.service.impl;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.exception.model.BadRequestException;
 import com.toshaniFintech.common.exception.model.NotFoundException;
-import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.dto.request.PayoutChargeCommissionRequest;
 import com.toshaniFintech.user_service.dto.response.PayoutChargeCommissionResponse;
 import com.toshaniFintech.user_service.entity.PayoutChargeCommissionEntity;
@@ -25,14 +24,6 @@ public class PayoutChargeCommissionServiceImpl implements PayoutChargeCommission
     @Override
     public PayoutChargeCommissionResponse createPayoutChargeCommission
             (PayoutChargeCommissionRequest payoutChargeCommissionRequest){
-        if (payoutChargeCommissionRepository.
-                findById(payoutChargeCommissionRequest.getChargeType()).isPresent()){
-
-            throw new UnprocessableEntityException(
-                    "PayoutChargeCommission already exists with charge type:"
-                            + payoutChargeCommissionRequest.getChargeType()
-            );
-        }
         PayoutChargeCommissionEntity entity = mapToEntity(payoutChargeCommissionRequest);
         PayoutChargeCommissionEntity savedEntity = payoutChargeCommissionRepository.save(entity);
         return mapToModel(savedEntity);
