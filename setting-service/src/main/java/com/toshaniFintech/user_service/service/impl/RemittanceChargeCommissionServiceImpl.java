@@ -26,13 +26,6 @@ public class RemittanceChargeCommissionServiceImpl implements RemittanceChargeCo
     public RemittanceChargeCommissionResponse createRemittanceChargeCommission
             (RemittanceChargeCommissionRequest remittanceChargeCommissionRequest) {
 
-        if (remittanceChargeCommissionRepository.findById
-                (remittanceChargeCommissionRequest.getId()).isPresent()) {
-            throw new UnprocessableEntityException(
-                    "RemittanceChargeCommission already exists with key: " + remittanceChargeCommissionRequest
-                            .getChargeType()
-            );
-        }
         RemittanceChargeCommissionEntity entity = mapToEntity(remittanceChargeCommissionRequest);
         RemittanceChargeCommissionEntity savedEntity = remittanceChargeCommissionRepository.save(entity);
         return mapToModel(savedEntity);

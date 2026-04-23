@@ -29,7 +29,7 @@ public class PayoutChargeCommissionEntity extends BaseEntity {
 
     public PayoutChargeCommissionEntity(){
     }
-    public PayoutChargeCommissionEntity(Long Id,Double minAmount,Double maxAmount,
+    public PayoutChargeCommissionEntity(Long id,Double minAmount,Double maxAmount,
                                         String txnType,String chargeType,Double charge){
         this.minAmount = minAmount;
         this.maxAmount = maxAmount;
