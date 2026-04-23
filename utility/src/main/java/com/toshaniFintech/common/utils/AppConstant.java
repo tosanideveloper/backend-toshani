@@ -15,6 +15,8 @@ public class AppConstant {
     public static final String PAGE_SIZE_DEFAULT_VALUE = "10";
     public static final String SORT_BY_DEFAULT_VALUE = "createdAt";
     public static final String ORDER_TYPE_DEFAULT_VALUE = "DESC";
+    public static final String DESC = "desc";
+
 
     private AppConstant() {
     }
