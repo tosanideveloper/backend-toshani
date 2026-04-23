@@ -1,6 +1,5 @@
 package com.toshaniFintech.user_service.repository;
 
-import com.toshaniFintech.user_service.entity.BbpsReportEntity;
 import com.toshaniFintech.user_service.entity.RechargeReportEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,15 +16,16 @@ public interface RechargeReportRepository extends JpaRepository<RechargeReportEn
     @Query("SELECT a FROM RechargeReportEntity a " +
             "WHERE a.txnDate BETWEEN :startDate AND :endDate " +
             "AND (:orderId IS NULL OR a.orderID IN :orderId) " +
-            "AND (:txnId IS NULL OR a.txnID IN :txnId) " +
-            "AND (:type IS NULL OR a.type IN :type) " +
-            "AND (:status IS NULL OR a.status IN :status) " +
+            "AND (:txnId IS NULL OR a.txnId IN :txnId) " +
+            "AND (:txnType IS NULL OR a.txnType IN :txnType) " +
+            "AND (:txnStatus IS NULL OR a.txnStatus IN :txnStatus) " +
             "AND ( :search IS NULL OR :search = '' " +
-            "   OR (:searchByField = 'txnID' AND LOWER(a.txnID) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "   OR (:searchByField = 'txnId' AND LOWER(a.txnId) LIKE LOWER(CONCAT('%', :search, '%'))) " +
             "   OR (:searchByField = 'orderID' AND LOWER(a.orderID) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "   OR (:searchByField = 'operator' AND LOWER(a.operator) LIKE LOWER(CONCAT('%', :search, '%'))) " +
             "   OR (:searchByField = 'rrn' AND LOWER(a.rrn) LIKE LOWER(CONCAT('%', :search, '%'))) " +
-            "   OR (:searchByField = 'type' AND LOWER(a.type) LIKE LOWER(CONCAT('%', :search, '%'))) " +
-            "   OR (:searchByField = 'status' AND LOWER(a.status) LIKE LOWER(CONCAT('%', :search, '%'))) )")
+            "   OR (:searchByField = 'txnType' AND LOWER(a.txnType) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "   OR (:searchByField = 'txnStatus' AND LOWER(a.txnStatus) LIKE LOWER(CONCAT('%', :search, '%'))) )")
     Page<RechargeReportEntity> fetchRechargeReport(
             @Param("startDate") String startDate,
             @Param("endDate") String endDate,

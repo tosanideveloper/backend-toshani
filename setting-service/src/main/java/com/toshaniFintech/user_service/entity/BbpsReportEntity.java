@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "th_bbps_report")
-@Data
 @NoArgsConstructor
 public class BbpsReportEntity extends BaseEntity {
 

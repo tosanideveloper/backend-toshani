@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "th_modify_report")
-@Data
 @NoArgsConstructor
 public class ModifyReportEntity extends BaseEntity {
 
