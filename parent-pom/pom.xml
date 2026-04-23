@@ -34,6 +34,7 @@
         <module>../gateway-service</module>
         <module>../setting-service</module>
         <module>../user-service</module>
+        <module>../notification-service</module>
     </modules>
 
     <dependencyManagement>
