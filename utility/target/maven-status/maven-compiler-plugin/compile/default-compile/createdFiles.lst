@@ -1,6 +1,7 @@
 com\toshaniFintech\common\exception\model\UnprocessableEntityException.class
 com\toshaniFintech\common\dto\response\UsersResponse.class
 com\toshaniFintech\common\entity\BaseEntity.class
+com\toshaniFintech\common\utils\Utility.class
 com\toshaniFintech\common\exception\model\NotFoundException.class
 com\toshaniFintech\common\dto\response\APIResponse.class
 com\toshaniFintech\common\exception\model\GlobalExceptionHandler.class
