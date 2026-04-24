@@ -6,12 +6,13 @@ import java.util.Date;
 
 @Data
 public class AmcReportResponse {
+    private String id;
     private String slNo;
-    private Date emiCreateDate;
+    private String emiCreateDate;
     private String companyName;
     private String agentDetail;
     private String txnId;
     private String totalCollectionAmt;
-    private BigDecimal emiAmount;
-    private String totalDays;
+    private String emiAmount;
+    private Integer totalDays;
 }

@@ -1,32 +1,27 @@
 package com.toshaniFintech.user_service.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
 @Data
 public class AmcReportRequest {
-    @NotBlank(message = "Company name must not be blank")
-    private String companyName;
+    private List<String> txnId;
 
-    @NotBlank(message = "Agent details must not be blank")
-    private String agentDetail;
+    @NotBlank(message = "startDate is required")
+    private String startDate;
 
-    @NotBlank(message = "Transaction ID must not be blank")
-    private String txnId;
+    @NotBlank(message = "endDate is required")
+    private String endDate;
 
-    @NotNull(message = "EMI create date must not be null")
-    private Date emiCreateDate;
+    private int pageNo;
+    private int pageSize;
 
-    @NotNull(message = "Total collection amount must not be null")
-    private BigDecimal totalCollectionAmt;
+    private String sortBy;
+    private String orderBy;
 
-    @NotNull(message = "EMI amount must not be null")
-    private BigDecimal emiAmount;
-
-    private Integer totalDays;
+    private String search;
+    private String searchByField;
 
 }
