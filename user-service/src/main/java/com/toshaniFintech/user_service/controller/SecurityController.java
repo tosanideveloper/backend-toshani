@@ -145,4 +145,28 @@ public class SecurityController {
                 HttpStatus.OK
         );
     }
+    @PostMapping("/authenticator/reset/initiate")
+    public ResponseEntity<APIResponse<Object>> initiateAuthenticatorReset(
+            Authentication authentication) {
+
+        securityService.initiateAuthenticatorReset(authentication.getName());
+        return ResponseUtil.success(
+                "Authenticator reset OTP sent successfully",
+                null,
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/authenticator/reset/confirm")
+    public ResponseEntity<APIResponse<Object>> confirmAuthenticatorReset(
+            @Valid @RequestBody AuthenticatorResetConfirmRequest request,
+            Authentication authentication) {
+
+        securityService.confirmAuthenticatorReset(authentication.getName(), request);
+        return ResponseUtil.success(
+                "Authenticator reset successfully",
+                null,
+                HttpStatus.OK
+        );
+    }
 }

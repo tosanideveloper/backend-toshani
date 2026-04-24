@@ -2,11 +2,8 @@ package com.toshaniFintech.user_service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.exception.model.NotFoundException;
-import com.toshaniFintech.user_service.entity.PartnerManagementEntity;
 import com.toshaniFintech.user_service.entity.ReconciliationReportEntity;
-import com.toshaniFintech.user_service.model.PartnerManagementModel;
 import com.toshaniFintech.user_service.model.ReconciliationReportModel;
-import com.toshaniFintech.user_service.repository.PartnerManagementRepository;
 import com.toshaniFintech.user_service.repository.ReconciliationReportRepository;
 import com.toshaniFintech.user_service.service.ReconciliationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
