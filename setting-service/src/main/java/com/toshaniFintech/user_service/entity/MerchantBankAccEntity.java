@@ -12,6 +12,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MerchantBankAccEntity extends BaseEntity {
+    @Column(name = "date")
+    private String date;
     @Column(name = "serial_number")
     private String serialNumber;
 

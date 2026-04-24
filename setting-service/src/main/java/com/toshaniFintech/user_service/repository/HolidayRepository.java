@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface HolidayRepository  extends JpaRepository<HolidayEntity, Long> {
-    Optional<HolidayEntity> findByHolidayName(String holidayName);
+public interface HolidayRepository extends JpaRepository<HolidayEntity, String> {
 }

@@ -118,6 +118,9 @@ public class SecurityServiceImpl implements SecurityService {
 
         return SecurityStatusResponse.builder()
                 .mpinEnabled(Boolean.TRUE.equals(security.getMpinEnabled()))
+                .mPinStatus(security.getMpinEnabled())
+                .authenticatorEnabled(false)
+                .authenticationCurrentStatus("disabled")
                 .build();
     }
 
@@ -184,7 +187,9 @@ public class SecurityServiceImpl implements SecurityService {
 
         return SecurityStatusResponse.builder()
                 .authenticatorEnabled(enabled)
-                .currentStatus(enabled ? "enabled" : "disabled")
+                .authenticationCurrentStatus(enabled ? "enabled" : "disabled")
+                .mpinEnabled(Boolean.TRUE.equals(security.getMpinEnabled()))
+                .mPinStatus(security.getMpinEnabled())
                 .build();
     }
 

@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class MerchantBankAccModel {
 
+    private String date;
     private String serialNo;
     private String apiPartnerName;
     private String bankName;
