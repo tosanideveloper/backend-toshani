@@ -7,23 +7,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="utility-service" />
-      </profile>
-      <profile name="Annotation profile for parent-pom" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
-        </processorPath>
-        <module name="utility" />
         <module name="auth-service" />
-        <module name="user-service" />
         <module name="eureka-client" />
         <module name="setting-service" />
         <module name="gateway-service" />
+        <module name="utility-service" />
+        <module name="utility" />
+        <module name="user-service" />
+        <module name="notification-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -32,7 +23,7 @@
       <module name="auth-service" options="-parameters" />
       <module name="eureka-client" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
-      <module name="parent-pom" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="setting-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
       <module name="utility" options="-parameters" />

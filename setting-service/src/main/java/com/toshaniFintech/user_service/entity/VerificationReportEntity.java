@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "th_verification_report")
-@Data
 @NoArgsConstructor
 public class VerificationReportEntity extends BaseEntity {
 

@@ -1,6 +1,7 @@
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\entity\Role.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\utils\ResponseUtil.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\entity\PasswordResetToken.java
+D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\dto\request\EmailReq.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\repository\UsersRepository.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\utils\AppConstant.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\dto\response\UsersResponse.java
@@ -8,7 +9,6 @@ D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\exception\model\
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\exception\model\NotFoundException.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\exception\model\BadRequestException.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\CommonUtilityApp.java
-D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\utils\Utility.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\dto\response\PaginatedResponse.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\dto\response\APIErrorResponse.java
 D:\TOSHANI(NEW)\utility\src\main\java\com\toshaniFintech\common\exception\model\GlobalExceptionHandler.java

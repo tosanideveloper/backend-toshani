@@ -12,6 +12,7 @@ com\toshaniFintech\common\utils\ResponseUtil.class
 com\toshaniFintech\common\entity\PasswordResetToken.class
 com\toshaniFintech\common\enums\UserStatus.class
 com\toshaniFintech\common\entity\Role.class
+com\toshaniFintech\common\dto\request\EmailReq.class
 com\toshaniFintech\common\dto\response\PaginatedResponse.class
 com\toshaniFintech\common\exception\model\BadRequestException.class
 com\toshaniFintech\common\utils\AppConstant.class

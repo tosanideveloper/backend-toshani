@@ -30,8 +30,8 @@ public interface BbpsReportRepository extends JpaRepository<BbpsReportEntity, St
             @Param("endDate") String endDate,
             @Param("orderId") List<String> orderId,
             @Param("txnId") List<String> txnId,
-            @Param("txnType") List<String> txnType,
-            @Param("txnStatus") List<String> txnStatus,
+            @Param("type") List<String> type,
+            @Param("status") List<String> txnStatus,
             @Param("search") String search,
             @Param("searchByField") String searchByField,
             PageRequest page

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "th_recharge_report")
-@Data
 @NoArgsConstructor
 public class RechargeReportEntity extends BaseEntity {
 
@@ -29,7 +28,7 @@ public class RechargeReportEntity extends BaseEntity {
     private String partnerDetails;
 
     @Column(name = "txn_id")
-    private String txnID;
+    private String txnId;
 
     @Column(name = "rrn")
     private String rrn;
@@ -37,8 +36,8 @@ public class RechargeReportEntity extends BaseEntity {
     @Column(name = "order_id")
     private String orderID;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "txn_type")
+    private String txnType;
 
     @Column(name = "operator_name")
     private String operator;
@@ -58,8 +57,8 @@ public class RechargeReportEntity extends BaseEntity {
     @Column(name = "tds")
     private String tds;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "txn_status")
+    private String txnStatus;
 
     @Column(name = "api_name")
     private String api;
@@ -70,27 +69,6 @@ public class RechargeReportEntity extends BaseEntity {
     @Column(name = "response_data", columnDefinition = "TEXT")
     private String response;
 
-    public RechargeReportEntity(String startDate, String endDate, String slNo, String txnDate, String partnerDetails, String txnID,String rrn, String orderID, String type, String operator, String number, String operatorID, String amount, String commission, String tds, String status, String api, String request, String response) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.slNo = slNo;
-        this.txnDate = txnDate;
-        this.partnerDetails = partnerDetails;
-        this.txnID = txnID;
-        this.rrn = rrn;
-        this.orderID = orderID;
-        this.type = type;
-        this.operator = operator;
-        this.number = number;
-        this.operatorID = operatorID;
-        this.amount = amount;
-        this.commission = commission;
-        this.tds = tds;
-        this.status = status;
-        this.api = api;
-        this.request = request;
-        this.response = response;
-    }
 
     public String getStartDate() {
         return startDate;
@@ -132,12 +110,12 @@ public class RechargeReportEntity extends BaseEntity {
         this.partnerDetails = partnerDetails;
     }
 
-    public String getTxnID() {
-        return txnID;
+    public String getTxnId() {
+        return txnId;
     }
 
-    public void setTxnID(String txnID) {
-        this.txnID = txnID;
+    public void setTxnId(String txnId) {
+        this.txnId = txnId;
     }
 
     public String getRrn() {
@@ -156,12 +134,12 @@ public class RechargeReportEntity extends BaseEntity {
         this.orderID = orderID;
     }
 
-    public String getType() {
-        return type;
+    public String getTxnType() {
+        return txnType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTxnType(String txnType) {
+        this.txnType = txnType;
     }
 
     public String getOperator() {
@@ -212,12 +190,12 @@ public class RechargeReportEntity extends BaseEntity {
         this.tds = tds;
     }
 
-    public String getStatus() {
-        return status;
+    public String getTxnStatus() {
+        return txnStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTxnStatus(String txnStatus) {
+        this.txnStatus = txnStatus;
     }
 
     public String getApi() {

@@ -28,37 +28,19 @@ public class Aeps1ReportServiceImpl implements Aeps1ReportService {
     @Override
     public PaginatedResponse<Aeps1ReportResponseDTO> fetchAepsReport(Aeps1ReportRequestDTO requestDTO) {
 
-        PageRequest page = Utility.pageRequest(
-                requestDTO.getPageNo(),
-                requestDTO.getPageSize(),
-                requestDTO.getSortBy(),
-                requestDTO.getOrderBy()
-        );
+        PageRequest page = Utility.pageRequest(requestDTO.getPageNo(), requestDTO.getPageSize(), requestDTO.getSortBy(),
+                requestDTO.getOrderBy());
 
-        Page<Aeps1ReportEntity> paginatedContent = aeps1ReportRepository.fetchAepsReport(
-                requestDTO.getStartDate(),
-                requestDTO.getEndDate(),
-                requestDTO.getOrderId(),
-                requestDTO.getTxnId(),
-                requestDTO.getTxnType(),
-                requestDTO.getStatus(),
-                requestDTO.getSearch(),
-                requestDTO.getSearchByField(),
-                page
-        );
+        Page<Aeps1ReportEntity> paginatedContent = aeps1ReportRepository.fetchAepsReport(requestDTO.getStartDate(),
+                requestDTO.getEndDate(), requestDTO.getOrderId(), requestDTO.getTxnId(), requestDTO.getTxnType(),
+                requestDTO.getStatus(), requestDTO.getSearch(), requestDTO.getSearchByField(), page);
 
         List<Aeps1ReportResponseDTO> responseDTOS = new ArrayList<>();
         paginatedContent.getContent().forEach(content ->
-                responseDTOS.add(aeps1ReportMapper.toResponseDto(content))
-        );
+                responseDTOS.add(aeps1ReportMapper.toResponseDto(content)));
 
-        return Utility.paginatedResponseForSubList(
-                paginatedContent.getNumber(),
-                paginatedContent.getTotalPages(),
-                paginatedContent.getSize(),
-                paginatedContent.getNumberOfElements(),
-                paginatedContent.getTotalElements(),
-                responseDTOS
-        );
+        return Utility.paginatedResponseForSubList(paginatedContent.getNumber(), paginatedContent.getTotalPages(),
+                paginatedContent.getSize(), paginatedContent.getNumberOfElements(), paginatedContent.getTotalElements(),
+                responseDTOS);
     }
 }

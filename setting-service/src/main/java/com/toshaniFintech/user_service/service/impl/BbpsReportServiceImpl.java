@@ -43,8 +43,8 @@ public class BbpsReportServiceImpl implements BbpsReportService {
                 requestDTO.getEndDate(),
                 requestDTO.getOrderId(),
                 requestDTO.getTxnId(),
-                requestDTO.getTxnType(),
                 requestDTO.getStatus(),
+                requestDTO.getTxnType(),
                 requestDTO.getSearch(),
                 requestDTO.getSearchByField(),
                 page
