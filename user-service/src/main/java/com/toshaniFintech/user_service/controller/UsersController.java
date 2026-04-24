@@ -2,10 +2,13 @@ package com.toshaniFintech.user_service.controller;
 
 import java.util.List;
 
+import com.toshaniFintech.common.dto.response.APIResponse;
+import com.toshaniFintech.common.utils.ResponseUtil;
 import com.toshaniFintech.user_service.dto.request.ForgotPasswordRequest;
 import com.toshaniFintech.user_service.dto.request.ResetPasswordRequest;
 import com.toshaniFintech.user_service.dto.request.UsersRequest;
 import com.toshaniFintech.common.dto.response.UsersResponse;
+import com.toshaniFintech.user_service.dto.response.UserInfoResponse;
 import com.toshaniFintech.user_service.service.UsersService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +49,15 @@ public class UsersController {
     public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         usersService.resetPassword(request);
         return ResponseEntity.ok("Password reset successfully");
+    }
+
+    @GetMapping("/userinfo")
+    public ResponseEntity<APIResponse<UserInfoResponse>> getUserInfo() {
+        UserInfoResponse response = usersService.getLoggedInUserInfo();
+        return ResponseUtil.success(
+                "User info fetched successfully",
+                response,
+                HttpStatus.OK
+        );
     }
 }

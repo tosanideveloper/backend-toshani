@@ -10,12 +10,21 @@ import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.common.repository.UsersRepository;
 import com.toshaniFintech.user_service.client.NotificationClient;
 import com.toshaniFintech.user_service.dto.request.*;
+import com.toshaniFintech.user_service.dto.response.AuthenticatorInfoResponse;
+import com.toshaniFintech.user_service.dto.response.MpinInfoResponse;
+import com.toshaniFintech.user_service.dto.response.UserBasicInfoResponse;
+import com.toshaniFintech.user_service.dto.response.UserInfoResponse;
+import com.toshaniFintech.user_service.entity.UserSecurity;
 import com.toshaniFintech.user_service.repository.PasswordResetTokenRepository;
 import com.toshaniFintech.user_service.repository.RoleRepository;
+import com.toshaniFintech.user_service.repository.UserSecurityRepository;
 import com.toshaniFintech.user_service.service.UsersService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service("usersService")
@@ -31,6 +41,10 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     private UsersRepository usersRepository;
+
+
+    @Autowired
+    private UserSecurityRepository userSecurityRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -189,6 +203,83 @@ public class UsersServiceImpl implements UsersService {
                         .map(Role::getName)
                         .toList()
         );
+        return response;
+    }
+
+    @Override
+    public UserInfoResponse getLoggedInUserInfo() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication.getName() == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        String username = authentication.getName();
+
+        Users user = usersRepository.findByUserName(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + username));
+
+        UserSecurity userSecurity = userSecurityRepository.findByUserId(user.getId())
+                .orElse(null);
+
+        UserBasicInfoResponse userResponse = new UserBasicInfoResponse();
+
+        userResponse.setId(user.getId());
+
+        userResponse.setFirstName(user.getFirstName());
+        userResponse.setMiddleName(user.getMiddleName());
+        userResponse.setLastName(user.getLastName());
+
+        userResponse.setUsername(user.getUserName());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setMobile(user.getMobile());
+
+        userResponse.setMobileVerified(user.isMobileVerified());
+        userResponse.setEmailVerified(user.isEmailVerified());
+        userResponse.setActive(user.isActive());
+        List<String> roles = user.getRoles()
+                .stream()
+                .map(Role::getName)
+                .collect(Collectors.toList());
+        userResponse.setRoles(roles);
+
+        userResponse.setEntityUuid(user.getEntityUuid());
+        userResponse.setEntityAdmin(user.getEntityAdmin());
+
+        userResponse.setUserType(
+                user.getUserType() != null ? user.getUserType().name() : null
+        );
+
+        MpinInfoResponse mpinResponse = new MpinInfoResponse();
+
+        if (userSecurity != null) {
+            mpinResponse.setEnabled(Boolean.TRUE.equals(userSecurity.getMpinEnabled()));
+            mpinResponse.setHashPresent(userSecurity.getMpinHash() != null && !userSecurity.getMpinHash().isBlank());
+            mpinResponse.setForgotOtpPresent(userSecurity.getForgotMpinOtp() != null && !userSecurity.getForgotMpinOtp().isBlank());
+            mpinResponse.setForgotMpinOtpExpiry(userSecurity.getForgotMpinOtpExpiry());
+        } else {
+            mpinResponse.setEnabled(false);
+            mpinResponse.setHashPresent(false);
+            mpinResponse.setForgotOtpPresent(false);
+            mpinResponse.setForgotMpinOtpExpiry(null);
+        }
+        AuthenticatorInfoResponse authResponse = new AuthenticatorInfoResponse();
+
+        if (userSecurity != null) {
+            authResponse.setEnabled(Boolean.TRUE.equals(userSecurity.getGoogleAuthEnabled()));
+            authResponse.setSecretPresent(userSecurity.getGoogleAuthSecret() != null && !userSecurity.getGoogleAuthSecret().isBlank());
+        } else {
+            authResponse.setEnabled(false);
+            authResponse.setSecretPresent(false);
+        }
+
+        // ================= FINAL =================
+        UserInfoResponse response = new UserInfoResponse();
+        response.setUser(userResponse);
+        response.setMpin(mpinResponse);
+        response.setAuthenticator(authResponse);
+
         return response;
     }
 }
