@@ -40,12 +40,12 @@ public class AffiliateUserImpl implements AffiliateUserService {
 
     @Override
     public AffiliateUserModel createAffiliateUser(AffiliateUserModel affiliateUserModel) {
-        if (affiliateUserRepository.findByMobileNumber(affiliateUserModel.getMobileNumber()).isPresent()) {
+       /* if (affiliateUserRepository.findByMobileNumber(affiliateUserModel.getMobileNumber()).isPresent()) {
             throw new UnprocessableEntityException(
-                    "Setting already exists with key: " + affiliateUserModel.getMobileNumber()
+                    "Mobile number already exists with key: " + affiliateUserModel.getMobileNumber()
             );
-        }
-        AffiliateUserEntity affiliateUserEntity = affiliateUserRepository.findById(String.valueOf(AbstractPersistable_.id)).orElseThrow(() -> new NotFoundException("User not found with mobile number: " + id));
+        }*/
+        AffiliateUserEntity affiliateUserEntity = new AffiliateUserEntity();
         affiliateUserEntity.setSerialNo(affiliateUserModel.getSerialNo());
         affiliateUserEntity.setName(affiliateUserModel.getName());
         affiliateUserEntity.setStatus(affiliateUserModel.getStatus());

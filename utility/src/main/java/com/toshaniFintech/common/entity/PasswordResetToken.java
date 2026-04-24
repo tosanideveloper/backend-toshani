@@ -1,9 +1,11 @@
 package com.toshaniFintech.common.entity;
 
 import jakarta.persistence.*;
-
+import lombok.ToString;
 import java.time.LocalDateTime;
 
+
+@ToString(callSuper = true)
 @Entity
 @Table(name = "th_password_reset_token")
 public class PasswordResetToken extends BaseEntity {

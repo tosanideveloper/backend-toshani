@@ -4,6 +4,7 @@ import com.toshaniFintech.user_service.dto.request.ForgotPasswordRequest;
 import com.toshaniFintech.user_service.dto.request.ResetPasswordRequest;
 import com.toshaniFintech.user_service.dto.request.UsersRequest;
 import com.toshaniFintech.common.dto.response.UsersResponse;
+import com.toshaniFintech.user_service.dto.response.UserInfoResponse;
 
 import java.util.List;
 
@@ -17,4 +18,7 @@ public interface UsersService {
     void forgotPassword(ForgotPasswordRequest request);
 
     void resetPassword(ResetPasswordRequest request);
+
+    UserInfoResponse getLoggedInUserInfo();
+
 }

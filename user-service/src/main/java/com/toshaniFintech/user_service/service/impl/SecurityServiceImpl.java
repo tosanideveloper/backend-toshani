@@ -248,6 +248,53 @@ public class SecurityServiceImpl implements SecurityService {
         userSecurityRepository.save(security);
     }
 
+    @Override
+    public void initiateAuthenticatorReset(String username) {
+        Users user = userRepository.findByUserName(username)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        UserSecurity security = getUserSecurity(username);
+
+        if (security.getGoogleAuthSecret() == null || !Boolean.TRUE.equals(security.getGoogleAuthEnabled())) {
+            throw new BadRequestException("Authenticator is not enabled");
+        }
+
+        String otp = generateOtp();
+        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(5);
+
+        security.setAuthenticatorResetOtp(otp);
+        security.setAuthenticatorResetOtpExpiry(expiryTime);
+
+        userSecurityRepository.save(security);
+
+        // TODO send OTP via email/SMS
+        System.out.println("Authenticator reset OTP for " + user.getEmail() + " is: " + otp);
+    }
+
+    @Override
+    public void confirmAuthenticatorReset(String username, AuthenticatorResetConfirmRequest request) {
+        UserSecurity security = getUserSecurity(username);
+
+        if (security.getAuthenticatorResetOtp() == null || security.getAuthenticatorResetOtpExpiry() == null) {
+            throw new BadRequestException("Authenticator reset not initiated");
+        }
+
+        if (LocalDateTime.now().isAfter(security.getAuthenticatorResetOtpExpiry())) {
+            throw new BadRequestException("OTP has expired");
+        }
+
+        if (!security.getAuthenticatorResetOtp().equals(request.getOtp())) {
+            throw new BadRequestException("Invalid OTP");
+        }
+
+        security.setGoogleAuthEnabled(false);
+        security.setGoogleAuthSecret(null);
+        security.setAuthenticatorResetOtp(null);
+        security.setAuthenticatorResetOtpExpiry(null);
+
+        userSecurityRepository.save(security);
+    }
+
     private String generateOtp() {
         int otp = 100000 + new Random().nextInt(900000);
         return String.valueOf(otp);
