@@ -63,7 +63,6 @@ public class IPController {
     @Operation(summary = "IP Addresses List", description = "To update IP Addresses List")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "IP Addresses updated successfully", content = @Content(schema = @Schema(implementation = APIResponse.class))), @ApiResponse(responseCode = "400", description = "Invalid input data"), @ApiResponse(responseCode = "500", description = "Internal server error")})
     public ResponseEntity<APIResponse<CreateIpResponse>> updateIpAddress(@PathVariable String id, @Valid @RequestBody CreateIpRequest request) {
-
         IPAddressModel ipAddressModel = objectMapper.convertValue(request, IPAddressModel.class);
         IPAddressModel updatedModel = iPService.updateIpAddress(id, ipAddressModel);
         CreateIpResponse createIpResponse = objectMapper.convertValue(updatedModel, CreateIpResponse.class);

@@ -37,7 +37,7 @@ public class ApiPartnerServiceImpl implements ApiPartnerService {
     @Override
     public ApiPartnerServiceModel createApisPartnerService(ApiPartnerServiceModel apiPartnerServiceModel) {
         ApiPartnerServiceEntity apiPartnerServiceEntity = objectMapper.convertValue(apiPartnerServiceModel, ApiPartnerServiceEntity.class);
-        TicketMessagesEntity saved = apiPartnerServicesRepository.save(apiPartnerServiceEntity);
+        ApiPartnerServiceEntity saved = apiPartnerServicesRepository.save(apiPartnerServiceEntity);
         return objectMapper.convertValue(saved, ApiPartnerServiceModel.class);
     }
 
