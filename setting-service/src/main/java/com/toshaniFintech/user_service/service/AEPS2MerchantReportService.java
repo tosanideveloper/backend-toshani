@@ -1,7 +1,6 @@
 package com.toshaniFintech.user_service.service;
 
 import com.toshaniFintech.user_service.dto.response.AEPS2MerchantReportResponse;
-import com.toshaniFintech.user_service.dto.response.AEPS2ReportResponse;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
