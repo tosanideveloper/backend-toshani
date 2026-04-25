@@ -2,12 +2,8 @@ package com.toshaniFintech.user_service.model;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class AmcReportModel {
-    private List<String> txnId;
-
+public class Aeps2MerchantReportModel {
     private String startDate;
     private String endDate;
 
@@ -16,13 +12,11 @@ public class AmcReportModel {
 
     private String search;
     private String searchByField;
-    
+
     private String Id;
     private String slNo;
-    private String emiCreateDate;
-    private String companyName;
-    private String agentDetail;
-    private String totalCollectionAmt;
-    private String emiAmount;
-    private String totalDays;
+    private String txnDate;
+    private String partnerDetails;
+    private String username;
+    private String merchantName;
 }
