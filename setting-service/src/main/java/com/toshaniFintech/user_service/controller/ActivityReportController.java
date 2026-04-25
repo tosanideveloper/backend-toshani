@@ -1,16 +1,16 @@
 package com.toshaniFintech.user_service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
-import com.toshaniFintech.common.utils.AppConstant;
-import com.toshaniFintech.common.utils.ResponseUtil;
+import com.toshaniFintech.user_service.dto.request.ActivityReportRequest;
 import com.toshaniFintech.user_service.dto.response.ActivityReportResponse;
 import com.toshaniFintech.user_service.service.ActivityReportService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,42 +26,12 @@ public class ActivityReportController {
     private ObjectMapper objectMapper;
 
     @PostMapping("/all")
-    public ResponseEntity<APIResponse<PaginatedResponse<ActivityReportResponse>>> getAllActivityReport(
-            @RequestParam(name = AppConstant.PAGE_NUMBER_PROPERTY_NAME,
-                    defaultValue = AppConstant.PAGE_NUMBER_DEFAULT_VALUE,
-                    required = false) int pageNo,
-
-            @RequestParam(name = AppConstant.PAGE_SIZE_PROPERTY_NAME,
-                    defaultValue = AppConstant.PAGE_SIZE_DEFAULT_VALUE,
-                    required = false) int pageSize,
-
-            @RequestParam(name = AppConstant.SORT_BY_PROPERTY_NAME,
-                    defaultValue = AppConstant.SORT_BY_DEFAULT_VALUE,
-                    required = false) String sortBy,
-
-            @RequestParam(name = AppConstant.ORDER_TYPE_PROPERTY_NAME,
-                    defaultValue = AppConstant.ORDER_TYPE_DEFAULT_VALUE,
-                    required = false) String orderType,
-
-            @RequestParam(name = AppConstant.SEARCH_PROPERTY_NAME,
-                    required = false) String searchString
-    ) {
-
-        PageRequest pageRequest;
-
-        if (AppConstant.ORDER_TYPE_DEFAULT_VALUE.equalsIgnoreCase(orderType)) {
-            pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-        } else {
-            pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
-        }
-
-        PaginatedResponse<ActivityReportResponse> response =
-                activityReportService.getAllActivityReport(pageRequest);
-
-        return ResponseUtil.success(
-                "Activity Report fetched successfully",
-                response,
-                HttpStatus.OK
-        );
+    @Operation(summary = "Activity Report", description = "Get Activity Report with pagination and advanced filter")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Activity Report fetched successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"), @ApiResponse(responseCode = "500",
+            description = "Internal server error")})
+    public ResponseEntity<PaginatedResponse<ActivityReportResponse>> fetchActivityReport
+            (@Valid @RequestBody ActivityReportRequest activityReportRequest) {
+        return new ResponseEntity<>(activityReportService.fetchActivityReport(activityReportRequest), HttpStatus.OK);
     }
 }

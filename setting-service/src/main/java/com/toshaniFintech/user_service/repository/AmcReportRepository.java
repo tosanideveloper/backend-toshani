@@ -15,14 +15,11 @@ public interface AmcReportRepository extends JpaRepository<AmcReportEntity, Stri
 
     @Query("SELECT a FROM AmcReportEntity a " +
             "WHERE a.emiCreateDate BETWEEN :startDate AND :endDate " +
-            "AND (:txnId IS NULL OR a.emiCollectionTxnId IN :txnId) " +
+            "AND (:txnId IS NULL OR a.txnId IN :txnId) " +
             "AND ( :search IS NULL OR :search = '' " +
-            "   OR (:searchByField = 'emiCollectionTxnId' AND LOWER(a.emiCollectionTxnId) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "   OR (:searchByField = 'txnId' AND LOWER(a.txnId) LIKE LOWER(CONCAT('%', :search, '%'))) " +
             "   OR (:searchByField = 'companyName' AND LOWER(a.companyName) LIKE LOWER(CONCAT('%', :search, '%'))) " +
-            "   OR (:searchByField = 'agentDetail' AND LOWER(a.agentDetail) LIKE LOWER(CONCAT('%', :search, '%'))) " +
-            "   OR (:searchByField = 'totalCollectionAmt' AND LOWER(a.totalCollectionAmt) LIKE LOWER(CONCAT('%', :search, '%'))) " +
-            "   OR (:searchByField = 'emiAmount' AND LOWER(a.emiAmount) LIKE LOWER(CONCAT('%', :search, '%'))) )" )
-
+            "   OR (:searchByField = 'agentDetail' AND LOWER(a.agentDetail) LIKE LOWER(CONCAT('%', :search, '%'))) )" )
     Page<AmcReportEntity> fetchAmcReport(
             @Param("startDate") String startDate,
             @Param("endDate") String endDate,
