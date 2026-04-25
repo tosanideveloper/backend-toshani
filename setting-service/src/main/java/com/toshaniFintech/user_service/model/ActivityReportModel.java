@@ -1,6 +1,5 @@
 package com.toshaniFintech.user_service.model;
 
-import com.toshaniFintech.common.entity.BaseEntity;
 import lombok.Data;
 
 @Data
