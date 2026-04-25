@@ -11,13 +11,13 @@ public class AmcReportModel {
     private String startDate;
     private String endDate;
 
-    private int pageNo;
-    private int pageSize;
+    private Long pageNo = 0L;
+    private Long pageSize = 10L;
 
-    private String sortBy;
     private String search;
     private String searchByField;
-
+    
+    private String Id;
     private String slNo;
     private String emiCreateDate;
     private String companyName;
