@@ -4,35 +4,53 @@ import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.math.BigDecimal;
-
-@Setter
-@Getter
 @Entity
 @Table(name = "th_remittance_charge_commission")
 public class RemittanceChargeCommissionEntity extends BaseEntity {
     @Column(name = "min_amount", nullable = false)
-    private BigDecimal minAmount;
+    private Double minAmount;
 
     @Column(name = "max_amount", nullable = false)
-    private BigDecimal maxAmount;
+    private Double maxAmount;
 
     @Column(name = "charge_type", nullable = false)
     private String chargeType;
 
     @Column(name = "charge", nullable = false)
-    private BigDecimal charge;
+    private Double charge;
 
-    public RemittanceChargeCommissionEntity() {
+    public Double getMinAmount() {
+        return minAmount;
     }
 
-    public RemittanceChargeCommissionEntity(Long Id,String minAmount, String maxAmount, String chargeType, String charge) {
-        this.minAmount = new BigDecimal(minAmount);
-        this.maxAmount = new BigDecimal(maxAmount);
+    public void setMinAmount(Double minAmount) {
+        this.minAmount = minAmount;
+    }
+
+    public Double getMaxAmount() {
+        return maxAmount;
+    }
+
+    public void setMaxAmount(Double maxAmount) {
+        this.maxAmount = maxAmount;
+    }
+
+    public String getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(String chargeType) {
         this.chargeType = chargeType;
-        this.charge = new BigDecimal(charge);
     }
+
+    public Double getCharge() {
+        return charge;
+    }
+
+    public void setCharge(Double charge) {
+        this.charge = charge;
+    }
+
+
 }

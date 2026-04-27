@@ -4,13 +4,7 @@ import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.math.BigDecimal;
-
-@Setter
-@Getter
 @Entity
 @Table(name = "dmt_charge_commission")
 public class DmtChargeCommissionEntity extends BaseEntity {

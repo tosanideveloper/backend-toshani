@@ -1,17 +1,22 @@
 package com.toshaniFintech.user_service.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
-import com.toshaniFintech.common.utils.AppConstant;
 import com.toshaniFintech.common.utils.ResponseUtil;
+import com.toshaniFintech.user_service.dto.request.PayoutChargeCommissionGetRequest;
 import com.toshaniFintech.user_service.dto.request.PayoutChargeCommissionRequest;
 import com.toshaniFintech.user_service.dto.response.PayoutChargeCommissionResponse;
+import com.toshaniFintech.user_service.model.PayoutChargeCommissionModel;
 import com.toshaniFintech.user_service.service.PayoutChargeCommissionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,84 +26,92 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = " Payout Charge Commission Service API", description = "APIs for Manage Payout Charge Commission Service CRUD")
 public class PayoutChargeCommissionController {
     @Autowired
-    private PayoutChargeCommissionService payoutChargeCommissionService;
+    private PayoutChargeCommissionService service;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @PostMapping("/create")
-    public ResponseEntity<APIResponse<PayoutChargeCommissionResponse>> createPayoutChargeCommission(
+    @Operation(summary = "Create Payout Commission Charge", description = "Create Payout Charge Commission")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Charge created successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<APIResponse<PayoutChargeCommissionResponse>> create(
             @Valid @RequestBody PayoutChargeCommissionRequest request) {
-        return ResponseUtil.success("Payout Charge Commission created successfully",
-                payoutChargeCommissionService.createPayoutChargeCommission(request),
-                HttpStatus.CREATED
-        );
+
+        PayoutChargeCommissionModel model =
+                objectMapper.convertValue(request, PayoutChargeCommissionModel.class);
+
+        PayoutChargeCommissionModel saved = service.create(model);
+
+        PayoutChargeCommissionResponse response =
+                objectMapper.convertValue(saved, PayoutChargeCommissionResponse.class);
+
+        return ResponseUtil.success("Charge created successfully", response, HttpStatus.OK);
     }
 
+    @PostMapping("/all")
+    @Operation(summary = "Get Payout Commission Charges",
+            description = "Get Payout Charge Commission with pagination and search")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Charges fetched successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<PaginatedResponse<PayoutChargeCommissionResponse>> fetchPayoutChargeCommission(
+            @Valid @RequestBody PayoutChargeCommissionGetRequest request) {
+
+        return new ResponseEntity<>(service.fetchPayoutChargeCommission(request), HttpStatus.OK);
+    }
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<PayoutChargeCommissionResponse>>
-    getPayoutChargeCommissionById(@PathVariable String id) {
-        return ResponseUtil.success(
-                "Payout Charge Commission fetched successfully",
-                payoutChargeCommissionService.getPayoutChargeCommissionById(id),
-                HttpStatus.OK
-        );
-    }
+    @Operation(summary = "Get Credit Card Charge by ID", description = "Fetch single charge by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Charge fetched successfully"),
+            @ApiResponse(responseCode = "404", description = "Charge not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<APIResponse<PayoutChargeCommissionResponse>> getById(
+            @PathVariable String id) {
 
+        PayoutChargeCommissionResponse response = service.getById(id);
+
+        return ResponseUtil.success("Charge fetched successfully", response, HttpStatus.OK);
+    }
     @PutMapping("/update/{id}")
-    public ResponseEntity<APIResponse<PayoutChargeCommissionResponse>>
-    updatePayoutChargeCommission(@PathVariable String id,
-                                 @Valid @RequestBody PayoutChargeCommissionRequest payoutChargeCommissionRequest) {
-        return ResponseUtil.success(
-                "Payout Charge Commission updated successfully",
-                payoutChargeCommissionService.updatePayoutChargeCommission(id, payoutChargeCommissionRequest),
-                HttpStatus.OK
-        );
-    }
-    @GetMapping("/all")
-    public ResponseEntity<APIResponse<PaginatedResponse<PayoutChargeCommissionResponse>>> getAllPayoutChargeCommission(
-            @RequestParam(name = AppConstant.PAGE_NUMBER_PROPERTY_NAME,
-                    defaultValue = AppConstant.PAGE_NUMBER_DEFAULT_VALUE,
-                    required = false) int pageNo,
+    @Operation(summary = "Update Payout Commission Charge", description = "Update Payout Charge Commission")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Charge updated successfully",
+                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "404", description = "Charge not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<APIResponse<PayoutChargeCommissionResponse>> update(
+            @PathVariable String id,
+            @Valid @RequestBody PayoutChargeCommissionRequest request) {
 
-            @RequestParam(name = AppConstant.PAGE_SIZE_PROPERTY_NAME,
-                    defaultValue = AppConstant.PAGE_SIZE_DEFAULT_VALUE,
-                    required = false) int pageSize,
+        PayoutChargeCommissionModel model =
+                objectMapper.convertValue(request, PayoutChargeCommissionModel.class);
 
-            @RequestParam(name = AppConstant.SORT_BY_PROPERTY_NAME,
-                    defaultValue = AppConstant.SORT_BY_DEFAULT_VALUE,
-                    required = false) String sortBy,
+        PayoutChargeCommissionResponse response = service.update(id, model);
 
-            @RequestParam(name = AppConstant.ORDER_TYPE_PROPERTY_NAME,
-                    defaultValue = AppConstant.ORDER_TYPE_DEFAULT_VALUE,
-                    required = false) String orderType,
-
-            @RequestParam(name = AppConstant.SEARCH_PROPERTY_NAME,
-                    required = false) String searchString
-    ) {
-
-        PageRequest pageRequest;
-
-        if (AppConstant.ORDER_TYPE_DEFAULT_VALUE.equalsIgnoreCase(orderType)) {
-            pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-        } else {
-            pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
-        }
-
-        PaginatedResponse<PayoutChargeCommissionResponse> response =
-                payoutChargeCommissionService.getAllPayoutChargeCommission(pageRequest);
-
-        return ResponseUtil.success(
-                "Payout Charge Commission fetched successfully",
-                response,
-                HttpStatus.OK
-        );
+        return ResponseUtil.success("Charge updated successfully", response, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<APIResponse<Object>> deletePayoutChargeCommission(@PathVariable String id) {
-        payoutChargeCommissionService.deletePayoutChargeCommission(id);
-        return ResponseUtil.success(
-                "Payout Charge Commission deleted successfully",
-                null,
-                HttpStatus.OK
-        );
+    @Operation(summary = "Delete Payout Commission Charge", description = "Delete Payout Charge Commission by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Charge deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Charge not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<APIResponse<String>> delete(@PathVariable String id) {
+
+        service.delete(id);
+
+        return ResponseUtil.success("Charge deleted successfully", "Deleted", HttpStatus.OK);
     }
 
 }
