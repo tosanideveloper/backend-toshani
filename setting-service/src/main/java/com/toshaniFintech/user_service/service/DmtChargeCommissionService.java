@@ -1,19 +1,17 @@
 package com.toshaniFintech.user_service.service;
 
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
-import com.toshaniFintech.user_service.dto.request.DmtChargeCommissionRequest;
+import com.toshaniFintech.user_service.dto.request.DmtChargeCommissionGetRequest;
 import com.toshaniFintech.user_service.dto.response.DmtChargeCommissionResponse;
-import org.springframework.data.domain.PageRequest;
+import com.toshaniFintech.user_service.model.DmtChargeCommissionModel;
 
 public interface DmtChargeCommissionService {
-    DmtChargeCommissionResponse createDmtChargeCommission(DmtChargeCommissionRequest dmtChargeCommissionRequest);
+    DmtChargeCommissionModel create(DmtChargeCommissionModel model);
 
-    PaginatedResponse<DmtChargeCommissionResponse> getAllDmtChargeCommission(PageRequest pageRequest);
-
-    DmtChargeCommissionResponse getDmtChargeCommissionById(String id);
-
-    DmtChargeCommissionResponse updateDmtChargeCommission(String id, DmtChargeCommissionRequest dmtChargeCommissionModel);
-
-    void deleteDmtChargeCommission(String id);
+    PaginatedResponse<DmtChargeCommissionResponse> fetchDmtChargeCommission(
+            DmtChargeCommissionGetRequest request);
+    DmtChargeCommissionResponse getById(String id);
+    DmtChargeCommissionResponse update(String id, DmtChargeCommissionModel model);
+    void delete(String id);
 }
 
