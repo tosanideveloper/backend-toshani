@@ -1,11 +1,13 @@
 package com.toshaniFintech.user_service.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
-import com.toshaniFintech.common.exception.model.BadRequestException;
-import com.toshaniFintech.common.exception.model.NotFoundException;
-import com.toshaniFintech.user_service.dto.request.PayoutChargeCommissionRequest;
+import com.toshaniFintech.common.utils.Utility;
+import com.toshaniFintech.user_service.dto.request.PayoutChargeCommissionGetRequest;
 import com.toshaniFintech.user_service.dto.response.PayoutChargeCommissionResponse;
 import com.toshaniFintech.user_service.entity.PayoutChargeCommissionEntity;
+import com.toshaniFintech.user_service.mapper.PayoutChargeCommissionMapper;
+import com.toshaniFintech.user_service.model.PayoutChargeCommissionModel;
 import com.toshaniFintech.user_service.repository.PayoutChargeCommissionRepository;
 import com.toshaniFintech.user_service.service.PayoutChargeCommissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,95 +15,93 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PayoutChargeCommissionServiceImpl implements PayoutChargeCommissionService {
     @Autowired
-    private PayoutChargeCommissionRepository payoutChargeCommissionRepository;
+    private PayoutChargeCommissionRepository repository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private PayoutChargeCommissionMapper payoutChargeCommissionMapper;
 
     @Override
-    public PayoutChargeCommissionResponse createPayoutChargeCommission
-            (PayoutChargeCommissionRequest payoutChargeCommissionRequest){
-        PayoutChargeCommissionEntity entity = mapToEntity(payoutChargeCommissionRequest);
-        PayoutChargeCommissionEntity savedEntity = payoutChargeCommissionRepository.save(entity);
-        return mapToModel(savedEntity);
+    public PayoutChargeCommissionModel create(PayoutChargeCommissionModel model) {
+        PayoutChargeCommissionEntity entity =
+                objectMapper.convertValue(model, PayoutChargeCommissionEntity.class);
+
+        PayoutChargeCommissionEntity saved = repository.save(entity);
+
+        return objectMapper.convertValue(saved, PayoutChargeCommissionModel.class);
     }
 
     @Override
-    public PayoutChargeCommissionResponse getPayoutChargeCommissionById(String id) {
-        PayoutChargeCommissionEntity entity = payoutChargeCommissionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Payout Charge Commission Entity not found with id: " + id));
-        return mapToModel(entity);
-    }
+    public PaginatedResponse<PayoutChargeCommissionResponse> fetchPayoutChargeCommission(
+            PayoutChargeCommissionGetRequest request) {
 
-    @Override
-    public PayoutChargeCommissionResponse updatePayoutChargeCommission
-            (String id, PayoutChargeCommissionRequest payoutChargeCommissionRequest) {
-        PayoutChargeCommissionEntity existingEntity = payoutChargeCommissionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Payout Charge Commission not found with id: " + id));
-
-        existingEntity.setMinAmount(payoutChargeCommissionRequest.getMinAmount());
-        existingEntity.setMaxAmount(payoutChargeCommissionRequest.getMaxAmount());
-        existingEntity.setTxnType(payoutChargeCommissionRequest.getTxnType());
-        existingEntity.setChargeType(payoutChargeCommissionRequest.getChargeType());
-        existingEntity.setCharge(payoutChargeCommissionRequest.getCharge());
-
-        PayoutChargeCommissionEntity updatedEntity = payoutChargeCommissionRepository.save(existingEntity);
-        return mapToModel(updatedEntity);
-    }
-
-    @Override
-    public PaginatedResponse<PayoutChargeCommissionResponse> getAllPayoutChargeCommission(PageRequest pageRequest) {
-
-        Page<PayoutChargeCommissionEntity> payoutChargeCommissionPage = payoutChargeCommissionRepository.findAll(pageRequest);
-
-        PaginatedResponse<PayoutChargeCommissionResponse> response =
-                new PaginatedResponse<>(payoutChargeCommissionPage);
-
-        response.setContent(
-                payoutChargeCommissionPage.getContent()
-                        .stream()
-                        .map(this::mapToModel)
-                        .collect(Collectors.toList())
+        PageRequest page = Utility.pageRequest(
+                request.getPageNo(),
+                request.getPageSize(),
+                request.getSortBy(),
+                request.getOrderBy()
         );
 
-        return response;
-    }
+        Page<PayoutChargeCommissionEntity> paginatedContent =
+                repository.fetchPayoutChargeCommission(
+                        request.getSearch(),
+                        request.getSearchByField(),
+                        page
+                );
 
+        List<PayoutChargeCommissionResponse> response = new ArrayList<>();
+        paginatedContent.getContent().forEach(content ->
+                response.add(payoutChargeCommissionMapper.toResponse(content))
+        );
+
+        return Utility.paginatedResponseForSubList(
+                paginatedContent.getNumber(),
+                paginatedContent.getTotalPages(),
+                paginatedContent.getSize(),
+                paginatedContent.getNumberOfElements(),
+                paginatedContent.getTotalElements(),
+                response
+        );
+    }
     @Override
-    public void deletePayoutChargeCommission(String id) {
-        PayoutChargeCommissionEntity existingEntity = payoutChargeCommissionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Payout Charge Commission not found with id: " + id));
+    public PayoutChargeCommissionResponse getById(String id) {
 
-        if (!existingEntity.isActive()) {
-            throw new BadRequestException("Payout Charge Commission already deleted");
-        }
-        existingEntity.setActive(false);
-        existingEntity.setDeletedAt(LocalDateTime.now());
-        payoutChargeCommissionRepository.save(existingEntity);
+        PayoutChargeCommissionEntity entity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payout Charge not found with id: " + id));
+
+        return payoutChargeCommissionMapper.toResponse(entity);
     }
-    private PayoutChargeCommissionEntity mapToEntity(PayoutChargeCommissionRequest model) {
-        PayoutChargeCommissionEntity entity = new PayoutChargeCommissionEntity();
+    @Override
+    public PayoutChargeCommissionResponse update(String id, PayoutChargeCommissionModel model) {
+
+        PayoutChargeCommissionEntity entity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payout Charge not found with id: " + id));
+
         entity.setMinAmount(model.getMinAmount());
         entity.setMaxAmount(model.getMaxAmount());
         entity.setTxnType(model.getTxnType());
         entity.setChargeType(model.getChargeType());
         entity.setCharge(model.getCharge());
-        return entity;
-    }
 
-    private PayoutChargeCommissionResponse mapToModel(PayoutChargeCommissionEntity entity) {
-        PayoutChargeCommissionResponse response = new PayoutChargeCommissionResponse();
-        response.setId(entity.getId());
-        response.setMinAmount(entity.getMinAmount());
-        response.setMaxAmount(entity.getMaxAmount());
-        response.setTxnType(entity.getTxnType());
-        response.setChargeType(entity.getChargeType());
-        response.setCharge(entity.getCharge());
-        response.setActive(entity.isActive());
-        return response;
+        PayoutChargeCommissionEntity updatedEntity = repository.save(entity);
+
+        return payoutChargeCommissionMapper.toResponse(updatedEntity);
+    }
+    @Override
+    public void delete(String id) {
+
+        PayoutChargeCommissionEntity entity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payout Charge not found with id: " + id));
+
+        repository.delete(entity);
     }
 }
 

@@ -1,16 +1,16 @@
 package com.toshaniFintech.user_service.service;
 
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
-import com.toshaniFintech.user_service.dto.request.PayoutChargeCommissionRequest;
+import com.toshaniFintech.user_service.dto.request.PayoutChargeCommissionGetRequest;
 import com.toshaniFintech.user_service.dto.response.PayoutChargeCommissionResponse;
-import org.springframework.data.domain.PageRequest;
+import com.toshaniFintech.user_service.model.PayoutChargeCommissionModel;
 
 public interface PayoutChargeCommissionService {
-    PayoutChargeCommissionResponse createPayoutChargeCommission
-            (PayoutChargeCommissionRequest payoutChargeCommissionRequest);
-    PayoutChargeCommissionResponse getPayoutChargeCommissionById(String id);
-    PayoutChargeCommissionResponse updatePayoutChargeCommission
-            (String id, PayoutChargeCommissionRequest payoutChargeCommissionModel);
-    PaginatedResponse< PayoutChargeCommissionResponse> getAllPayoutChargeCommission(PageRequest pageRequest);
-    void deletePayoutChargeCommission(String id);
+    PayoutChargeCommissionModel create(PayoutChargeCommissionModel model);
+
+    PaginatedResponse<PayoutChargeCommissionResponse> fetchPayoutChargeCommission(
+            PayoutChargeCommissionGetRequest request);
+    PayoutChargeCommissionResponse getById(String id);
+    PayoutChargeCommissionResponse update(String id, PayoutChargeCommissionModel model);
+    void delete(String id);
 }

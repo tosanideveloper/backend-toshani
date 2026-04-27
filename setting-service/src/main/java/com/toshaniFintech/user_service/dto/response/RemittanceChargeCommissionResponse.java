@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 public class RemittanceChargeCommissionResponse {
     private String id;
     private Integer slNo;
-    private BigDecimal minAmount;
-    private BigDecimal maxAmount;
+    private Double minAmount;
+    private Double maxAmount;
     private String chargeType;
-    private BigDecimal charge;
+    private Double charge;
     private Boolean active;
 }
