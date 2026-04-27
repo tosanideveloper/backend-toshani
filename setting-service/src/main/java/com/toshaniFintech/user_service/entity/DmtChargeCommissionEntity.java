@@ -14,26 +14,48 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "dmt_charge_commission")
 public class DmtChargeCommissionEntity extends BaseEntity {
-    @Column(name = "min_amount", nullable = false)
-    private BigDecimal minAmount;
+    @Column(name = "min_amount")
+    private Double minAmount;
 
-    @Column(name = "max_amount", nullable = false)
-    private BigDecimal maxAmount;
+    @Column(name = "max_amount")
+    private Double maxAmount;
 
-    @Column(name = "comm_type", nullable = false)
+    @Column(name = "comm_type")
     private String commType;
 
-    @Column(name = "comm", nullable = false)
-    private BigDecimal comm;
+    @Column(name = "comm")
+    private Double comm;
 
-    public DmtChargeCommissionEntity(){
+    public Double getMinAmount() {
+        return minAmount;
     }
-    public DmtChargeCommissionEntity(Long id,BigDecimal minAmount,BigDecimal maxAmount,
-                                     String commType,BigDecimal comm){
-      this.minAmount = minAmount;
-      this.maxAmount = maxAmount;
-      this.commType = commType;
-      this.comm = comm;
+
+    public void setMinAmount(Double minAmount) {
+        this.minAmount = minAmount;
     }
+
+    public Double getMaxAmount() {
+        return maxAmount;
+    }
+
+    public void setMaxAmount(Double maxAmount) {
+        this.maxAmount = maxAmount;
+    }
+
+    public String getCommType() {return commType;}
+
+    public void setCommType(String commType) {
+        this.commType = commType;
+    }
+
+    public Double getComm() {
+        return comm;
+    }
+
+    public void setComm(Double comm) {
+        this.comm = comm;
+    }
+
+
 
 }

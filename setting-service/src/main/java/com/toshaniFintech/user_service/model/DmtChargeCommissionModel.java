@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 @Data
 public class DmtChargeCommissionModel {
     private String slNo;
-    private BigDecimal minAmount;
-    private BigDecimal maxAmount;
+    private Double minAmount;
+    private Double maxAmount;
     private String commType;
-    private BigDecimal comm;
+    private Double comm;
 }
