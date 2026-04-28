@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/activity-report")
+@RequestMapping("api/v1/activity-report")
 @Tag(name = "Activity Report API", description = "APIs for Activity Report CRUD")
 public class ActivityReportController {
     @Autowired

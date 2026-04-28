@@ -8,16 +8,16 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "th_remittance_charge_commission")
 public class RemittanceChargeCommissionEntity extends BaseEntity {
-    @Column(name = "min_amount", nullable = false)
+    @Column(name = "min_amount")
     private Double minAmount;
 
-    @Column(name = "max_amount", nullable = false)
+    @Column(name = "max_amount")
     private Double maxAmount;
 
-    @Column(name = "charge_type", nullable = false)
+    @Column(name = "charge_type")
     private String chargeType;
 
-    @Column(name = "charge", nullable = false)
+    @Column(name = "charge")
     private Double charge;
 
     public Double getMinAmount() {

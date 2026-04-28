@@ -22,7 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(" /api/v1/dmt-charge-commission")
+@RequestMapping("api/v1/dmt-charge-commission")
 @Tag(name = " Dmt Charge Commission Service API", description = "APIs for Dmt Charge Commission Commission Service CRUD")
 public class DmtChargeCommissionController {
     @Autowired

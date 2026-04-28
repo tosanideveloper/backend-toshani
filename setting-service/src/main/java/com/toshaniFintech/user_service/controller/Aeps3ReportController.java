@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/aeps3-report")
+@RequestMapping("api/v1/aeps3-report")
 @Tag(name = "Aeps3 Report API", description = "APIs for Manage AEPS3 Report CRUD")
 public class Aeps3ReportController {
     @Autowired

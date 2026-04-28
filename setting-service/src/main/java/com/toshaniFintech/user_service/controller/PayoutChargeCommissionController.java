@@ -22,7 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(" /api/v1/payout-charge-commission")
+@RequestMapping("api/v1/payout-charge-commission")
 @Tag(name = " Payout Charge Commission Service API", description = "APIs for Manage Payout Charge Commission Service CRUD")
 public class PayoutChargeCommissionController {
     @Autowired
