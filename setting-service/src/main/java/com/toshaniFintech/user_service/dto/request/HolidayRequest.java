@@ -10,12 +10,15 @@ import java.time.LocalDate;
 @Data
 public class HolidayRequest {
     @NotBlank(message = "Holiday Name must not be blank")
-    @Size(max = 50, message = "Holiday Name must not exceed 50 characters")
+    @Size(max = 50)
     private String holidayName;
 
-    private String holidayDate;
+    @NotNull(message = "Holiday date is required")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate holidayDate;
 
     @NotBlank(message = "Holiday type is required")
     private String holidayType;
+
 }
 

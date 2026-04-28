@@ -17,7 +17,7 @@ public class HolidayEntity extends BaseEntity {
     @Column(name = "holiday_name", nullable = false)
     private String holidayName;
     @Column(name = "holiday_date", nullable = false)
-    private String holidayDate;
+    private LocalDate holidayDate;
     @Column(name = "holiday_type", nullable = false)
     private String holidayType;
 }

@@ -8,6 +8,6 @@ import java.time.LocalDate;
 public class HolidaysModel {
     private String id;
     private String holidayName;
-    private LocalDate holidayDate;
+    private String holidayDate;
     private String holidayType;
 }
