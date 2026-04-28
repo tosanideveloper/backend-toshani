@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/aeps2-merchant-report")
+@RequestMapping("api/v1/aeps2-merchant-report")
 @Tag(name = "Aeps2 Merchant Report API", description = "APIs for Manage AEPS2 Merchant Report CRUD")
 public class Aeps2MerchantReportController {
     @Autowired

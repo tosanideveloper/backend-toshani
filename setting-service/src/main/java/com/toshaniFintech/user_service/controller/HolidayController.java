@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/api/v1/holiday")
+@RequestMapping("api/v1/holiday")
 @Tag(name = "Holiday API", description = "APIs for Holiday CRUD")
 public class HolidayController {
     

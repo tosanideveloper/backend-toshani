@@ -22,7 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/remittance-charge-commission")
+@RequestMapping("api/v1/remittance-charge-commission")
 @Tag(name = "Remittance Charge Commission Service API",
         description = "APIs for Manage Remittance Charge Commission Service CRUD")
 public class RemittanceChargeCommissionController {
