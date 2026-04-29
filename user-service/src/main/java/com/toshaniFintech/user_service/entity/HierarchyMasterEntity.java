@@ -2,60 +2,121 @@ package com.toshaniFintech.user_service.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "th_hirarchy_master")
 public class HierarchyMasterEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @Column(name = "hirarchy_uuid")
-    private String hirarchyuuid;
+        @Column(name = "hirarchy_uuid")
+        private String hirarchyUuid;
 
-    @Column(name = "hirarchy_level")
-    private String hirarchylevel;
+        @Column(name = "hirarchy_level")
+        private String hirarchyLevel;
 
-    @Column(name = "client_uuid")
-    private String clientuuid;
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(
+                name = "client_uuid",
+                referencedColumnName = "client_uuid",
+                foreignKey = @ForeignKey(name = "fk_hierarchy_client_uuid")
+        )
+        private ClientMasterEntity clientMaster;
 
-    @Column(name = "partner_uuid")
-    private String partneruuid;
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(
+                name = "partner_uuid",
+                referencedColumnName = "partner_uuid",
+                foreignKey = @ForeignKey(name = "fk_hierarchy_partner_uuid")
+        )
+        private PartnerMasterEntity partnerMaster;
 
-    @Column(name = "channel_uuid")
-    private String channeluuid;
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(
+                name = "channel_uuid",
+                referencedColumnName = "channel_uuid",
+                foreignKey = @ForeignKey(name = "fk_hierarchy_channel_uuid")
+        )
+        private ChannelMasterEntity channelMaster;
 
-    @Column(name = "hirarchy_name")
-    private String hirarchyname;
+        @Column(name = "hirarchy_name")
+        private String hirarchyName;
 
-    @Column(name = "parent_hirarchy")
-    private String parenthirarchy;
+        @Column(name = "parent_hirarchy")
+        private String parentHierarchy;
 
-    @Column(name = "hirarchy_status")
-    private String hirarchystatus;
+        @Column(name = "hirarchy_status")
+        private String hirarchyStatus;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+        public Long getId() {
+            return id;
+        }
 
-    public String getHirarchyuuid() { return hirarchyuuid; }
-    public void setHirarchyuuid(String hirarchyuuid) { this.hirarchyuuid = hirarchyuuid; }
+        public void setId(Long id) {
+            this.id = id;
+        }
 
-    public String getHirarchylevel() { return hirarchylevel; }
-    public void setHirarchylevel(String hirarchylevel) { this.hirarchylevel = hirarchylevel; }
+        public String getHirarchyUuid() {
+            return hirarchyUuid;
+        }
 
-    public String getClientuuid() { return clientuuid; }
-    public void setClientuuid(String clientuuid) { this.clientuuid = clientuuid; }
+        public void setHirarchyUuid(String hirarchyUuid) {
+            this.hirarchyUuid = hirarchyUuid;
+        }
 
-    public String getPartneruuid() { return partneruuid; }
-    public void setPartneruuid(String partneruuid) { this.partneruuid = partneruuid; }
+        public String getHirarchyLevel() {
+            return hirarchyLevel;
+        }
 
-    public String getChanneluuid() { return channeluuid; }
-    public void setChanneluuid(String channeluuid) { this.channeluuid = channeluuid; }
+        public void setHirarchyLevel(String hirarchyLevel) {
+            this.hirarchyLevel = hirarchyLevel;
+        }
 
-    public String getHirarchyname() { return hirarchyname; }
-    public void setHirarchyname(String hirarchyname) { this.hirarchyname = hirarchyname; }
+        public ClientMasterEntity getClientMaster() {
+            return clientMaster;
+        }
 
-    public String getParenthirarchy() { return parenthirarchy; }
-    public void setParenthirarchy(String parenthirarchy) { this.parenthirarchy = parenthirarchy; }
+        public void setClientMaster(ClientMasterEntity clientMaster) {
+            this.clientMaster = clientMaster;
+        }
 
-    public String getHirarchystatus() { return hirarchystatus; }
-    public void setHirarchystatus(String hirarchystatus) { this.hirarchystatus = hirarchystatus; }
-}
+        public PartnerMasterEntity getPartnerMaster() {
+            return partnerMaster;
+        }
+
+        public void setPartnerMaster(PartnerMasterEntity partnerMaster) {
+            this.partnerMaster = partnerMaster;
+        }
+
+        public ChannelMasterEntity getChannelMaster() {
+            return channelMaster;
+        }
+
+        public void setChannelMaster(ChannelMasterEntity channelMaster) {
+            this.channelMaster = channelMaster;
+        }
+
+        public String getHirarchyName() {
+            return hirarchyName;
+        }
+
+        public void setHirarchyName(String hirarchyName) {
+            this.hirarchyName = hirarchyName;
+        }
+
+        public String getParentHierarchy() {
+            return parentHierarchy;
+        }
+
+        public void setParentHierarchy(String parentHierarchy) {
+            this.parentHierarchy = parentHierarchy;
+        }
+
+        public String getHirarchyStatus() {
+            return hirarchyStatus;
+        }
+
+        public void setHirarchyStatus(String hirarchyStatus) {
+            this.hirarchyStatus = hirarchyStatus;
+        }
+    }

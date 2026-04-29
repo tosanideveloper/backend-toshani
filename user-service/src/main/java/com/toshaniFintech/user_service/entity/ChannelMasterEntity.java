@@ -1,7 +1,9 @@
 package com.toshaniFintech.user_service.entity;
+
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "th_channel_master")
 public class ChannelMasterEntity {
 
     @Id
@@ -9,35 +11,78 @@ public class ChannelMasterEntity {
     private Long id;
 
     @Column(name = "channel_uuid")
-    private String channeluuid;
+    private String channelUuid;
 
-    @Column(name = "client_uuid")
-    private String clientuuid;
 
-    @Column(name = "partner_uuid")
-    private String partneruuid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "client_uuid",
+            referencedColumnName = "client_uuid",
+            foreignKey = @ForeignKey(name = "fk_channel_client_uuid")
+    )
+    private ClientMasterEntity clientMaster;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "partner_uuid",
+            referencedColumnName = "partner_uuid",
+            foreignKey = @ForeignKey(name = "fk_channel_partner_uuid")
+    )
+    private PartnerMasterEntity partnerMaster;
 
     @Column(name = "channel_name")
-    private String channelname;
+    private String channelName;
 
     @Column(name = "channel_status")
-    private String channelstatus;
+    private String channelStatus;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public ChannelMasterEntity() {}
 
-    public String getChanneluuid() { return channeluuid; }
-    public void setChanneluuid(String channeluuid) { this.channeluuid = channeluuid; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getClientuuid() { return clientuuid; }
-    public void setClientuuid(String clientuuid) { this.clientuuid = clientuuid; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getPartneruuid() { return partneruuid; }
-    public void setPartneruuid(String partneruuid) { this.partneruuid = partneruuid; }
+    public String getChannelUuid() {
+        return channelUuid;
+    }
 
-    public String getChannelname() { return channelname; }
-    public void setChannelname(String channelname) { this.channelname = channelname; }
+    public void setChannelUuid(String channelUuid) {
+        this.channelUuid = channelUuid;
+    }
 
-    public String getChannelstatus() { return channelstatus; }
-    public void setChannelstatus(String channelstatus) { this.channelstatus = channelstatus; }
+    public ClientMasterEntity getClientMaster() {
+        return clientMaster;
+    }
+
+    public void setClientMaster(ClientMasterEntity clientMaster) {
+        this.clientMaster = clientMaster;
+    }
+
+    public PartnerMasterEntity getPartnerMaster() {
+        return partnerMaster;
+    }
+
+    public void setPartnerMaster(PartnerMasterEntity partnerMaster) {
+        this.partnerMaster = partnerMaster;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getChannelStatus() {
+        return channelStatus;
+    }
+
+    public void setChannelStatus(String channelStatus) {
+        this.channelStatus = channelStatus;
+    }
 }

@@ -2,7 +2,32 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/auth-service/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/auth-service/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/auth-service/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/eureka-client/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eureka-client/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/eureka-client/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/gateway-service/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gateway-service/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/gateway-service/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/notification-service/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/notification-service/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/notification-service/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/parent-pom/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/parent-pom/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/parent-pom/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/setting-service/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/setting-service/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/setting-service/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/user-service/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/user-service/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/user-service/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/utility/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/utility/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/utility/src/test/java" isTestSource="true" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

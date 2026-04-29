@@ -5,6 +5,7 @@ com\toshaniFintech\common\utils\Utility.class
 com\toshaniFintech\common\exception\model\NotFoundException.class
 com\toshaniFintech\common\dto\response\APIResponse.class
 com\toshaniFintech\common\exception\model\GlobalExceptionHandler.class
+com\toshaniFintech\common\enums\UserType.class
 com\toshaniFintech\common\CommonUtilityApp.class
 com\toshaniFintech\common\entity\Users.class
 com\toshaniFintech\common\repository\UsersRepository.class

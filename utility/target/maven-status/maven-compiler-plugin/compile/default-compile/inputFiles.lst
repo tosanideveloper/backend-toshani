@@ -5,6 +5,7 @@ D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\dto\r
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\utils\ResponseUtil.java
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\dto\response\APIErrorResponse.java
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\enums\UserStatus.java
+D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\enums\UserType.java
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\utils\AppConstant.java
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\dto\response\APIResponse.java
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\entity\BaseEntity.java
@@ -16,3 +17,4 @@ D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\excep
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\dto\response\UsersResponse.java
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\exception\model\BadRequestException.java
 D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\dto\response\PaginatedResponse.java
+D:\Toshani\backend-toshani\utility\src\main\java\com\toshaniFintech\common\utils\Utility.java
