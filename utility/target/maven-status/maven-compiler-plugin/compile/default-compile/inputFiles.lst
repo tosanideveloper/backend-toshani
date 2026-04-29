@@ -2,6 +2,7 @@ D:\backend-toshani-NEW\utility\src\main\java\com\toshaniFintech\common\dto\respo
 D:\backend-toshani-NEW\utility\src\main\java\com\toshaniFintech\common\dto\response\APIResponse.java
 D:\backend-toshani-NEW\utility\src\main\java\com\toshaniFintech\common\entity\BaseEntity.java
 D:\backend-toshani-NEW\utility\src\main\java\com\toshaniFintech\common\entity\Users.java
+D:\backend-toshani-NEW\utility\src\main\java\com\toshaniFintech\common\enums\UserType.java
 D:\backend-toshani-NEW\utility\src\main\java\com\toshaniFintech\common\dto\response\PaginatedResponse.java
 D:\backend-toshani-NEW\utility\src\main\java\com\toshaniFintech\common\exception\model\NotFoundException.java
 D:\backend-toshani-NEW\utility\src\main\java\com\toshaniFintech\common\dto\response\APIErrorResponse.java
