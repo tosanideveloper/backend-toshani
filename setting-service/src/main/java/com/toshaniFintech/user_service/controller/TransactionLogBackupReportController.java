@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1/transaction-log-backup-report")
-@Tag(name = "Transaction Log Backup Report Service API",
-        description = "APIs for Transaction Log Backup Report Service CRUD")
+@Tag(name = "Transaction Log Backup Report Service API", description = "APIs for Transaction Log Backup Report Service CRUD")
 public class TransactionLogBackupReportController {
     @Autowired
     private TransactionLogBackupReportService transactionLogBackupReportService;
