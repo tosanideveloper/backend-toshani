@@ -15,8 +15,8 @@ public interface MatmCommissionRepository extends JpaRepository<MatmCommissionEn
     @Query("SELECT p FROM MatmCommissionEntity p " +
             "WHERE (:commType IS NULL OR p.commType IN :commType) " +
             "AND (:search IS NULL OR :search = '' " +
-            "   OR (:searchByField = 'commType' AND LOWER(p.commType) LIKE LOWER(CONCAT('%', :search, '%')) )")
-
+            "   OR (:searchByField = 'commType' AND LOWER(p.commType) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            ")")
     Page<MatmCommissionEntity> fetchAll(
             @Param("commType") java.util.List<String> commType,
             @Param("search") String search,

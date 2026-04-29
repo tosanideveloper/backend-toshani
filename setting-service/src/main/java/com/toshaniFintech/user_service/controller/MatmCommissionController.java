@@ -33,9 +33,9 @@ public class MatmCommissionController {
     private ObjectMapper objectMapper;
 
     @PostMapping("/create")
-    @Operation(summary = "Create Matm", description = "Create Matm Commission")
+    @Operation(summary = "Create Matm Commission", description = "Create Matm Commission")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Matm created successfully",
+            @ApiResponse(responseCode = "200", description = "Matm Commission created successfully",
                     content = @Content(schema = @Schema(implementation = APIResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -51,14 +51,14 @@ public class MatmCommissionController {
         MatmCommissionResponseDTO response =
                 objectMapper.convertValue(saved, MatmCommissionResponseDTO.class);
 
-        return ResponseUtil.success("Matm created successfully", response, HttpStatus.OK);
+        return ResponseUtil.success("Matm Commission created successfully", response, HttpStatus.OK);
     }
 
     @PostMapping("/all")
-    @Operation(summary = "Get Matm",
+    @Operation(summary = "Get Matm Commission",
             description = "Get Matm commission with pagination and search")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Matm fetched successfully"),
+            @ApiResponse(responseCode = "200", description = "Matm Commission fetched successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
@@ -69,10 +69,10 @@ public class MatmCommissionController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get Matm by ID", description = "Fetch single Matm by ID")
+    @Operation(summary = "Get Matm Commission by ID", description = "Fetch single Matm Commission by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Matm fetched successfully"),
-            @ApiResponse(responseCode = "404", description = "Matm not found"),
+            @ApiResponse(responseCode = "200", description = "Matm Commission fetched successfully"),
+            @ApiResponse(responseCode = "404", description = "Matm Commission not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<APIResponse<MatmCommissionResponseDTO>> getById(
@@ -80,16 +80,16 @@ public class MatmCommissionController {
 
         MatmCommissionResponseDTO matmCommissionResponseDTO = matmCommissionService.getById(id);
 
-        return ResponseUtil.success("Matm fetched successfully", matmCommissionResponseDTO, HttpStatus.OK);
+        return ResponseUtil.success("Matm Commission fetched successfully", matmCommissionResponseDTO, HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
-    @Operation(summary = "Update Matm", description = "Update Matm commission")
+    @Operation(summary = "Update Matm Commission", description = "Update Matm commission")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Matm updated successfully",
+            @ApiResponse(responseCode = "200", description = "Matm Commission updated successfully",
                     content = @Content(schema = @Schema(implementation = APIResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "404", description = "Matm not found"),
+            @ApiResponse(responseCode = "404", description = "Matm Commission not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<APIResponse<MatmCommissionResponseDTO>> update(
@@ -101,20 +101,20 @@ public class MatmCommissionController {
 
         MatmCommissionResponseDTO matmCommissionResponseDTO = matmCommissionService.update(id, matmCommissionModel);
 
-        return ResponseUtil.success("Charge updated successfully", matmCommissionResponseDTO, HttpStatus.OK);
+        return ResponseUtil.success("Matm Commission updated successfully", matmCommissionResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    @Operation(summary = "Delete Matm", description = "Delete Matm commission by ID")
+    @Operation(summary = "Delete Matm Commission", description = "Delete Matm commission by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Matm deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Matm not found"),
+            @ApiResponse(responseCode = "200", description = "Matm Commission deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Matm Commission not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<APIResponse<String>> delete(@PathVariable String id) {
 
         matmCommissionService.delete(id);
 
-        return ResponseUtil.success("Matm deleted successfully", "Deleted", HttpStatus.OK);
+        return ResponseUtil.success("Matm Commission deleted successfully", "Deleted", HttpStatus.OK);
     }
 }
