@@ -35,6 +35,7 @@
         <module>../setting-service</module>
         <module>../user-service</module>
         <module>../notification-service</module>
+        <module>../settlement-service</module>
     </modules>
 
     <dependencyManagement>

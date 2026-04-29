@@ -1,0 +1,120 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Toshani FinTech Backend – .gitignore
+# Java 17 · Spring Boot 3.x · Maven Multi-Module · PostgreSQL
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Maven build output ────────────────────────────────────────────────────────
+target/
+**/target/
+
+# ── Compiled Java class files ─────────────────────────────────────────────────
+*.class
+
+# ── Package / Archive files ───────────────────────────────────────────────────
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ── Maven wrapper properties ──────────────────────────────────────────────────
+.mvn/wrapper/maven-wrapper.properties
+
+# ── Spring Boot env-specific configs (contain secrets) ───────────────────────
+**/application-dev.yaml
+**/application-dev.properties
+**/application-prod.yaml
+**/application-prod.properties
+**/application-local.yaml
+**/application-local.properties
+
+# ── Log files ─────────────────────────────────────────────────────────────────
+*.log
+*.log.*
+logs/
+log/
+
+# ── IntelliJ IDEA ─────────────────────────────────────────────────────────────
+.idea/
+**/.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+
+# ── Eclipse / STS ─────────────────────────────────────────────────────────────
+.apt_generated
+.classpath
+**/.classpath
+.factorypath
+.project
+**/.project
+.settings/
+**/.settings/
+.springBeans
+.sts4-cache
+bin/
+
+# ── VS Code ───────────────────────────────────────────────────────────────────
+.vscode/
+*.code-workspace
+
+# ── NetBeans ──────────────────────────────────────────────────────────────────
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+
+# ── OS generated files ────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ── Environment / Secret files ────────────────────────────────────────────────
+.env
+.env.*
+*.env
+secrets.yaml
+secrets.properties
+
+# ── Office / Planning documents ───────────────────────────────────────────────
+*.xlsx
+*.xls
+*.csv
+*.docx
+*.doc
+*.pptx
+*.ppt
+
+# ── Test and coverage output ──────────────────────────────────────────────────
+surefire-reports/
+failsafe-reports/
+coverage/
+*.exec
+
+# ── SonarQube ─────────────────────────────────────────────────────────────────
+.sonar/
+
+# ── Temporary files ───────────────────────────────────────────────────────────
+*.tmp
+*.bak
+*.swp
+*.swo
+.cache/
+tmp/
+temp/
