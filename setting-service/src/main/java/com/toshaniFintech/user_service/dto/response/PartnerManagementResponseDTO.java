@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class PartnerManagementResponseDTO {
+    private String id;
     private String name;
     private String mobileNumber;
     private String uploadPancard;

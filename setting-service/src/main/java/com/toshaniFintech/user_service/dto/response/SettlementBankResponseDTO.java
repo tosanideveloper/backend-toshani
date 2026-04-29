@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 public class SettlementBankResponseDTO {
     private String id;
-    private List<SettlementBankModel> settlementBankModels;
-}
+    private String  date;
+    private List<SettlementBankModel> settlementBankModel;}

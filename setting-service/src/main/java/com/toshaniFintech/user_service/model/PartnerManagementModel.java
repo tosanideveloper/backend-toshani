@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PartnerManagementModel {
+    private String id;
     private String serialNo;
     private String name;
     private String mobileNumber;

@@ -1,0 +1,59 @@
+server:
+  port: 8082
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: user-service
+
+  datasource:
+    url: jdbc:postgresql://toshanidb.cf4ageamuk6x.ap-south-1.rds.amazonaws.com:5432/toshanidb
+    username: postgres
+    password: Aq52earuFJv0JvO5SPHR
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: email-smtp.ap-south-1.amazonaws.com
+    port: 587
+    username: AKIAYNTAOTWDSTLGBF5C
+    password: BDKXtmMkLKG6m6yMv9Fx+Y+STLPN7iQ40RvyhMM3UwXP
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+app:
+  mail:
+    from: noreply@toshani.in
+    support-from: support@toshani.in
+    reset-password-base-url: https://testapi.toshani.in/reset-password
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui/index.html
+    disable-swagger-default-url: true
+
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false

@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class TicketReasonRequestDTO {
-    private String id;
     @NotBlank(message = "Category must not be blank")
     private String category;
 

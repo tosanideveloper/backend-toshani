@@ -32,7 +32,7 @@ public class PartnerManagementImpl implements PartnerManagementService {
 
     @Override
     public PartnerManagementModel createPartnerManagement(PartnerManagementModel partnerManagementModel) {
-        PartnerManagementEntity partnerManagementEntity = partnerManagementRepository.findById(String.valueOf(AbstractPersistable_.id)).orElseThrow(() -> new NotFoundException("Messages not found with id: " + id));
+        PartnerManagementEntity partnerManagementEntity = new PartnerManagementEntity();
         partnerManagementEntity.setSerialNo(partnerManagementModel.getSerialNo());
         partnerManagementEntity.setName(partnerManagementModel.getName());
         partnerManagementEntity.setStatus(partnerManagementModel.getStatus());

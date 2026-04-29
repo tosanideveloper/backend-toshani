@@ -7,13 +7,14 @@ import com.toshaniFintech.user_service.dto.request.SettlementBankRequestDTO;
 import com.toshaniFintech.user_service.dto.response.SettlementBankResponseDTO;
 import com.toshaniFintech.user_service.model.SettlementBankModel;
 import com.toshaniFintech.user_service.service.SettlementBankService;
+
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/settlemt-bank")
-@Tag(name = "Settlement bank API", description = "APIs for Settlement banks CRUD")
+@RequestMapping("/api/v1/settlement-bank")
+@Tag(name = "Settlement Bank API", description = "APIs for Settlement Bank operations")
 public class SettlementBankController {
 
     @Autowired
@@ -32,91 +33,96 @@ public class SettlementBankController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    // ✅ CREATE
     @PostMapping("/create")
-    @Operation(
-            summary = "Settlement Bank",
-            description = "Create a API for Settlement Bank"
-    )
+    @Operation(summary = "Create Settlement Bank", description = "Create new Settlement Bank entry")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Settlement Bank created successfully",
-                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "200", description = "Created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<SettlementBankResponseDTO>> createSettlementBank(@Valid @RequestBody SettlementBankRequestDTO settlementBankRequestDTO) {
-        SettlementBankModel settlementBankModel = objectMapper.convertValue(settlementBankRequestDTO, SettlementBankModel.class);
-        SettlementBankModel updatedModel = settlementBankService.createSettlementBank( settlementBankModel);
-        SettlementBankResponseDTO responseDTO = objectMapper.convertValue(updatedModel, SettlementBankResponseDTO.class);
-        return ResponseUtil.success("Settlement Bank created successfully", responseDTO, HttpStatus.OK);
+    public ResponseEntity<APIResponse<SettlementBankResponseDTO>> createSettlementBank(
+            @Valid @RequestBody SettlementBankRequestDTO request) {
+
+        SettlementBankModel model = objectMapper.convertValue(request, SettlementBankModel.class);
+
+        SettlementBankModel saved = settlementBankService.createSettlementBank(model);
+
+        // 🔥 Wrap into LIST (as per your required response)
+        SettlementBankResponseDTO responseDTO = new SettlementBankResponseDTO();
+        responseDTO.setId(saved.getId());
+        responseDTO.setDate(saved.getDate());
+        responseDTO.setSettlementBankModel(List.of(saved));
+
+        return ResponseUtil.success(
+                "Settlement Bank created successfully",
+                responseDTO,
+                HttpStatus.OK
+        );
     }
 
+    // ✅ GET ALL
     @GetMapping("/all")
-    @Operation(
-            summary = "Settlement Bank",
-            description = "fetch all Settlement Bank"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Settlement Bank fetched successfully",
-                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "User already exists"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
+    @Operation(summary = "Get All Settlement Banks", description = "Fetch all settlement bank records")
+    public ResponseEntity<APIResponse<List<SettlementBankModel>>> getAllSettlementBanks() {
 
-    public ResponseEntity<APIResponse<List<SettlementBankModel>>> getSettlementBanks() {
-        return ResponseUtil.success("Settlement Bank fetched successfully", settlementBankService.getAllSettlementBanks(), HttpStatus.OK);
+        List<SettlementBankModel> list = settlementBankService.getAllSettlementBanks();
+
+        return ResponseUtil.success(
+                "Settlement Banks fetched successfully",
+                list,
+                HttpStatus.OK
+        );
     }
 
+    // ✅ GET BY ID
     @GetMapping("/{id}")
-    @Operation(
-            summary = "Settlement Bank",
-            description = "Get Settlement Bank by ID"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Settlement Bank fetched successfully",
-                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "User already exists"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    public ResponseEntity<APIResponse<SettlementBankModel>> getSettlementBankByID(@PathVariable String id) {
-        return ResponseUtil.success("Settlement Bank fetched successfully", settlementBankService.getSettlementBankByID(id), HttpStatus.OK);
+    @Operation(summary = "Get Settlement Bank by ID", description = "Fetch settlement bank by ID")
+    public ResponseEntity<APIResponse<SettlementBankModel>> getById(@PathVariable String id) {
+
+        SettlementBankModel model = settlementBankService.getSettlementBankByID(id);
+
+        return ResponseUtil.success(
+                "Settlement Bank fetched successfully",
+                model,
+                HttpStatus.OK
+        );
     }
 
+    // ✅ UPDATE
     @PutMapping("/update/{id}")
-    @Operation(
-            summary = "Settlement Bank",
-            description = "Update Settlement Bank by id"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Settlement Bank updated successfully",
-                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "User already exists"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    public ResponseEntity<APIResponse<SettlementBankResponseDTO>> updateSettlementBank(@PathVariable String id, @Valid @RequestBody SettlementBankRequestDTO settlementBankRequestDTO) {
-        SettlementBankModel settlementBankModel = objectMapper.convertValue(settlementBankRequestDTO, SettlementBankModel.class);
-        SettlementBankModel updatedModel = settlementBankService.updateSettlementBank(id, settlementBankModel);
-        SettlementBankResponseDTO responseDTO = objectMapper.convertValue(updatedModel, SettlementBankResponseDTO.class);
-        return ResponseUtil.success("Settlement Bank updated successfully", responseDTO, HttpStatus.OK);
+    @Operation(summary = "Update Settlement Bank", description = "Update existing settlement bank")
+    public ResponseEntity<APIResponse<SettlementBankResponseDTO>> updateSettlementBank(
+            @PathVariable String id,
+            @Valid @RequestBody SettlementBankRequestDTO request) {
+
+        SettlementBankModel model = objectMapper.convertValue(request, SettlementBankModel.class);
+
+        SettlementBankModel updated = settlementBankService.updateSettlementBank(id, model);
+
+        SettlementBankResponseDTO responseDTO = new SettlementBankResponseDTO();
+        responseDTO.setId(updated.getId());
+        responseDTO.setDate(updated.getDate());
+        responseDTO.setSettlementBankModel(List.of(updated));
+
+        return ResponseUtil.success(
+                "Settlement Bank updated successfully",
+                responseDTO,
+                HttpStatus.OK
+        );
     }
 
+    // ✅ DELETE (SOFT DELETE)
     @DeleteMapping("/delete/{id}")
-    @Operation(
-            summary = "Settlement Bank",
-            description = "Delete Settlement Bank"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Settlement Bank deleted successfully",
-                    content = @Content(schema = @Schema(implementation = APIResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "User already exists"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })    public ResponseEntity<APIResponse<Object>> deleteSettlementBank(@PathVariable String id) {
-        settlementBankService.deleteSettlementBank(id);
-        return ResponseUtil.success("Settlement Bank deleted successfully", null, HttpStatus.OK);
-    }
+    @Operation(summary = "Delete Settlement Bank", description = "Soft delete settlement bank")
+    public ResponseEntity<APIResponse<Object>> deleteSettlementBank(@PathVariable String id) {
 
+        settlementBankService.deleteSettlementBank(id);
+
+        return ResponseUtil.success(
+                "Settlement Bank deleted successfully",
+                null,
+                HttpStatus.OK
+        );
+    }
 }
