@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "transaction-log-backup-report")
+@Table(name = "th_transaction-log-backup-report")
 public class TransactionLogBackupReportEntity extends BaseEntity {
     @Column(name = "txn_date")
     private String txnDate;
