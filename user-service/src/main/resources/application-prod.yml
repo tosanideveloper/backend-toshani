@@ -1,19 +1,11 @@
 server:
-  port: 8085
+  port: 8082
+  forward-headers-strategy: framework
+
+swagger:
+  server-url: https://testapi.toshani.in/users
 
 spring:
-  main:
-    allow-bean-definition-overriding: true
-
-  application:
-    name: notification-service
-
-  batch:
-    jdbc:
-      initialize-schema: always
-    job:
-      enabled: false
-
   datasource:
     url: jdbc:postgresql://toshanidb.cf4ageamuk6x.ap-south-1.rds.amazonaws.com:5432/toshanidb
     username: postgres
@@ -21,9 +13,12 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    show-sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
     properties:
       hibernate:
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   mail:
@@ -46,3 +41,10 @@ app:
   mail:
     from: noreply@toshani.in
     support-from: support@toshani.in
+    reset-password-base-url: https://testapi.toshani.in/reset-password
+
+eureka:
+  client:
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true

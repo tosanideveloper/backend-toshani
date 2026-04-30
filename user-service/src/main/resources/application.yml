@@ -1,6 +1,6 @@
 spring:
   application:
-    name: setting-service
+    name: user-service
 
   profiles:
     active: local

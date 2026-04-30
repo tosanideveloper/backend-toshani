@@ -2,10 +2,10 @@ server:
   port: 8082
   forward-headers-strategy: framework
 
-spring:
-  application:
-    name: user-service
+swagger:
+  server-url:
 
+spring:
   datasource:
     url: jdbc:postgresql://toshanidb.cf4ageamuk6x.ap-south-1.rds.amazonaws.com:5432/toshanidb
     username: postgres
@@ -41,16 +41,7 @@ app:
   mail:
     from: noreply@toshani.in
     support-from: support@toshani.in
-    reset-password-base-url: https://testapi.toshani.in/reset-password
-
-springdoc:
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui/index.html
-    disable-swagger-default-url: true
+    reset-password-base-url: http://localhost:8082/reset-password
 
 eureka:
   client:
