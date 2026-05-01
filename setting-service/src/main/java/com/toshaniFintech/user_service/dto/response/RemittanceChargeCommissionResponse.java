@@ -12,5 +12,4 @@ public class RemittanceChargeCommissionResponse {
     private Double maxAmount;
     private String chargeType;
     private Double charge;
-    private Boolean active;
 }

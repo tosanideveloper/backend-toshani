@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/amc-report")
+@RequestMapping("api/v1/amc-report")
 @Tag(name = "Amc Report Service API", description = "APIs for Manage AMC Report Service CRUD")
 public class AmcReportController {
     @Autowired

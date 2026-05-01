@@ -11,5 +11,4 @@ public class PayoutChargeCommissionResponse {
     private String txnType;
     private String chargeType;
     private Double charge;
-    private boolean active;
 }
