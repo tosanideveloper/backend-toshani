@@ -6,5 +6,4 @@ import com.toshaniFintech.user_service.dto.response.AdminDebitWalletReportRespon
 
 public interface AdminDebitWalletReportService {
     PaginatedResponse<AdminDebitWalletReportResponse> fetchAdminDebitWalletReport( AdminDebitWalletReportRequest request);
-
 }
