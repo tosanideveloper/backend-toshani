@@ -115,9 +115,13 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public SecurityStatusResponse getMpinStatus(String username) {
         UserSecurity security = getUserSecurity(username);
-
+        boolean mPinEnabled = Boolean.TRUE.equals(security.getMpinEnabled());
+        boolean authEnabled = Boolean.TRUE.equals(security.getGoogleAuthEnabled());
         return SecurityStatusResponse.builder()
                 .mpinEnabled(Boolean.TRUE.equals(security.getMpinEnabled()))
+                .mPinStatus(mPinEnabled ? "enabled":"disabled")
+                .authenticatorEnabled(authEnabled)
+                .authenticationCurrentStatus(authEnabled ? "enabled":"disabled")
                 .build();
     }
 
@@ -180,11 +184,13 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public SecurityStatusResponse getAuthenticatorStatus(String username) {
         UserSecurity security = getUserSecurity(username);
-        boolean enabled = Boolean.TRUE.equals(security.getGoogleAuthEnabled());
-
+        boolean mPinEnabled = Boolean.TRUE.equals(security.getMpinEnabled());
+        boolean authEnabled = Boolean.TRUE.equals(security.getGoogleAuthEnabled());
         return SecurityStatusResponse.builder()
-                .authenticatorEnabled(enabled)
-                .currentStatus(enabled ? "enabled" : "disabled")
+                .authenticatorEnabled(authEnabled)
+                .authenticationCurrentStatus(authEnabled ? "enabled" : "disabled")
+                .mpinEnabled(mPinEnabled)
+                .mPinStatus(mPinEnabled ? "enabled" : "disabled")
                 .build();
     }
 

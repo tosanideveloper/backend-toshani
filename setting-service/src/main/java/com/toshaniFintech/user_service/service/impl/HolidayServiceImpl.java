@@ -1,10 +1,15 @@
 package com.toshaniFintech.user_service.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.dto.request.HolidayRequest;
 import com.toshaniFintech.user_service.dto.response.HolidayResponse;
+import com.toshaniFintech.user_service.dto.response.TicketMessagesResponseDTO;
 import com.toshaniFintech.user_service.entity.HolidayEntity;
+import com.toshaniFintech.user_service.entity.TicketMessagesEntity;
+import com.toshaniFintech.user_service.model.HolidaysModel;
+import com.toshaniFintech.user_service.model.TicketMessagesModel;
 import com.toshaniFintech.user_service.repository.HolidayRepository;
 import com.toshaniFintech.user_service.service.HolidayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,56 +23,45 @@ public class HolidayServiceImpl implements HolidayService {
 
     @Autowired
     private HolidayRepository holidayRepository;
-    @Override
-    public HolidayResponse createHoliday(HolidayRequest holidayRequest) {
+    @Autowired
+    private ObjectMapper objectMapper;
 
-        if (holidayRepository.findByHolidayName(holidayRequest.getHolidayName()).isPresent()) {
-            throw new UnprocessableEntityException(
-                    "Holiday already exists with key: " + holidayRequest.getHolidayName()
-            );
-        }
-        HolidayEntity entity = mapToEntity(holidayRequest);
-        HolidayEntity savedEntity = holidayRepository.save(entity);
-        return mapToModel(savedEntity);
-    }
+
     @Override
-    public List<HolidayResponse> getAllHolidays() {
-        List<HolidayEntity> holidays = holidayRepository.findAll();
-        return holidays.stream()
-                .map(this::mapToModel)
-                .collect(Collectors.toList());
+    public List<HolidaysModel> getAllHolidays() {
+        List<HolidayEntity> holidayEntityList = holidayRepository.findAll();
+        return holidayEntityList.stream().map(holidayEntity -> objectMapper.convertValue(holidayEntity, HolidaysModel.class)).toList();
     }
 
     @Override
-    public HolidayResponse getHolidayById(String id) {
-        HolidayEntity entity = holidayRepository.findById(Long.valueOf(id))
-                .orElseThrow(() -> new NotFoundException("Holiday not found with id: " + id));
+    public HolidaysModel createHoliday(HolidaysModel holidaysModel) {
+        HolidayEntity holidayEntity = objectMapper.convertValue(holidaysModel, HolidayEntity.class);
+        HolidayEntity saved = holidayRepository.save(holidayEntity);
+        return objectMapper.convertValue(saved, HolidaysModel.class);
+
+    }
+
+    @Override
+    public HolidaysModel updateHoliday(String id, HolidaysModel holidaysModel) {
+        holidayRepository.findById(id).orElseThrow(() -> new RuntimeException("Holi not found with id: " + id));
+        HolidayEntity holidayEntity = objectMapper.convertValue(holidaysModel, HolidayEntity.class);
+        HolidayEntity saved = holidayRepository.save(holidayEntity);
+        return objectMapper.convertValue(saved, HolidaysModel.class);
+
+    }
+
+    @Override
+    public HolidaysModel getHolidayById(String id) {
+        HolidayEntity entity = holidayRepository.findById(id).orElseThrow(() -> new NotFoundException("Holiday not found with id: " + id));
         return mapToModel(entity);
     }
-
-    @Override
-    public HolidayResponse updateHoliday(String id, HolidayRequest holidayRequest) {
-        HolidayEntity existingEntity;
-        existingEntity = holidayRepository.findById(Long.valueOf(id))
-                .orElseThrow(() -> new NotFoundException("Holiday not found with id: " + id));
-
-        existingEntity.setHolidayName(holidayRequest.getHolidayName());
-        existingEntity.setHolidayDate(holidayRequest.getHolidayDate());
-        HolidayEntity updatedEntity = holidayRepository.save(existingEntity);
-        return mapToModel(updatedEntity);
-    }
-
-    private HolidayEntity mapToEntity(HolidayRequest request) {
-        HolidayEntity entity = new HolidayEntity();
-        entity.setHolidayName(request.getHolidayName());
-        entity.setHolidayDate(request.getHolidayDate());
-        return entity;
-    }
-
-    private HolidayResponse mapToModel(HolidayEntity entity) {
+    private HolidaysModel mapToModel(HolidayEntity entity) {
         HolidayResponse response = new HolidayResponse();
-        response.setHolidayName(entity.getHolidayName());
         response.setHolidayDate(entity.getHolidayDate());
-        return response;
+        response.setHolidayType(entity.getHolidayType());
+        response.setHolidayName(entity.getHolidayName());
+
+        return objectMapper.convertValue(entity, HolidaysModel.class);
     }
+
 }

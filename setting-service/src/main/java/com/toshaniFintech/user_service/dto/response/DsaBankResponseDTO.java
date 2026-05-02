@@ -5,6 +5,8 @@ import lombok.Getter;
 
 @Data
 public class DsaBankResponseDTO {
+
+    private String id;
     private String dsaBankName;
     private String displayName;
     private String accountName;

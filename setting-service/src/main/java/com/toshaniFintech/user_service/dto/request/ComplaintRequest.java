@@ -1,27 +1,27 @@
 package com.toshaniFintech.user_service.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 public class ComplaintRequest {
+
     @NotBlank(message = "complaintId must not be blank")
-    @Size(max = 50, message = "complaintId must not exceed 50 characters")
+    @Size(max = 50)
     private String complaintId;
 
-    @NotBlank(message = "complaintOn must not be blank")
-    private LocalDateTime complaintOn;
+    @NotNull(message = "complaintOn must not be null")
+    private LocalDate complaintOn;
 
     @NotBlank(message = "agentDetails must not be blank")
-    @Size(max = 255, message = "agentDetails must not exceed 255 characters")
     private String agentDetails;
 
     @NotBlank(message = "requestUrl must not be blank")
-    @Size(max = 500, message = "requestUrl must not exceed 500 characters")
     private String requestUrl;
 
     @NotBlank(message = "request must not be blank")
@@ -35,6 +35,5 @@ public class ComplaintRequest {
 
     private String attachment;
 
-    private List <String>messages;
-
+    private List<String> messages;
 }

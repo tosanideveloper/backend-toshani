@@ -63,7 +63,7 @@ public class TicketReasonServiceImpl implements TicketReasonService {
         response.setCategory(entity.getCategory());
         response.setReason(entity.getReason());
         response.setStatus(entity.getStatus());
-        response.setCreatedOn(entity.getCreatedOn());
+        response.setCreatedDate(entity.getCreatedOn());
         return objectMapper.convertValue(entity, TicketReasonModel.class);
     }
 }

@@ -18,12 +18,6 @@ public class HolidayEntity extends BaseEntity {
     private String holidayName;
     @Column(name = "holiday_date", nullable = false)
     private LocalDate holidayDate;
-    public HolidayEntity(){
-
-    }
-    public HolidayEntity(String holidayName, LocalDate holidayDate){
-        this.holidayName = holidayName;
-        this.holidayDate = holidayDate;
-
-    }
+    @Column(name = "holiday_type", nullable = false)
+    private String holidayType;
 }

@@ -5,6 +5,8 @@ import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.dto.request.DsaBankRequestDTO;
 import com.toshaniFintech.user_service.dto.response.DsaBankResponseDTO;
 import com.toshaniFintech.user_service.entity.DsaBankEntity;
+import com.toshaniFintech.user_service.entity.TicketMessagesEntity;
+import com.toshaniFintech.user_service.model.TicketMessagesModel;
 import com.toshaniFintech.user_service.repository.DsaBankRepository;
 import com.toshaniFintech.user_service.service.DsaBankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +29,8 @@ public class DsaBankImpl implements DsaBankService {
 
     @Override
     public DsaBankResponseDTO createDsaBankService(DsaBankRequestDTO dsaBankRequestDTO) {
-        if (dsaBankRepository.findByDsaBankName(dsaBankRequestDTO.getDsaBankName()).isPresent()) {
-            throw new UnprocessableEntityException("DSA Bank already exists with key: " + dsaBankRequestDTO.getDsaBankName());
-        }
-        DsaBankEntity dsaBankEntity = dsaBankRepository.findById(String.valueOf(AbstractPersistable_.id)).orElseThrow(() -> new RuntimeException("Dsa Bank not found with id: " + id));
+
+        DsaBankEntity dsaBankEntity = new DsaBankEntity();
         dsaBankEntity.setDsaBankName(dsaBankRequestDTO.getDsaBankName());
         dsaBankEntity.setDisplayName(dsaBankRequestDTO.getDisplayName());
         dsaBankEntity.setAccountName(dsaBankRequestDTO.getAccountName());
@@ -50,6 +50,7 @@ public class DsaBankImpl implements DsaBankService {
 
     private DsaBankResponseDTO mapToModel(DsaBankEntity dsaBankEntity) {
         DsaBankResponseDTO response = new DsaBankResponseDTO();
+        response.setId(dsaBankEntity.getId());
         response.setDsaBankName(dsaBankEntity.getDsaBankName());
         response.setDisplayName(dsaBankEntity.getDisplayName());
         response.setAccountName(dsaBankEntity.getAccountName());

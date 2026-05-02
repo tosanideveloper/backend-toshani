@@ -1,14 +1,22 @@
 package com.toshaniFintech.user_service.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 public class ReconciliationReportRequestDTO {
-    @NotBlank(message = "start date must not be blank")
-    private Date startDate;
-    @NotBlank(message = "end date must not be blank")
-    private Date endDate;
+
+    @NotNull(message = "Start date is required")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Local startDate;
+
+    @NotNull(message = "End date is required")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
 }

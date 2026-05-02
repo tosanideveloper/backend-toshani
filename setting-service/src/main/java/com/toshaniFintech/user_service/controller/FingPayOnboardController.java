@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/fingpayonboard")
-@Tag(name = "th_fingpayonboard", description = "APIs for FingPayOnboard CRUD")
+@Tag(name = "Fingpay onboard API", description = "APIs for FingPayOnboard CRUD")
 
 public class FingPayOnboardController {
     @Autowired
@@ -30,7 +30,6 @@ public class FingPayOnboardController {
     @GetMapping("/all")
     @Operation(summary = "FingPay Onboard List", description = "To fetch FingPay Onboard List")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "FingPay Onboarded list page successfully", content = @Content(schema = @Schema(implementation = APIResponse.class))), @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            //@ApiResponse(responseCode = "409", description = "User already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     public ResponseEntity<APIResponse<List<FingPayOnboardModel>>> getfingPayOnboardlist() {
         return ResponseUtil.success("FingPay Onboarded List fetched successfully", fingPayOnboardService.getFingPayOnboardList(), HttpStatus.OK);

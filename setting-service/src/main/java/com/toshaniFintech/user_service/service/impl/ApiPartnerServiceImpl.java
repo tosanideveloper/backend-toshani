@@ -5,7 +5,9 @@ import com.toshaniFintech.common.exception.model.BadRequestException;
 import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.common.exception.model.UnprocessableEntityException;
 import com.toshaniFintech.user_service.entity.ApiPartnerServiceEntity;
+import com.toshaniFintech.user_service.entity.TicketMessagesEntity;
 import com.toshaniFintech.user_service.model.ApiPartnerServiceModel;
+import com.toshaniFintech.user_service.model.TicketMessagesModel;
 import com.toshaniFintech.user_service.repository.ApiPartnerServicesRepository;
 import com.toshaniFintech.user_service.service.ApiPartnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +36,8 @@ public class ApiPartnerServiceImpl implements ApiPartnerService {
 
     @Override
     public ApiPartnerServiceModel createApisPartnerService(ApiPartnerServiceModel apiPartnerServiceModel) {
-        if (apiPartnerServicesRepository.findByServiceName(apiPartnerServiceModel.getServiceName()).isPresent()) {
-            throw new UnprocessableEntityException(
-                    "Setting already exists with key: " + apiPartnerServiceModel.getServiceName()
-            );
-        }
-        ApiPartnerServiceEntity apiPartnerServiceEntity = apiPartnerServicesRepository.findById(String.valueOf(AbstractPersistable_.id)).orElseThrow(() -> new RuntimeException("Setting not found with id: " + id));
-        apiPartnerServiceEntity.setPartnerDetails(apiPartnerServiceModel.getPartnerDetails());
-        apiPartnerServiceEntity.setDate(apiPartnerServiceModel.getDate());
-        apiPartnerServiceEntity.setStatus(apiPartnerServiceModel.getStatus());
-        apiPartnerServiceEntity.setServiceName(apiPartnerServiceModel.getServiceName());
-        apiPartnerServiceEntity.setRemarks(apiPartnerServiceModel.getRemarks());
-
+        ApiPartnerServiceEntity apiPartnerServiceEntity = objectMapper.convertValue(apiPartnerServiceModel, ApiPartnerServiceEntity.class);
         ApiPartnerServiceEntity saved = apiPartnerServicesRepository.save(apiPartnerServiceEntity);
-
         return objectMapper.convertValue(saved, ApiPartnerServiceModel.class);
     }
 

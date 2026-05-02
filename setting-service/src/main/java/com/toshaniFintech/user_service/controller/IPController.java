@@ -1,10 +1,13 @@
 package com.toshaniFintech.user_service.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.utils.ResponseUtil;
 import com.toshaniFintech.user_service.dto.request.CreateIpRequest;
 import com.toshaniFintech.user_service.dto.response.CreateIpResponse;
+import com.toshaniFintech.user_service.dto.response.TicketMessagesResponseDTO;
 import com.toshaniFintech.user_service.model.IPAddressModel;
+import com.toshaniFintech.user_service.model.TicketMessagesModel;
 import com.toshaniFintech.user_service.service.IPService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,10 +31,15 @@ public class IPController {
     @Autowired
     private IPService iPService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
     @PostMapping("/create")
     public ResponseEntity<APIResponse<CreateIpResponse>> createIpResponseResponseEntity(@Valid @RequestBody CreateIpRequest createIpRequest) {
 
-        return ResponseUtil.success("IP created successfully", iPService.createIpResponse(createIpRequest), HttpStatus.CREATED);
+        IPAddressModel ipAddressModel = objectMapper.convertValue(createIpRequest, IPAddressModel.class);
+        IPAddressModel updatedModel = iPService.createIpResponse( ipAddressModel);
+        CreateIpResponse responseDTO = objectMapper.convertValue(updatedModel, CreateIpResponse.class);
+        return ResponseUtil.success("Ip created successfully", responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -54,8 +62,10 @@ public class IPController {
     @PutMapping("/update/{id}")
     @Operation(summary = "IP Addresses List", description = "To update IP Addresses List")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "IP Addresses updated successfully", content = @Content(schema = @Schema(implementation = APIResponse.class))), @ApiResponse(responseCode = "400", description = "Invalid input data"), @ApiResponse(responseCode = "500", description = "Internal server error")})
-    public ResponseEntity<APIResponse<CreateIpResponse>> updateIpAddress(@PathVariable Long id, @Valid @RequestBody CreateIpRequest request) {
-
-        return ResponseUtil.success("IP Addresses updated successfully", iPService.createIpResponse(request), HttpStatus.OK);
+    public ResponseEntity<APIResponse<CreateIpResponse>> updateIpAddress(@PathVariable String id, @Valid @RequestBody CreateIpRequest request) {
+        IPAddressModel ipAddressModel = objectMapper.convertValue(request, IPAddressModel.class);
+        IPAddressModel updatedModel = iPService.updateIpAddress(id, ipAddressModel);
+        CreateIpResponse createIpResponse = objectMapper.convertValue(updatedModel, CreateIpResponse.class);
+        return ResponseUtil.success("Ip updated successfully", createIpResponse, HttpStatus.OK);
     }
 }

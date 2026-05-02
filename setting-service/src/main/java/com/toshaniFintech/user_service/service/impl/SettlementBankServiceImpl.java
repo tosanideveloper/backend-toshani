@@ -1,6 +1,5 @@
 package com.toshaniFintech.user_service.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.exception.model.NotFoundException;
 import com.toshaniFintech.user_service.entity.SettlementBankEntity;
 import com.toshaniFintech.user_service.model.SettlementBankModel;
@@ -11,64 +10,105 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class SettlementBankServiceImpl implements SettlementBankService {
-    @Autowired
-    private SettlementBankRepository settlementBankRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private SettlementBankRepository repository;
 
+    // ✅ CREATE
+    @Override
+    public SettlementBankModel createSettlementBank(SettlementBankModel model) {
+
+        SettlementBankEntity entity = new SettlementBankEntity();
+
+        entity.setId(UUID.randomUUID().toString());
+        entity.setDate(model.getDate());
+
+        entity.setAgentID(model.getAgentDetails().getAgentID());
+        entity.setAgentName(model.getAgentDetails().getAgentName());
+
+        entity.setBankName(model.getBankDetails().getBankName());
+        entity.setAccountNo(model.getBankDetails().getAccountNo());
+        entity.setIfscCode(model.getBankDetails().getIfscCode());
+
+        SettlementBankEntity saved = repository.save(entity);
+
+        return mapToModel(saved);
+    }
+
+    // ✅ GET ALL
     @Override
     public List<SettlementBankModel> getAllSettlementBanks() {
-        List<SettlementBankEntity> settlementBankEntityList = settlementBankRepository.findAll();
-        return settlementBankEntityList.stream().map(settlementBanks -> objectMapper.convertValue(settlementBanks, SettlementBankModel.class)).toList();
+        return repository.findAll()
+                .stream()
+                .map(this::mapToModel)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public SettlementBankModel createSettlementBank(SettlementBankModel settlementBankModel) {
-        SettlementBankEntity settlementBankEntity = objectMapper.convertValue(settlementBankModel, SettlementBankEntity.class);
-        SettlementBankEntity saved = settlementBankRepository.save(settlementBankEntity);
-        return objectMapper.convertValue(saved, SettlementBankModel.class);
-    }
-
-    @Override
-    public SettlementBankModel updateSettlementBank(String id, SettlementBankModel settlementBankModel) {
-        settlementBankRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket Reason not found with id: " + id));
-        SettlementBankEntity settlementBankEntity = objectMapper.convertValue(settlementBankModel, SettlementBankEntity.class);
-        SettlementBankEntity saved = settlementBankRepository.save(settlementBankEntity);
-        return objectMapper.convertValue(saved, SettlementBankModel.class);
-    }
-
-    @Override
-    public void deleteSettlementBank(String id) {
-        SettlementBankEntity existingEntity = settlementBankRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket Details not found with id: " + id));
-        existingEntity.setActive(false);
-        existingEntity.setDeletedAt(LocalDateTime.now());
-        settlementBankRepository.save(existingEntity);
-
-    }
-
+    // ✅ GET BY ID
     @Override
     public SettlementBankModel getSettlementBankByID(String id) {
-        SettlementBankEntity entity = settlementBankRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket Details not found with id: " + id));
+        SettlementBankEntity entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Settlement Bank not found with id: " + id));
+
         return mapToModel(entity);
     }
 
+    // ✅ UPDATE
+    @Override
+    public SettlementBankModel updateSettlementBank(String id, SettlementBankModel model) {
+
+        SettlementBankEntity entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Settlement Bank not found with id: " + id));
+
+        entity.setDate(model.getDate());
+        entity.setAgentID(model.getAgentDetails().getAgentID());
+        entity.setAgentName(model.getAgentDetails().getAgentName());
+        entity.setBankName(model.getBankDetails().getBankName());
+        entity.setAccountNo(model.getBankDetails().getAccountNo());
+        entity.setIfscCode(model.getBankDetails().getIfscCode());
+
+        SettlementBankEntity updated = repository.save(entity);
+
+        return mapToModel(updated);
+    }
+
+    // ✅ DELETE (SOFT)
+    @Override
+    public void deleteSettlementBank(String id) {
+
+        SettlementBankEntity entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Settlement Bank not found with id: " + id));
+
+        entity.setActive(false);
+        entity.setDeletedAt(LocalDateTime.now());
+
+        repository.save(entity);
+    }
+
+    // ✅ MAPPER
     private SettlementBankModel mapToModel(SettlementBankEntity entity) {
-        SettlementBankModel settlementBankModel = new SettlementBankModel();
-        settlementBankModel.setDate(entity.getDate());
-        SettlementBankModel.AgentDetails agentDetails = new SettlementBankModel.AgentDetails();
 
-        agentDetails.setAgentID(entity.getAgentID());
-        agentDetails.setAgentName(entity.getAgentName());
+        SettlementBankModel model = new SettlementBankModel();
+        model.setId(entity.getId()); // 🔥 IMPORTANT (avoid null id)
+        model.setDate(entity.getDate());
 
-        SettlementBankModel.BankDetails bankDetails = new SettlementBankModel.BankDetails();
+        SettlementBankModel.AgentDetails agent = new SettlementBankModel.AgentDetails();
+        agent.setAgentID(entity.getAgentID());
+        agent.setAgentName(entity.getAgentName());
 
-        bankDetails.setBankName(entity.getBankName());
-        bankDetails.setAccountNo(entity.getAccountNo());
-        bankDetails.setIfscCode(entity.getIfscCode());
-        return objectMapper.convertValue(entity, SettlementBankModel.class);
+        SettlementBankModel.BankDetails bank = new SettlementBankModel.BankDetails();
+        bank.setBankName(entity.getBankName());
+        bank.setAccountNo(entity.getAccountNo());
+        bank.setIfscCode(entity.getIfscCode());
+
+        model.setAgentDetails(agent);
+        model.setBankDetails(bank);
+
+        return model;
     }
 }

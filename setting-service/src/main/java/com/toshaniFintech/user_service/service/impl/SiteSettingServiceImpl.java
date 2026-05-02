@@ -40,6 +40,9 @@ public class SiteSettingServiceImpl implements SiteSettingService {
         entity.setEmail(siteSettingModel.getEmail());
         entity.setState(siteSettingModel.getState());
         entity.setCountry(siteSettingModel.getCountry());
+        entity.setMetaDesc(siteSettingModel.getMetaDesc());
+        entity.setMetaTitle(siteSettingModel.getMetaTitle());
+        entity.setMetaKey(siteSettingModel.getMetaKey());
 
         SiteSettingEntity saved = siteSettingRepository.save(entity);
 
@@ -62,6 +65,9 @@ public class SiteSettingServiceImpl implements SiteSettingService {
         response.setEmail(entity.getEmail());
         response.setState(entity.getState());
         response.setCountry(entity.getCountry());
+        response.setMetaDesc(entity.getMetaDesc());
+        response.setMetaTitle(entity.getMetaTitle());
+        response.setMetaKey(entity.getMetaKey());
 
         return objectMapper.convertValue(entity, SiteSettingModel.class);
     }

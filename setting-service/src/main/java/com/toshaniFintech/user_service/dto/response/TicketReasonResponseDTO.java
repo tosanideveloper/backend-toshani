@@ -8,5 +8,5 @@ public class TicketReasonResponseDTO {
     private String category;
     private String reason;
     private String status;
-    private String createdOn;
+    private String createdDate;
 }
