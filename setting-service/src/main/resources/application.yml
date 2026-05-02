@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: setting-service
+
+  profiles:
+    active: local
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui/index.html
+    disable-swagger-default-url: true

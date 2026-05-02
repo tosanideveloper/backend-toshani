@@ -1,10 +1,18 @@
 server:
-  port: 8081
-  forward-headers-strategy: framework
+  port: 8085
+
+swagger:
+  server-url:
 
 spring:
-  application:
-    name: auth-service
+  main:
+    allow-bean-definition-overriding: true
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
 
   datasource:
     url: jdbc:postgresql://toshanidb.cf4ageamuk6x.ap-south-1.rds.amazonaws.com:5432/toshanidb
@@ -13,20 +21,28 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    hibernate:
-      ddl-auto: update   # options: create, create-drop, validate, none
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui/index.html
+  mail:
+    host: email-smtp.ap-south-1.amazonaws.com
+    port: 587
+    username: AKIAYNTAOTWDSTLGBF5C
+    password: BDKXtmMkLKG6m6yMv9Fx+Y+STLPN7iQ40RvyhMM3UwXP
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
-
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka
+app:
+  mail:
+    from: noreply@toshani.in
+    support-from: support@toshani.in
