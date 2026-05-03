@@ -17,6 +17,7 @@ public class AdminCreditWalletReportModel {
     private String search;
     private String searchByField;
 
+    private String Id;
     private String apiUserDetails;
     private String openingBalance;
     private String creditDebit;

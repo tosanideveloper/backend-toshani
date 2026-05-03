@@ -5,12 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AdminDebitWalletReportModel {
-    private List<String> txnId;
+public class PartnerBalanceReportModel {
+    private List<String> userId;
 
     private String startDate;
     private String endDate;
-
 
     private Long pageNo = 0L;
     private Long pageSize = 10L;
@@ -19,11 +18,11 @@ public class AdminDebitWalletReportModel {
     private String searchByField;
 
     private String Id;
-    private String apiUserDetails;
-    private String openingBalance;
-    private String creditDebit;
-    private String closingBalance;
-    private String key;
-    private String updatedBy;
-    private String txnDetails;
+    private String txnDate;
+    private String companyDetails;
+    private String userType;
+    private String debitBalance;
+    private String creditBalance;
+    private String virtualBalance;
+    private String actualBalance;
 }
