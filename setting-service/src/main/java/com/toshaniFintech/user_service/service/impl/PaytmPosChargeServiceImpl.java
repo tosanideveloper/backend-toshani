@@ -56,8 +56,6 @@ public class PaytmPosChargeServiceImpl implements PaytmPosChargeService {
                 repository.fetchAll(
                         requestDTO.getPaymentMode(),
                         requestDTO.getChargeType(),
-                        requestDTO.getMinAmount(),
-                        requestDTO.getMaxAmount(),
                         requestDTO.getSearch(),
                         requestDTO.getSearchByField(),
                         page
