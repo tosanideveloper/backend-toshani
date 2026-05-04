@@ -3,6 +3,7 @@ package com.toshaniFintech.user_service.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.Utility;
+import com.toshaniFintech.user_service.dto.request.MatmCommissionGetAll;
 import com.toshaniFintech.user_service.dto.request.MatmCommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.MatmCommissionResponseDTO;
 import com.toshaniFintech.user_service.entity.MatmCommissionEntity;
@@ -44,20 +45,22 @@ public class MatmCommissionImpl implements MatmCommissionService {
     }
     @Override
     public PaginatedResponse<MatmCommissionResponseDTO> getAll(
-            MatmCommissionRequestDTO matmCommissionRequestDTO) {
+            MatmCommissionGetAll matmCommissionGetAll) {
 
         PageRequest page = Utility.pageRequest(
-                matmCommissionRequestDTO.getPageNo(),
-                matmCommissionRequestDTO.getPageSize(),
-                matmCommissionRequestDTO.getSortBy(),
-                matmCommissionRequestDTO.getOrderBy()
+                matmCommissionGetAll.getPageNo(),
+                matmCommissionGetAll.getPageSize(),
+                matmCommissionGetAll.getSortBy(),
+                matmCommissionGetAll.getOrderBy()
         );
 
         Page<MatmCommissionEntity> paginatedContent =
                 matmCommissionRepository.fetchAll(
-                        matmCommissionRequestDTO.getCommtype(),
-                        matmCommissionRequestDTO.getSearch(),
-                        matmCommissionRequestDTO.getSearchByField(),
+                        matmCommissionGetAll.getCommType(),
+                        matmCommissionGetAll.getStartDate(),
+                        matmCommissionGetAll.getEndDate(),
+                        matmCommissionGetAll.getSearch(),
+                        matmCommissionGetAll.getSearchByField(),
                         page
                 );
 

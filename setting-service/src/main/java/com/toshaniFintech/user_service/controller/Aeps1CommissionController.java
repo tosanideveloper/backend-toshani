@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.ResponseUtil;
+import com.toshaniFintech.user_service.dto.request.Aeps1CommissionGetAll;
 import com.toshaniFintech.user_service.dto.request.Aeps1CommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.Aeps1CommissionResponseDTO;
 import com.toshaniFintech.user_service.model.Aeps1CommissionModel;
@@ -59,9 +60,9 @@ public class Aeps1CommissionController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     public ResponseEntity<PaginatedResponse<Aeps1CommissionResponseDTO>> getAll(
-            @Valid @RequestBody Aeps1CommissionRequestDTO aeps1CommissionRequestDTO) {
+            @Valid @RequestBody Aeps1CommissionGetAll aeps1CommissionGetAll) {
 
-        return new ResponseEntity<>(aeps1CommissionService.getAll(aeps1CommissionRequestDTO), HttpStatus.OK);
+        return new ResponseEntity<>(aeps1CommissionService.getAll(aeps1CommissionGetAll), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -3,14 +3,11 @@ package com.toshaniFintech.user_service.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.Utility;
-import com.toshaniFintech.user_service.dto.request.EmployeeManagementGetAllRequest;
+import com.toshaniFintech.user_service.dto.request.EmployeeManagementGetAll;
 import com.toshaniFintech.user_service.dto.response.EmployeeManagementResponseDTO;
-import com.toshaniFintech.user_service.dto.response.MatmCommissionResponseDTO;
 import com.toshaniFintech.user_service.entity.EmployeeManagementEntity;
-import com.toshaniFintech.user_service.entity.MatmCommissionEntity;
 import com.toshaniFintech.user_service.mapper.EmployeeManagementMapper;
 import com.toshaniFintech.user_service.model.EmployeeManagementModel;
-import com.toshaniFintech.user_service.model.MatmCommissionModel;
 import com.toshaniFintech.user_service.repository.EmployeeManagementRepository;
 import com.toshaniFintech.user_service.service.EmployeeManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,13 @@ public class EmployeeManagementImpl implements EmployeeManagementService {
     @Override
     public EmployeeManagementModel createEmployee(EmployeeManagementModel employeeManagementModel) {
 
+        if (employeeManagementRepository.existsByEmail(employeeManagementModel.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        if (employeeManagementRepository.existsByEmployeeCode(employeeManagementModel.getEmployeeCode())) {
+            throw new RuntimeException("Employee code already exists");
+        }
         EmployeeManagementEntity employeeManagementEntity =
                 objectMapper.convertValue(employeeManagementModel, EmployeeManagementEntity.class);
 
@@ -44,20 +48,22 @@ public class EmployeeManagementImpl implements EmployeeManagementService {
     }
     @Override
     public PaginatedResponse<EmployeeManagementResponseDTO> getAllEmployee(
-            EmployeeManagementGetAllRequest employeeManagementGetAllRequest) {
+            EmployeeManagementGetAll employeeManagementGetAll) {
 
         PageRequest page = Utility.pageRequest(
-                employeeManagementGetAllRequest.getPageNo(),
-                employeeManagementGetAllRequest.getPageSize(),
-                employeeManagementGetAllRequest.getSortBy(),
-                employeeManagementGetAllRequest.getOrderBy()
+                employeeManagementGetAll.getPageNo(),
+                employeeManagementGetAll.getPageSize(),
+                employeeManagementGetAll.getSortBy(),
+                employeeManagementGetAll.getOrderBy()
         );
 
         Page<EmployeeManagementEntity> paginatedContent =
                 employeeManagementRepository.fetchAllEmployee(
-                        employeeManagementGetAllRequest.getStatus(),
-                        employeeManagementGetAllRequest.getSearch(),
-                        employeeManagementGetAllRequest.getSearchByField(),
+                        employeeManagementGetAll.getStatus(),
+                        employeeManagementGetAll.getStartDate(),
+                        employeeManagementGetAll.getEndDate(),
+                        employeeManagementGetAll.getSearch(),
+                        employeeManagementGetAll.getSearchByField(),
                         page
                 );
 
@@ -88,6 +94,11 @@ public class EmployeeManagementImpl implements EmployeeManagementService {
 
         EmployeeManagementEntity employeeManagementEntity = employeeManagementRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee management not found with id: " + id));
+
+        if (!employeeManagementEntity.getEmail().equals(employeeManagementModel.getEmail())
+                && employeeManagementRepository.existsByEmail(employeeManagementModel.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
 
         employeeManagementEntity.setEmployeeCode(employeeManagementModel.getEmployeeCode());
         employeeManagementEntity.setName(employeeManagementModel.getName());

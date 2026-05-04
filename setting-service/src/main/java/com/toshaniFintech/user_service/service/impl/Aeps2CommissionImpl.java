@@ -3,6 +3,7 @@ package com.toshaniFintech.user_service.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.Utility;
+import com.toshaniFintech.user_service.dto.request.Aeps2CommissionGetAll;
 import com.toshaniFintech.user_service.dto.request.Aeps2CommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.Aeps2CommissionResponseDTO;
 import com.toshaniFintech.user_service.entity.Aeps2CommissionEntity;
@@ -44,19 +45,21 @@ public class Aeps2CommissionImpl implements Aeps2CommissionService {
 
     @Override
     public PaginatedResponse<Aeps2CommissionResponseDTO> getAll(
-            Aeps2CommissionRequestDTO aeps2CommissionRequestDTO) {
+            Aeps2CommissionGetAll aeps2CommissionRGetAll) {
 
         PageRequest page = Utility.pageRequest(
-                aeps2CommissionRequestDTO.getPageNo(),
-                aeps2CommissionRequestDTO.getPageSize(),
-                aeps2CommissionRequestDTO.getSortBy(),
-                aeps2CommissionRequestDTO.getOrderBy());
+                aeps2CommissionRGetAll.getPageNo(),
+                aeps2CommissionRGetAll.getPageSize(),
+                aeps2CommissionRGetAll.getSortBy(),
+                aeps2CommissionRGetAll.getOrderBy());
 
         Page<Aeps2CommissionEntity> paginatedContent = aeps2CommissionRepository.fetchAll(
-                aeps2CommissionRequestDTO.getCommType(),
-                aeps2CommissionRequestDTO.getTransactionType(),
-                aeps2CommissionRequestDTO.getSearch(),
-                aeps2CommissionRequestDTO.getSearchByField(),
+                aeps2CommissionRGetAll.getCommType(),
+                aeps2CommissionRGetAll.getTransactionType(),
+                aeps2CommissionRGetAll.getStartDate(),
+                aeps2CommissionRGetAll.getEndDate(),
+                aeps2CommissionRGetAll.getSearch(),
+                aeps2CommissionRGetAll.getSearchByField(),
                 page);
 
         List<Aeps2CommissionResponseDTO> responseDTOS = new ArrayList<>();

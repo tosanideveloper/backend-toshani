@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.ResponseUtil;
+import com.toshaniFintech.user_service.dto.request.MatmCommissionGetAll;
 import com.toshaniFintech.user_service.dto.request.MatmCommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.MatmCommissionResponseDTO;
 import com.toshaniFintech.user_service.model.MatmCommissionModel;
@@ -63,9 +64,9 @@ public class MatmCommissionController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<PaginatedResponse<MatmCommissionResponseDTO>> getAll(
-            @Valid @RequestBody MatmCommissionRequestDTO matmCommissionRequestDTO) {
+            @Valid @RequestBody MatmCommissionGetAll matmCommissionGetAll) {
 
-        return new ResponseEntity<>(matmCommissionService.getAll(matmCommissionRequestDTO), HttpStatus.OK);
+        return new ResponseEntity<>(matmCommissionService.getAll(matmCommissionGetAll), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

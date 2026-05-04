@@ -4,16 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.ResponseUtil;
-import com.toshaniFintech.user_service.dto.request.Aeps3CommissionRequestDTO;
-import com.toshaniFintech.user_service.dto.request.EmployeeManagementGetAllRequest;
+import com.toshaniFintech.user_service.dto.request.EmployeeManagementGetAll;
 import com.toshaniFintech.user_service.dto.request.EmployeeManagementRequestDTO;
-import com.toshaniFintech.user_service.dto.request.MatmCommissionRequestDTO;
-import com.toshaniFintech.user_service.dto.response.Aeps3CommissionResponseDTO;
 import com.toshaniFintech.user_service.dto.response.EmployeeManagementResponseDTO;
-import com.toshaniFintech.user_service.dto.response.MatmCommissionResponseDTO;
-import com.toshaniFintech.user_service.model.Aeps3CommissionModel;
 import com.toshaniFintech.user_service.model.EmployeeManagementModel;
-import com.toshaniFintech.user_service.model.MatmCommissionModel;
 import com.toshaniFintech.user_service.service.EmployeeManagementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -69,9 +63,9 @@ public class EmployeeManagementController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<PaginatedResponse<EmployeeManagementResponseDTO>> getAllEmployee(
-            @Valid @RequestBody EmployeeManagementGetAllRequest employeeManagementGetAllRequest) {
+            @Valid @RequestBody EmployeeManagementGetAll employeeManagementGetAll) {
 
-        return new ResponseEntity<>(employeeManagementService.getAllEmployee(employeeManagementGetAllRequest), HttpStatus.OK);
+        return new ResponseEntity<>(employeeManagementService.getAllEmployee(employeeManagementGetAll), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     @Operation(summary = "Get Employee Management by ID", description = "Fetch single Employee Management by ID")

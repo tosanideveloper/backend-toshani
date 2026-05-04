@@ -2,6 +2,8 @@ package com.toshaniFintech.user_service.dto.response;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class EmployeeManagementResponseDTO {
     private String id;
@@ -10,4 +12,5 @@ public class EmployeeManagementResponseDTO {
     private String email;
     private String mobile;
     private String status;
+    private LocalDate createDate;
 }

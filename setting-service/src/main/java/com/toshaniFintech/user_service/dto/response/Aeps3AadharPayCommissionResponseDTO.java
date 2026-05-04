@@ -2,6 +2,8 @@ package com.toshaniFintech.user_service.dto.response;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class Aeps3AadharPayCommissionResponseDTO {
     private String id;
@@ -10,4 +12,5 @@ public class Aeps3AadharPayCommissionResponseDTO {
     private String chargeType;
     private Double charge;
     private String rrn;
+    private LocalDate createDate;
 }

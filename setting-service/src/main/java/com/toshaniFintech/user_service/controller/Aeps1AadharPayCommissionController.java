@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.ResponseUtil;
+import com.toshaniFintech.user_service.dto.request.Aeps1AadharPayCommissionGetAll;
 import com.toshaniFintech.user_service.dto.request.Aeps1AadharPayCommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.Aeps1AadharPayCommissionResponseDTO;
 import com.toshaniFintech.user_service.model.Aeps1AadharPayCommissionModel;
@@ -62,9 +63,9 @@ public class Aeps1AadharPayCommissionController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     public ResponseEntity<PaginatedResponse<Aeps1AadharPayCommissionResponseDTO>> getAll(
-            @Valid @RequestBody Aeps1AadharPayCommissionRequestDTO aeps1AadharPayCommissionRequestDTO) {
+            @Valid @RequestBody Aeps1AadharPayCommissionGetAll aeps1AadharPayCommissionGetAll) {
 
-        return new ResponseEntity<>(aeps1AadharPayCommissionService.getAll(aeps1AadharPayCommissionRequestDTO),
+        return new ResponseEntity<>(aeps1AadharPayCommissionService.getAll(aeps1AadharPayCommissionGetAll),
                 HttpStatus.OK);
     }
 

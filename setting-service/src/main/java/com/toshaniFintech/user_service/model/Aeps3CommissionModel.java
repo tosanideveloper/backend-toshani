@@ -2,6 +2,8 @@ package com.toshaniFintech.user_service.model;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class Aeps3CommissionModel {
     private String id;
@@ -11,4 +13,5 @@ public class Aeps3CommissionModel {
     private String commissionType;
     private Double commission;
     private String rrn;
+    private LocalDate createDate;
 }

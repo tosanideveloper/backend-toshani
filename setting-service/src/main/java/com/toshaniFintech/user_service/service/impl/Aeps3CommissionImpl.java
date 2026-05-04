@@ -3,6 +3,7 @@ package com.toshaniFintech.user_service.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.Utility;
+import com.toshaniFintech.user_service.dto.request.Aeps3CommissionGetAll;
 import com.toshaniFintech.user_service.dto.request.Aeps3CommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.Aeps3CommissionResponseDTO;
 import com.toshaniFintech.user_service.entity.Aeps3CommissionEntity;
@@ -42,19 +43,21 @@ public class Aeps3CommissionImpl implements Aeps3CommissionService {
 
     @Override
     public PaginatedResponse<Aeps3CommissionResponseDTO> getAllAeps3(
-            Aeps3CommissionRequestDTO aeps3CommissionRequestDTO) {
+            Aeps3CommissionGetAll aeps3CommissionRGetAll) {
 
         PageRequest page = Utility.pageRequest(
-                aeps3CommissionRequestDTO.getPageNo(),
-                aeps3CommissionRequestDTO.getPageSize(),
-                aeps3CommissionRequestDTO.getSortBy(),
-                aeps3CommissionRequestDTO.getOrderBy());
+                aeps3CommissionRGetAll.getPageNo(),
+                aeps3CommissionRGetAll.getPageSize(),
+                aeps3CommissionRGetAll.getSortBy(),
+                aeps3CommissionRGetAll.getOrderBy());
 
         Page<Aeps3CommissionEntity> paginatedContent = aeps3CommissionRepository.fetchAllAeps3(
-                aeps3CommissionRequestDTO.getTransactionType(),
-                aeps3CommissionRequestDTO.getCommissionType(),
-                aeps3CommissionRequestDTO.getSearch(),
-                aeps3CommissionRequestDTO.getSearchByField(),
+                aeps3CommissionRGetAll.getTransactionType(),
+                aeps3CommissionRGetAll.getCommissionType(),
+                aeps3CommissionRGetAll.getStartDate(),
+                aeps3CommissionRGetAll.getEndDate(),
+                aeps3CommissionRGetAll.getSearch(),
+                aeps3CommissionRGetAll.getSearchByField(),
                 page);
 
         List<Aeps3CommissionResponseDTO> responseDTOS = new ArrayList<>();

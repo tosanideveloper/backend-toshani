@@ -1,29 +1,33 @@
 package com.toshaniFintech.user_service.entity;
 
 import com.toshaniFintech.common.entity.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "th_matm_commission")
 
 public class MatmCommissionEntity extends BaseEntity {
 
-    private String id;
+    @Column(name = "min_amount")
     private Double minAmount;
+
+    @Column(name = "max_amount")
     private Double maxAmount;
+
+    @Column(name = "comm_type")
     private String commType;
+
+    @Column(name = "comm")
     private Double comm;
 
-    public MatmCommissionEntity(Double minAmount, Double maxAmount, String commType, Double comm) {
+    @Column(name = "create_date")
+    private LocalDate createDate;
 
-        this.minAmount = minAmount;
-        this.maxAmount = maxAmount;
-        this.commType = commType;
-        this.comm = comm;
-    }
     public MatmCommissionEntity() {
-
     }
 
     public Double getMinAmount() {
@@ -56,5 +60,13 @@ public class MatmCommissionEntity extends BaseEntity {
 
     public void setComm(Double comm) {
         this.comm = comm;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 }

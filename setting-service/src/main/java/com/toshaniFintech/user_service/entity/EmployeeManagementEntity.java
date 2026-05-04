@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "th_employee_management")
 public class EmployeeManagementEntity extends BaseEntity {
@@ -22,7 +24,10 @@ public class EmployeeManagementEntity extends BaseEntity {
     private String mobile;
 
     @Column(name = "status")
-    private String status; // Active, Inactive, On Leave, Suspended
+    private String status;
+
+    @Column(name = "create_date")
+    private LocalDate createDate;
 
     public EmployeeManagementEntity() {
     }
@@ -65,5 +70,13 @@ public class EmployeeManagementEntity extends BaseEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 }

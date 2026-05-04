@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "th_aeps3_commission")
 public class Aeps3CommissionEntity extends BaseEntity {
@@ -20,15 +22,8 @@ public class Aeps3CommissionEntity extends BaseEntity {
     private Double commission;
     @Column(name = "rrn")
     private String rrn;
-
-    public Aeps3CommissionEntity(Double minAmount, Double maxAmount, String transactionType,String commissionType, Double commission, String rrn) {
-        this.minAmount = minAmount;
-        this.maxAmount = maxAmount;
-        this.transactionType = transactionType;
-        this.commissionType = commissionType;
-        this.commission = commission;
-        this.rrn = rrn;
-    }
+    @Column(name = "create_date")
+    private LocalDate createDate;
 
     public Aeps3CommissionEntity() {
     }
@@ -79,5 +74,13 @@ public class Aeps3CommissionEntity extends BaseEntity {
 
     public void setRrn(String rrn) {
         this.rrn = rrn;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 }

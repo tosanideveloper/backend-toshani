@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "th_aeps1_aadhaar_pay_commission")
 
@@ -20,14 +22,8 @@ public class Aeps1AadharPayCommissionEntity extends BaseEntity {
     private Double charge;
     @Column(name = "rrn")
     private String rrn;
-
-    public Aeps1AadharPayCommissionEntity(Double minAmount, Double maxAmount, String chargeType, Double charge, String rrn) {
-        this.minAmount = minAmount;
-        this.maxAmount = maxAmount;
-        this.chargeType = chargeType;
-        this.charge = charge;
-        this.rrn = rrn;
-    }
+    @Column(name = "create_date")
+    private LocalDate createDate;
 
     public Aeps1AadharPayCommissionEntity() {
     }
@@ -70,5 +66,13 @@ public class Aeps1AadharPayCommissionEntity extends BaseEntity {
 
     public void setRrn(String rrn) {
         this.rrn = rrn;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 }

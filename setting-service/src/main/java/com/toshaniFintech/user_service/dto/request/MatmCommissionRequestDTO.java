@@ -1,28 +1,31 @@
 package com.toshaniFintech.user_service.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 public class MatmCommissionRequestDTO {
-
-    private List<String> commtype;
-    private List<String> comm;
-    @NotBlank(message = "startDate is required")
-    private String startDate;
-
-    @NotBlank(message = "endDate is required")
-    private String endDate;
+    @NotNull(message = "minAmount is required")
     private Double minAmount;
+
+    @NotNull(message = "maxAmount is required")
     private Double maxAmount;
 
-    private int pageNo;
-    private int pageSize;
-    private String sortBy;
-    private String orderBy;
+    @NotBlank(message = "commType is required")
+    private String commType;
 
-    private String search;
-    private String searchByField;
+    @NotNull(message = "comm is required")
+    private Double comm;
+
+    @NotBlank(message = "rrn is required")
+    private String rrn;
+
+    @NotNull(message = "createDate is required")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createDate;
 }

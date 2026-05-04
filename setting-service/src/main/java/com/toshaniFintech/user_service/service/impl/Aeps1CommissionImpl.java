@@ -3,6 +3,7 @@ package com.toshaniFintech.user_service.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.Utility;
+import com.toshaniFintech.user_service.dto.request.Aeps1CommissionGetAll;
 import com.toshaniFintech.user_service.dto.request.Aeps1CommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.Aeps1CommissionResponseDTO;
 import com.toshaniFintech.user_service.entity.Aeps1CommissionEntity;
@@ -44,18 +45,20 @@ public class Aeps1CommissionImpl implements Aeps1CommissionService {
 
     @Override
     public PaginatedResponse<Aeps1CommissionResponseDTO> getAll(
-            Aeps1CommissionRequestDTO aeps1CommissionRequestDTO) {
+            Aeps1CommissionGetAll aeps1CommissionGetAll) {
 
         PageRequest page = Utility.pageRequest(
-                aeps1CommissionRequestDTO.getPageNo(),
-                aeps1CommissionRequestDTO.getPageSize(),
-                aeps1CommissionRequestDTO.getSortBy(),
-                aeps1CommissionRequestDTO.getOrderBy());
+                aeps1CommissionGetAll.getPageNo(),
+                aeps1CommissionGetAll.getPageSize(),
+                aeps1CommissionGetAll.getSortBy(),
+                aeps1CommissionGetAll.getOrderBy());
 
         Page<Aeps1CommissionEntity> paginatedContent = aeps1CommissionRepository.fetchAll(
-                aeps1CommissionRequestDTO.getCommType(),
-                aeps1CommissionRequestDTO.getSearch(),
-                aeps1CommissionRequestDTO.getSearchByField(),
+                aeps1CommissionGetAll.getCommType(),
+                aeps1CommissionGetAll.getStartDate(),
+                aeps1CommissionGetAll.getEndDate(),
+                aeps1CommissionGetAll.getSearch(),
+                aeps1CommissionGetAll.getSearchByField(),
                 page);
 
         List<Aeps1CommissionResponseDTO> responseDTOS = new ArrayList<>();

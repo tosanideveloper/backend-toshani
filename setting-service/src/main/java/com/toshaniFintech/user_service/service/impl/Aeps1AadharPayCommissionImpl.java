@@ -3,6 +3,7 @@ package com.toshaniFintech.user_service.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
 import com.toshaniFintech.common.utils.Utility;
+import com.toshaniFintech.user_service.dto.request.Aeps1AadharPayCommissionGetAll;
 import com.toshaniFintech.user_service.dto.request.Aeps1AadharPayCommissionRequestDTO;
 import com.toshaniFintech.user_service.dto.response.Aeps1AadharPayCommissionResponseDTO;
 import com.toshaniFintech.user_service.entity.Aeps1AadharPayCommissionEntity;
@@ -45,18 +46,20 @@ public class Aeps1AadharPayCommissionImpl implements Aeps1AadharPayCommissionSer
 
     @Override
     public PaginatedResponse<Aeps1AadharPayCommissionResponseDTO> getAll(
-            Aeps1AadharPayCommissionRequestDTO aeps1AadharPayCommissionRequestDTO) {
+            Aeps1AadharPayCommissionGetAll aeps1AadharPayCommissionGetAll) {
 
         PageRequest page = Utility.pageRequest(
-                aeps1AadharPayCommissionRequestDTO.getPageNo(),
-                aeps1AadharPayCommissionRequestDTO.getPageSize(),
-                aeps1AadharPayCommissionRequestDTO.getSortBy(),
-                aeps1AadharPayCommissionRequestDTO.getOrderBy());
+                aeps1AadharPayCommissionGetAll.getPageNo(),
+                aeps1AadharPayCommissionGetAll.getPageSize(),
+                aeps1AadharPayCommissionGetAll.getSortBy(),
+                aeps1AadharPayCommissionGetAll.getOrderBy());
 
         Page<Aeps1AadharPayCommissionEntity> paginatedContent = aeps1AadharPayCommissionRepository.fetchAll(
-                aeps1AadharPayCommissionRequestDTO.getChargeType(),
-                aeps1AadharPayCommissionRequestDTO.getSearch(),
-                aeps1AadharPayCommissionRequestDTO.getSearchByField(),
+                aeps1AadharPayCommissionGetAll.getChargeType(),
+                aeps1AadharPayCommissionGetAll.getStartDate(),
+                aeps1AadharPayCommissionGetAll.getEndDate(),
+                aeps1AadharPayCommissionGetAll.getSearch(),
+                aeps1AadharPayCommissionGetAll.getSearchByField(),
                 page);
 
         List<Aeps1AadharPayCommissionResponseDTO> responseDTOS = new ArrayList<>();
