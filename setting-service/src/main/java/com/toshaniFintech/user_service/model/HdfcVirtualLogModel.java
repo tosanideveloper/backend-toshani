@@ -20,6 +20,7 @@ public class HdfcVirtualLogModel {
     private String search;
     private String searchByField;
 
+    private String id;
     private String txnDate;
     private String amount;
     private String creditDebit;

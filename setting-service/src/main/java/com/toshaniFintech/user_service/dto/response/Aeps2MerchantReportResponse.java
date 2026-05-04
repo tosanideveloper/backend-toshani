@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Aeps2MerchantReportResponse {
-    private String Id;
+    private String id;
     private String slNo;
     private String txnDate;
     private String partnerDetails;

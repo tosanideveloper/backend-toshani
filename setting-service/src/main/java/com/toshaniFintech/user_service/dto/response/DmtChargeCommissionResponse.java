@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 @Data
 public class DmtChargeCommissionResponse {
     private String id;
-    private String slNo;
     private Double minAmount;
     private Double maxAmount;
     private String commType;

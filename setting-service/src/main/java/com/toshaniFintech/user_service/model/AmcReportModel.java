@@ -17,8 +17,7 @@ public class AmcReportModel {
     private String search;
     private String searchByField;
     
-    private String Id;
-    private String slNo;
+    private String id;
     private String emiCreateDate;
     private String companyName;
     private String agentDetail;

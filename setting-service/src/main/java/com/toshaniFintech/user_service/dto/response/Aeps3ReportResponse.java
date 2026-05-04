@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class Aeps3ReportResponse {
-    private String Id;
-    private String slNo;
+    private String id;
     private String partnerName;
     private String partnerId;
     private String txnId;

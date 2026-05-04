@@ -13,8 +13,7 @@ public class ActivityReportModel {
     private String search;
     private String searchByField;
 
-    private String Id;
-    private String slNo;
+    private String id;
     private String apiUserDetail;
     private String date;
     private String updatedBy;

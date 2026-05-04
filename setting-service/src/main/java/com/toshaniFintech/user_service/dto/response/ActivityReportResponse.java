@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ActivityReportResponse {
-    private String Id;
+    private String id;
     private String slNo;
     private String apiUserDetail;
     private String txnDate;

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CreditWalletReportModel {
+    private String id;
     private String txnDate;
     private String txnId;
     private String apiTxnId;

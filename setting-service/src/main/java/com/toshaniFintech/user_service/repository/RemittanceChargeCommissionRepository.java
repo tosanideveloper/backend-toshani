@@ -13,9 +13,7 @@ public interface RemittanceChargeCommissionRepository extends JpaRepository<Remi
 
     @Query("SELECT c FROM RemittanceChargeCommissionEntity c " +
             "WHERE (:search IS NULL OR :search = '' " +
-            "   OR (:searchByField = 'minAmount' AND CAST(c.minAmount as string) LIKE CONCAT('%', :search, '%')) " +
-            "   OR (:searchByField = 'maxAmount' AND CAST(c.maxAmount as string) LIKE CONCAT('%', :search, '%')) " +
-            "   OR (:searchByField = 'chargeType' AND LOWER(c.chargeType) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "   OR (:searchByField = 'chargeType' AND CAST(c.chargeType as string) LIKE CONCAT('%', :search, '%')) " +
             "   OR (:searchByField = 'charge' AND CAST(c.charge as string) LIKE CONCAT('%', :search, '%')) )")
     Page<RemittanceChargeCommissionEntity> fetchRemittanceChargeCommission(
             @Param("search") String search,

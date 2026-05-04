@@ -7,7 +7,6 @@ import java.util.Date;
 @Data
 public class AmcReportResponse {
     private String id;
-    private String slNo;
     private String emiCreateDate;
     private String companyName;
     private String agentDetail;

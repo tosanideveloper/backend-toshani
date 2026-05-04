@@ -13,8 +13,7 @@ public class Aeps2MerchantReportModel {
     private String search;
     private String searchByField;
 
-    private String Id;
-    private String slNo;
+    private String id;
     private String txnDate;
     private String partnerDetails;
     private String username;

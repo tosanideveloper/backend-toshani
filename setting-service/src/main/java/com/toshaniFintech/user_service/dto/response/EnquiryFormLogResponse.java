@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class EnquiryFormLogResponse {
-    private String Id;
+    private String id;
     private String enquiryDate;
     private String name;
     private String mobileNumber;

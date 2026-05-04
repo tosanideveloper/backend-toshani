@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class RemittanceChargeCommissionModel {
-    private String slNo;
+    private String id;
     private Double minAmount;
     private Double maxAmount;
     private String chargeType;

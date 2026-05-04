@@ -13,7 +13,7 @@ public class EnquiryFormLogModel {
     private String search;
     private String searchByField;
 
-    private String Id;
+    private String id;
     private String enquiryDate;
     private String name;
     private String mobileNumber;

@@ -18,6 +18,8 @@ public class HoldBalanceLogReportModel {
     private String searchByField;
 
 
+
+    private String id;
     private String txnDate;
     private String partnerDetails;
     private String debitHoldBalanceBefore;

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class HoldBalanceLogReportResponse {
-    private String Id;
+    private String id;
     private String txnDate;
     private String partnerDetails;
     private String partnerId;

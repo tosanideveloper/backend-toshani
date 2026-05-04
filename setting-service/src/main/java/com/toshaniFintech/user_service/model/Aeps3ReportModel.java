@@ -20,8 +20,7 @@ public class Aeps3ReportModel {
     private String search;
     private String searchByField;
 
-    private String Id;
-    private String slNo;
+    private String id;
     private String partnerName;
     private String partnerId;
     private String merchantCode;
