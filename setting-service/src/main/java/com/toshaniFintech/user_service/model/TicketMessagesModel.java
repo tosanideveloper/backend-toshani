@@ -8,5 +8,4 @@ public class TicketMessagesModel {
     private String category;
     private String message;
     private String status;
-
 }

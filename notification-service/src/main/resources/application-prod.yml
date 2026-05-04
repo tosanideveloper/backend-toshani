@@ -1,10 +1,18 @@
 server:
-  port: 8082
-  forward-headers-strategy: framework
+  port: 8085
+
+swagger:
+  server-url: https://testapi.toshani.in/notification-service
 
 spring:
-  application:
-    name: user-service
+  main:
+    allow-bean-definition-overriding: true
+
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
 
   datasource:
     url: jdbc:postgresql://toshanidb.cf4ageamuk6x.ap-south-1.rds.amazonaws.com:5432/toshanidb
@@ -13,12 +21,9 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   mail:
@@ -41,19 +46,3 @@ app:
   mail:
     from: noreply@toshani.in
     support-from: support@toshani.in
-    reset-password-base-url: https://testapi.toshani.in/reset-password
-
-springdoc:
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui/index.html
-    disable-swagger-default-url: true
-
-eureka:
-  client:
-    enabled: false
-    register-with-eureka: false
-    fetch-registry: false

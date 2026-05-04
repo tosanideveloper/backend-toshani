@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ModifyReportResponseDTO {
 
+    private String id;
     private String txnDate;
     private String partnerDetails;
     private String serviceName;

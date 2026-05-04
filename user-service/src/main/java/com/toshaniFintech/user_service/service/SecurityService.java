@@ -28,4 +28,8 @@ public interface SecurityService {
     void verifyAuthenticator(String username, OtpVerifyRequest request);
 
     void disableAuthenticator(String username, OtpVerifyRequest request);
+
+    void initiateAuthenticatorReset(String username);
+
+    void confirmAuthenticatorReset(String username, AuthenticatorResetConfirmRequest request);
 }

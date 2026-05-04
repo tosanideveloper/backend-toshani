@@ -22,8 +22,7 @@ public class FingPayOnboardImpl implements FingPayOnboardService {
     @Override
     public List<FingPayOnboardModel> getFingPayOnboardList() {
         List<FingPayOnboardEntity> fingPayOnboardEntityList = fingPayOnboardRepository.findAll();
-        return fingPayOnboardEntityList.stream().
-                map(fingPayOnboardEntity -> objectMapper.convertValue(
-                        fingPayOnboardEntityList, FingPayOnboardModel.class)).toList();
+        return fingPayOnboardEntityList.stream().map(fingPayOnboardEntity ->
+                objectMapper.convertValue(fingPayOnboardEntityList, FingPayOnboardModel.class)).toList();
     }
 }

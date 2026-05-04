@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class SecurityStatusResponse {
     private Boolean mpinEnabled;
+    private String mPinStatus;
     private Boolean authenticatorEnabled;
-    private String currentStatus;
+    private String authenticationCurrentStatus;
 }

@@ -1,11 +1,11 @@
 server:
-  port: 8084
+  port: 8081
   forward-headers-strategy: framework
 
-spring:
-  application:
-    name: setting-service
+swagger:
+  server-url: https://testapi.toshani.in/auth
 
+spring:
   datasource:
     url: jdbc:postgresql://toshanidb.cf4ageamuk6x.ap-south-1.rds.amazonaws.com:5432/toshanidb
     username: postgres
@@ -15,17 +15,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
-springdoc:
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui/index.html
-    disable-swagger-default-url: true

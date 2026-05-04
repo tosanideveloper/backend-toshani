@@ -33,7 +33,7 @@ public class AdminEmailsServiceImpl implements AdminEmailsService {
 
     @Override
     public AdminEmailsModel createAdminEmail(AdminEmailsModel adminEmailsModel) {
-        AdminEmailsEntity adminEmailsEntity = adminEmailsRepository.findById(String.valueOf(AbstractPersistable_.id)).orElseThrow(() -> new RuntimeException("Messages not found with id: " + id));
+        AdminEmailsEntity adminEmailsEntity = new AdminEmailsEntity();
         adminEmailsEntity.setId(adminEmailsModel.getId());
         adminEmailsEntity.setEmailAddress(adminEmailsModel.getEmailAddress());
         adminEmailsEntity.setEmailName(adminEmailsModel.getEmailName());
@@ -51,7 +51,6 @@ public class AdminEmailsServiceImpl implements AdminEmailsService {
         adminEmailsEntity.setEmailName(adminEmailsModel.getEmailName());
         adminEmailsEntity.setEmailType(adminEmailsModel.getEmailType());
         adminEmailsEntity.setStatus(adminEmailsModel.getStatus());
-
 
         AdminEmailsEntity saved = adminEmailsRepository.save(adminEmailsEntity);
 

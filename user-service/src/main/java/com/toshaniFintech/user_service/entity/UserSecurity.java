@@ -32,6 +32,12 @@ public class UserSecurity extends BaseEntity {
     @Column(name = "google_auth_enabled")
     private Boolean googleAuthEnabled = false;
 
+    @Column(name = "authenticator_reset_otp")
+    private String authenticatorResetOtp;
+
+    @Column(name = "authenticator_reset_otp_expiry")
+    private LocalDateTime authenticatorResetOtpExpiry;
+
     public String getUserId() {
         return userId;
     }
@@ -86,5 +92,21 @@ public class UserSecurity extends BaseEntity {
 
     public void setGoogleAuthEnabled(Boolean googleAuthEnabled) {
         this.googleAuthEnabled = googleAuthEnabled;
+    }
+
+    public String getAuthenticatorResetOtp() {
+        return authenticatorResetOtp;
+    }
+
+    public void setAuthenticatorResetOtp(String authenticatorResetOtp) {
+        this.authenticatorResetOtp = authenticatorResetOtp;
+    }
+
+    public LocalDateTime getAuthenticatorResetOtpExpiry() {
+        return authenticatorResetOtpExpiry;
+    }
+
+    public void setAuthenticatorResetOtpExpiry(LocalDateTime authenticatorResetOtpExpiry) {
+        this.authenticatorResetOtpExpiry = authenticatorResetOtpExpiry;
     }
 }

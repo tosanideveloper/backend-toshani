@@ -1,6 +1,7 @@
 package com.toshaniFintech.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.toshaniFintech.common.enums.UserType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +33,15 @@ public class Users extends BaseEntity implements Serializable {
     @Pattern(regexp = "^[^@ ]+@[^@ ]+\\.[^@ ]+$", message = "Enter valid email id")
     private String email;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "middle_name")
+    private String middleName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     @NotNull
     @Column(name = "user_name")
     private String userName;
@@ -47,6 +58,16 @@ public class Users extends BaseEntity implements Serializable {
 
     @Column(name = "is_email_verified")
     private boolean emailVerified = false;
+
+    @Column(name = "entity_uuid")
+    private String entityUuid;
+
+    @Column(name = "is_entity_admin")
+    private Boolean entityAdmin;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type")
+    private UserType userType;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

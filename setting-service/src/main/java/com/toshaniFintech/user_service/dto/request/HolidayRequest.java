@@ -6,15 +6,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-
 import java.time.LocalDate;
 @Data
 public class HolidayRequest {
-    @NotBlank(message = "holidayName must not be blank")
-    @Size(max = 50, message = "holidayName must not exceed 50 characters")
+    @NotBlank(message = "Holiday Name must not be blank")
+    @Size(max = 50)
     private String holidayName;
-    @NotNull(message = "holidayDate is required")
+
+    @NotNull(message = "Holiday date is required")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate holidayDate;
+
+    @NotBlank(message = "Holiday type is required")
+    private String holidayType;
+
 }
 

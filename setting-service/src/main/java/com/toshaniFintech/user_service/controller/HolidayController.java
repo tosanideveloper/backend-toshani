@@ -1,4 +1,8 @@
 package com.toshaniFintech.user_service.controller;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toshaniFintech.user_service.dto.response.TicketMessagesResponseDTO;
+import com.toshaniFintech.user_service.model.HolidaysModel;
+import com.toshaniFintech.user_service.model.TicketMessagesModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +31,9 @@ public class HolidayController {
     
     @Autowired
     private HolidayService holidayService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
     @PostMapping("/create")
     @Operation(
             summary = "Holiday List",
@@ -42,11 +49,11 @@ public class HolidayController {
 
     public ResponseEntity<APIResponse<HolidayResponse>> createHoliday(
             @Valid @RequestBody HolidayRequest request) {
-        return ResponseUtil.success(
-                "Holiday created successfully",
-                holidayService.createHoliday(request),
-                HttpStatus.CREATED
-        );
+        HolidaysModel holidaysModel = objectMapper.convertValue(request, HolidaysModel.class);
+        HolidaysModel updatedModel = holidayService.createHoliday( holidaysModel);
+        HolidayResponse responseDTO = objectMapper.convertValue(updatedModel, HolidayResponse.class);
+        return ResponseUtil.success("Holiday created successfully", responseDTO, HttpStatus.OK);
+
     }
     @GetMapping("/all")
     @Operation(
@@ -61,13 +68,9 @@ public class HolidayController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
 
-    public ResponseEntity<APIResponse<List<HolidayResponse>>> getAllHolidays() {
-        return ResponseUtil.success(
-                "Holiday fetched successfully",
-                holidayService.getAllHolidays(),
-                HttpStatus.OK
-        );
-    }
+    public ResponseEntity<APIResponse<List<HolidaysModel>>> getAllHolidays() {
+            return ResponseUtil.success("Holiday's fetched successfully", holidayService.getAllHolidays(), HttpStatus.OK);
+        }
     @GetMapping("/{id}")
     @Operation(
             summary = "Get Holiday By ID",
@@ -80,12 +83,9 @@ public class HolidayController {
             @ApiResponse(responseCode = "409", description = "Holiday already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<HolidayResponse>> getHolidayById(@PathVariable Long id) {
-        return ResponseUtil.success(
-                "Holiday fetched successfully",
-                holidayService.getHolidayById(String.valueOf(id)),
-                HttpStatus.OK
-        );
+    public ResponseEntity<APIResponse<HolidaysModel>> getHolidayById(@PathVariable String id) {
+        return ResponseUtil.success("Holiday message fetched successfully", holidayService.getHolidayById(id), HttpStatus.OK);
+
     }
     @PutMapping("/update/{id}")
     @Operation(
@@ -102,10 +102,10 @@ public class HolidayController {
     public ResponseEntity<APIResponse<HolidayResponse>> updateHoliday(
             @PathVariable String id,
             @Valid @RequestBody HolidayRequest holidayRequest) {
-        return ResponseUtil.success(
-                "Holiday updated successfully",
-                holidayService.updateHoliday(id, holidayRequest),
-                HttpStatus.OK
-        );
+        HolidaysModel ticketMessagesModel = objectMapper.convertValue(holidayRequest, HolidaysModel.class);
+        HolidaysModel updatedModel = holidayService.updateHoliday(id, ticketMessagesModel);
+        HolidayResponse responseDTO = objectMapper.convertValue(updatedModel, HolidayResponse.class);
+        return ResponseUtil.success("Holiday updated successfully", responseDTO, HttpStatus.OK);
+
     }
 }

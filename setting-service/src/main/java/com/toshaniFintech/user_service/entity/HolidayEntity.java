@@ -1,6 +1,5 @@
 package com.toshaniFintech.user_service.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.toshaniFintech.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,14 +16,8 @@ import java.time.LocalDate;
 public class HolidayEntity extends BaseEntity {
     @Column(name = "holiday_name", nullable = false)
     private String holidayName;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "holiday_date", nullable = false)
     private LocalDate holidayDate;
-    public HolidayEntity(){
-
-    }
-    public HolidayEntity(String holidayName, LocalDate holidayDate){
-        this.holidayName = holidayName;
-        this.holidayDate = holidayDate;
-    }
+    @Column(name = "holiday_type", nullable = false)
+    private String holidayType;
 }

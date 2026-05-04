@@ -3,6 +3,7 @@ package com.toshaniFintech.user_service.model;
 import lombok.Data;
 @Data
 public class SettlementBankModel {
+    private String id;
     private String date;
     private AgentDetails agentDetails;
     private BankDetails bankDetails;

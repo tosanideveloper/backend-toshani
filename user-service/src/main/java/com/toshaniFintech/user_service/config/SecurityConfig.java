@@ -31,7 +31,8 @@ public class SecurityConfig {
                 "http://localhost:3000",
                 "http://localhost:8080",
                 "http://localhost:8082",
-                "https://testapi.toshani.in"
+                "https://testapi.toshani.in",
+                "https://webtest.toshani.in"
         ));
         configuration.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"
