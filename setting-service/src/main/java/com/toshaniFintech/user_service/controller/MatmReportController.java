@@ -1,11 +1,7 @@
 package com.toshaniFintech.user_service.controller;
 
-import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
-import com.toshaniFintech.common.utils.ResponseUtil;
-import com.toshaniFintech.user_service.dto.request.Aeps2ReportRequestDTO;
 import com.toshaniFintech.user_service.dto.request.MatmReportRequestDTO;
-import com.toshaniFintech.user_service.dto.response.Aeps2ReportResponseDTO;
 import com.toshaniFintech.user_service.dto.response.MatmReportResponseDTO;
 import com.toshaniFintech.user_service.service.MatmReportService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/matm-report")

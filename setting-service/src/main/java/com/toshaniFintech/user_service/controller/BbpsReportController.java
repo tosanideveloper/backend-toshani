@@ -2,10 +2,7 @@ package com.toshaniFintech.user_service.controller;
 
 import com.toshaniFintech.common.dto.response.APIResponse;
 import com.toshaniFintech.common.dto.response.PaginatedResponse;
-import com.toshaniFintech.common.utils.ResponseUtil;
-import com.toshaniFintech.user_service.dto.request.Aeps2ReportRequestDTO;
 import com.toshaniFintech.user_service.dto.request.BbpsReportRequestDTO;
-import com.toshaniFintech.user_service.dto.response.Aeps2ReportResponseDTO;
 import com.toshaniFintech.user_service.dto.response.BbpsReportResponseDTO;
 import com.toshaniFintech.user_service.service.BbpsReportService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/bbps-report")

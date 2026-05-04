@@ -1,6 +1,5 @@
 package com.toshaniFintech.user_service.repository;
 
-import com.toshaniFintech.user_service.entity.Aeps2ReportEntity;
 import com.toshaniFintech.user_service.entity.MatmReportEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
