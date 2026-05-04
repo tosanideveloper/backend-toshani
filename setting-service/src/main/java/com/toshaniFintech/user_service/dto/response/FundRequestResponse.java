@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class FundRequestResponse {
-    private String Id;
+    private String id;
     private String requestId;
     private String partnerId;
     private String companyName;

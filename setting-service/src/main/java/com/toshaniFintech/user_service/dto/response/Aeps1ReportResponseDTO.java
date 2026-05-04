@@ -1,6 +1,5 @@
 package com.toshaniFintech.user_service.dto.response;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data

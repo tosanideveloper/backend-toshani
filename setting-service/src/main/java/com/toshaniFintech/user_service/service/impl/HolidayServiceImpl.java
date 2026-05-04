@@ -58,7 +58,6 @@ public class HolidayServiceImpl implements HolidayService {
     private HolidaysModel mapToModel(HolidayEntity entity) {
         HolidayResponse response = new HolidayResponse();
         response.setHolidayDate(entity.getHolidayDate());
-        response.setHolidayType(entity.getHolidayType());
         response.setHolidayName(entity.getHolidayName());
 
         return objectMapper.convertValue(entity, HolidaysModel.class);
