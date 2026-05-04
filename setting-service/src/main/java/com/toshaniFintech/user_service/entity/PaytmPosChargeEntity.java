@@ -1,6 +1,7 @@
 package com.toshaniFintech.user_service.entity;
 
 import com.toshaniFintech.common.entity.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -8,10 +9,15 @@ import jakarta.persistence.Table;
 @Table(name = "th_paytm_pos_charge")
 public class PaytmPosChargeEntity extends BaseEntity {
 
+    @Column(name = "min_amount")
     private Double minAmount;
+    @Column(name = "max_amount")
     private Double maxAmount;
-    private String paymentMode; // UPI / NB
-    private String chargeType;  // Percent / Fixed
+    @Column(name = "payment_mode")
+    private String paymentMode;
+    @Column(name = "charge_type")// UPI / NB
+    private String chargeType;
+    @Column(name = "charge")// Percent / Fixed
     private Double charge;
 
     public PaytmPosChargeEntity(Double minAmount, Double maxAmount, String paymentMode, String chargeType, Double charge) {

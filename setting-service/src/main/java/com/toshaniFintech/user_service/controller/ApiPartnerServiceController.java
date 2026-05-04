@@ -44,7 +44,8 @@ public class ApiPartnerServiceController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<APIResponse<List<ApiPartnerServiceModel>>> getAllSettlementTime() {
-        return ResponseUtil.success("API Partner Services fetched successfully", apiPartnerService.getAllApiPartnerServices(), HttpStatus.OK);
+        return ResponseUtil.success("API Partner Services fetched successfully",
+                apiPartnerService.getAllApiPartnerServices(), HttpStatus.OK);
     }
     @PostMapping("/create")
     @Operation(
@@ -58,11 +59,16 @@ public class ApiPartnerServiceController {
             @ApiResponse(responseCode = "409", description = "Data does not exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<APIResponse<ApiPartnerServiceResponseDTO>> createPartner(@Valid @RequestBody ApisServicesRequestDTO apisServicesRequestDto) {
-        ApiPartnerServiceModel apiPartnerServiceModel = objectMapper.convertValue(apisServicesRequestDto, ApiPartnerServiceModel.class);
-        ApiPartnerServiceModel partnerServiceModel = apiPartnerService.createApisPartnerService(apiPartnerServiceModel);
-        ApiPartnerServiceResponseDTO responseDTO = objectMapper.convertValue(partnerServiceModel, ApiPartnerServiceResponseDTO.class);
-        return ResponseUtil.success("API Partner Services created successfully", responseDTO, HttpStatus.OK);
+    public ResponseEntity<APIResponse<ApiPartnerServiceResponseDTO>> createPartner(
+            @Valid @RequestBody ApisServicesRequestDTO apisServicesRequestDto) {
+        ApiPartnerServiceModel apiPartnerServiceModel = objectMapper.convertValue(
+                apisServicesRequestDto, ApiPartnerServiceModel.class);
+        ApiPartnerServiceModel partnerServiceModel = apiPartnerService.createApisPartnerService(
+                apiPartnerServiceModel);
+        ApiPartnerServiceResponseDTO responseDTO = objectMapper.convertValue(
+                partnerServiceModel, ApiPartnerServiceResponseDTO.class);
+        return ResponseUtil.success("API Partner Services created successfully",
+                responseDTO, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
     @Operation(
